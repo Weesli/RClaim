@@ -1,0 +1,221 @@
+#
+#           Author by @Weesli
+#
+
+main-menu:
+  title: "&8Claim Management"
+  size: 27
+  children:
+    claims:
+      title: "&eYour Claims"
+      material: GRASS_BLOCK
+      custom-model-data: 0
+      lore:
+        - "&8"
+        - "&aClick to view your claims!"
+      slot: 4
+    upgrade-claim:
+      title: "&eUpgrade Claim"
+      material: BEACON
+      custom-model-data: 0
+      lore:
+        - "&8"
+        - "&aClick and upgrade your claim!"
+      slot: 10
+    members:
+      title: "&eManage Members"
+      material: PLAYER_HEAD
+      custom-model-data: 0
+      lore:
+        - "&8"
+        - "&aClick to manage your members!"
+      slot: 13
+    options:
+      title: "&eClaim Options"
+      material: REDSTONE_BLOCK
+      custom-model-data: 0
+      lore:
+        - "&8"
+        - "&aClick and settings your claims!"
+      slot: 16
+
+claims-menu:
+  title: "&8Your claims"
+  size: 54
+  item-settings:
+    title: "&eYour claim #<count>"
+    material: GRASS_BLOCK
+    custom-model-data: 0
+    lore:
+      - "&8"
+      - "&aX: <x>"
+      - "&aZ: <z>"
+      - "&aCountdown: <time>"
+      - "&a"
+      - "&a&cClick to upgrade time this claim!"
+
+upgrade-menu:
+  title: "&8Upgrade time your claim"
+  size: 9
+  item-settings:
+    title: "&eUpgrade claim"
+    material: BEACON
+    custom-model-data: 0
+    lore:
+      - "&8"
+      - "&aCost : &f<cost>"
+      - "&8"
+      - "&aClick to upgrade time your claim!"
+    slot: 4
+
+
+members-menu:
+  title: "&8Claim members"
+  size: 54
+  item-settings:
+    title: "&eMember, <name>"
+    material: PLAYER_HEAD
+    custom-model-data: 0
+    lore:
+      - "&a"
+      - "&a&cClick to manage this member!"
+
+options-menu:
+  title: "&8Claim options"
+  size: 9
+  children:
+    spawn-animal:
+      title: "&eSpawn Animal"
+      material: SHEEP_SPAWN_EGG
+      custom-model-data: 0
+      lore:
+        - "&8"
+        - "&aClick to spawn animals on your claim!"
+      slot: 1
+    spawn-monster:
+      title: "&eSpawn Monster"
+      material: SKELETON_SPAWN_EGG
+      custom-model_data: 0
+      lore:
+        - "&8"
+        - "&aClick to spawn monsters on your claim!"
+      slot: 3
+    pvp:
+      title: "&eEnable PVP"
+      material: DIAMOND_SWORD
+      custom-model_data: 0
+      lore:
+        - "&8"
+        - "&aClick to enable PVP on your claim!"
+      slot: 5
+    explosion:
+      title: "&eEnable Explosion"
+      material: TNT
+      custom-model_data: 0
+      lore:
+        - "&8"
+        - "&aClick to enable explosions on your claim!"
+      slot: 7
+
+resize-menu:
+  title: "&8Resize your claim"
+  size: 54
+  children:
+    empty-claim:
+      title: "&eEmpty claim"
+      material: WHITE_WOOL
+      custom-model_data: 0
+      lore:
+        - "&8"
+        - "&eX : &f<x>"
+        - "&eZ : &f<z>"
+        - "&e"
+        - "&eCost : &f<cost>"
+        - "&e"
+        - "&aClick to buy this claim"
+    self-claim:
+      title: "&eActive claim"
+      material: GREEN_WOOL
+      custom-model_data: 0
+      lore:
+        - "&8"
+        - "&eX : &f<x>"
+        - "&eZ : &f<z>"
+        - "&e"
+    not-available-claim:
+      title: "&eNot available claim"
+      material: RED_WOOL
+      custom-model_data: 0
+      lore:
+        - "&8"
+        - "&eX : &f<x>"
+        - "&eZ : &f<z>"
+    starter-claim:
+      title: "&eYour claim"
+      material: BLACK_WOOL
+      custom-model_data: 0
+      lore:
+        - "&8"
+        - "&eX : &f<x>"
+        - "&eZ : &f<z>"
+
+permissions-menu:
+  title: "Permissions Menu"
+  size: 27
+  children:
+    block-break:
+      title: "Block Break"
+      material: STONE_PICKAXE
+      custom-model-data: 0
+      lore:
+        - "Toggle block breaking permission"
+      slot: 2
+    block-place:
+      title: "Block Place"
+      material: STONE
+      custom-model-data: 0
+      lore:
+        - "Toggle block placing permission"
+      slot: 11
+    pickup-item:
+      title: "Pickup Item"
+      material: DIAMOND
+      custom-model-data: 0
+      lore:
+        - "Toggle item pickup permission"
+      slot: 20
+    drop-item:
+      title: "Drop Item"
+      material: IRON_INGOT
+      custom-model-data: 0
+      lore:
+        - "Toggle item dropping permission"
+      slot: 4
+    container-open:
+      title: "Open Container"
+      material: CHEST
+      custom-model-data: 0
+      lore:
+        - "Toggle container opening permission"
+      slot: 13
+    interact-entity:
+      title: "Interact Entity"
+      material: IRON_SWORD
+      custom-model-data: 0
+      lore:
+        - "Toggle entity interaction permission"
+      slot: 22
+    attack-animal:
+      title: "Attack Animal"
+      material: BOW
+      custom-model-data: 0
+      lore:
+        - "Toggle attacking animals permission"
+      slot: 6
+    attack-monster:
+      title: "Attack Monster"
+      material: DIAMOND_SWORD
+      custom-model-data: 0
+      lore:
+        - "Toggle attacking monsters permission"
+      slot: 15

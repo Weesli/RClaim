@@ -1,0 +1,36 @@
+#
+#    Author by @Weesli
+#
+
+options:
+  prefix: "&6Claim &8>> "
+  # Storage type can be 'YAML' or 'MySQL'
+  storage-type: YAML
+  # Economy type can be 'VAULT' or 'none'
+  economy-type: VAULT
+  # sended location to all player when Exploded claim from any causes
+  # if you don't want this setting, you change enabled to false
+  claim-timeout-message:
+    enabled: true
+    text:
+      - "&aThe claim region of &b%player% at coordinates &b%x% &b%z% has been destroyed!"
+  time-format: "%week%w %day%d %hour%h %minute%m %second%s"
+  # If you set the storage-type to 'MySQL' it will automatically use this one!
+  mysql:
+    host: localhost
+    port: 3306
+    username: root
+    password: ""
+    database: rclaims
+
+
+claim-settings:
+  # if change this setting of 0, claim is be free
+  claim-cost: 10000
+  # claim duration in days
+  claim-duration: 30
+  default-claim-status:
+    SPAWN_ANIMAL: true
+    SPAWN_MONSTER: false
+    EXPLOSION: false
+    PVP: false

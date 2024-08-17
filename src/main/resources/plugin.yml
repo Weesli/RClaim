@@ -1,0 +1,9 @@
+name: RClaim
+version: '1.0'
+main: net.weesli.rClaim.RClaim
+api-version: '1.13'
+depend: [RozsLib]
+softdepend: [Vault]
+commands:
+  claim:
+    description: creating a claim in chunk
