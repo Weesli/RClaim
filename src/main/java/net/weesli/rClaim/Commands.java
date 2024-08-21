@@ -121,6 +121,7 @@ public class Commands {
                             if (!event.isCancelled()){
                                 player_data.getClaims().forEach(claim -> {
                                     claim.removeMember(target.getUniqueId());
+                                    claim.getClaimPermissions().remove(target.getUniqueId());
                                     RClaim.getInstance().getStorage().updateClaim(claim);
                                 });
                                 ClaimManager.getPlayerData().put(player.getUniqueId(),player_data);
@@ -292,7 +293,9 @@ public class Commands {
 
     private static boolean isCheckPlayer(String name){
         for (OfflinePlayer player : Bukkit.getOfflinePlayers()){
-            if (player.getName().equalsIgnoreCase(name) || player.getUniqueId().equals(UUID.fromString(name))){
+            if (player.getName().equalsIgnoreCase(name)){
+                return true;
+            } else if (player.getUniqueId().toString().equals(name)) {
                 return true;
             }
         }

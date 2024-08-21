@@ -122,6 +122,7 @@ public class PlayerListener implements Listener {
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getItem().getLocation())).findFirst();
         claim.ifPresent(c -> {
             if (c.isOwner(player.getUniqueId())){return;}
+            if (!c.isMember(player.getUniqueId())){return;}
             if (!c.checkPermission(player.getUniqueId(), ClaimPermission.PICKUP_ITEM)){
                 e.setCancelled(true);
                 player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_PICKUP_ITEM"));

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.weesli</groupId>
-    <artifactId>RClaim</artifactId>
+    <artifactId>weesli-rclaim</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
@@ -15,6 +15,13 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/Weesli/RClaim</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <defaultGoal>clean package</defaultGoal>
@@ -68,15 +75,14 @@
             <url>https://jitpack.io/</url>
         </repository>
         <repository>
-            <id>fancyplugins-releases</id>
-            <name>FancyPlugins Repository</name>
-            <url>https://repo.fancyplugins.de/releases</url>
-        </repository>
-        <repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
-
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+            <layout>default</layout>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -89,7 +95,7 @@
         <dependency>
             <groupId>net.weesli</groupId>
             <artifactId>weesli-rozslib</artifactId>
-            <version>1.3</version>
+            <version>1.4</version>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
