@@ -38,7 +38,6 @@ main-menu:
         - "&8"
         - "&aClick and settings your claims!"
       slot: 16
-
 claims-menu:
   title: "&8Your claims"
   size: 54
@@ -52,7 +51,8 @@ claims-menu:
       - "&aZ: <z>"
       - "&aCountdown: <time>"
       - "&a"
-      - "&a&cClick to upgrade time this claim!"
+      - "&aClick to upgrade time this claim!"
+      - "&aClick Shift + RightClick to unClaim this claim"
 
 upgrade-menu:
   title: "&8Upgrade time your claim"
@@ -72,13 +72,22 @@ upgrade-menu:
 members-menu:
   title: "&8Claim members"
   size: 54
+  add-member:
+    title: "&eAdd Member"
+    material: NAME_TAG
+    custom-model-data: 0
+    lore:
+      - "&8"
+      - "&aEnter player's name to add them!"
+    slot: 49
   item-settings:
     title: "&eMember, <name>"
     material: PLAYER_HEAD
     custom-model-data: 0
     lore:
       - "&a"
-      - "&a&cClick to manage this member!"
+      - "&aClick to manage this member!"
+      - "&aShift + Click to untrust player"
 
 options-menu:
   title: "&8Claim options"
@@ -219,3 +228,25 @@ permissions-menu:
       lore:
         - "Toggle attacking monsters permission"
       slot: 15
+
+
+verify-menu:
+  title: "&8Are you sure?"
+  size: 9
+  children:
+    confirm:
+      title: "&eYes"
+      material: GREEN_WOOL
+      custom-model-data: 0
+      lore:
+        - "&8"
+        - "&aClick to confirm your action!"
+      slot: 2
+    deny:
+      title: "&cNo"
+      material: RED_WOOL
+      custom-model_data: 0
+      lore:
+        - "&8"
+        - "&aClick to cancel your action!"
+      slot: 6

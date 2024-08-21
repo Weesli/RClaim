@@ -2,6 +2,8 @@ package net.weesli.rClaim.management;
 
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.StorageManager.StorageType;
+import net.weesli.rClaim.api.events.ClaimCreateEvent;
+import net.weesli.rClaim.api.events.ClaimDeleteEvent;
 import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rClaim.utils.Claim;
 import net.weesli.rClaim.utils.ClaimPermission;
@@ -45,13 +47,22 @@ public class ClaimManager {
         }
     }
 
-    public static void ExplodeClaim(String ID, ExplodeCause cause){
+    public static void ExplodeClaim(String ID, ExplodeCause cause, boolean isCenter){
         Optional<Claim> claim = getClaim(ID);
         if (claim.isEmpty()){return;}
-        removeClaim(claim.get());
-        RClaim.getInstance().getStorage().deleteClaim(ID);
-        if (RClaim.getInstance().getConfig().getBoolean("options.claim-timeout-message.enabled")){
-            RClaim.getInstance().getConfig().getStringList("options.claim-timeout-message.text").stream().map(line-> ColorBuilder.convertColors(line).replaceAll("%player%", Bukkit.getPlayer(claim.get().getOwner()).getName()).replaceAll("%x%", String.valueOf(claim.get().getX())).replaceAll("%z%", String.valueOf(claim.get().getZ()))).forEach(Bukkit::broadcastMessage);
+        ClaimDeleteEvent event = new ClaimDeleteEvent(claim.get(),cause, isCenter);
+        Bukkit.getPluginManager().callEvent(event);
+        if (!event.isCancelled()){
+            removeClaim(claim.get());
+            RClaim.getInstance().getStorage().deleteClaim(ID);
+            if (RClaim.getInstance().getConfig().getBoolean("options.claim-timeout-message.enabled")){
+                RClaim.getInstance().getConfig().getStringList("options.claim-timeout-message.text").stream().map(line-> ColorBuilder.convertColors(line).replaceAll("%player%", Bukkit.getPlayer(claim.get().getOwner()).getName()).replaceAll("%x%", String.valueOf(claim.get().getX())).replaceAll("%z%", String.valueOf(claim.get().getZ()))).forEach(Bukkit::broadcastMessage);
+            }
+        }
+        if (isCenter){
+            getPlayerData(claim.get().getOwner()).getClaims().forEach(claim1 -> {
+                ExplodeClaim(claim1.getID(),ExplodeCause.UNCLAIM, false);
+            });
         }
     }
 
@@ -66,8 +77,8 @@ public class ClaimManager {
             claimStatuses = claimList.get(0).getClaimStatuses();
             permissions = claimList.get(0).getClaimPermissions();
         }
-        Claim claim = new Claim(id, owner.getUniqueId(), members, claimStatuses, chunk);
-        getTasks().add(new ClaimTask(id, getSec(RClaim.getInstance().getConfig().getInt("claim-settings.claim-duration"))));
+        Claim claim = new Claim(id, owner.getUniqueId(), members, claimStatuses, chunk, isCenter);
+        getTasks().add(new ClaimTask(id, getSec(RClaim.getInstance().getConfig().getInt("claim-settings.claim-duration")), isCenter));
         if (isCenter){
             setupBlock(claim);
             for (String default_permission_value : RClaim.getInstance().getConfig().getConfigurationSection("claim-settings.default-claim-status").getKeys(false)){
@@ -78,10 +89,12 @@ public class ClaimManager {
             }
         }
         claim.setClaimPermissions(permissions);
-        addClaim(claim);
-        ClaimPlayer player = getPlayerData(owner.getUniqueId());
-        playerData.put(owner.getUniqueId(),player);
-        RClaim.getInstance().getStorage().insertClaim(claim);
+        ClaimCreateEvent event = new ClaimCreateEvent(owner, claim);
+        Bukkit.getPluginManager().callEvent(event);
+        if (!event.isCancelled()){
+            addClaim(claim);
+            RClaim.getInstance().getStorage().insertClaim(claim);
+        }
     }
 
     public static void viewClaimRadius(Player player, Chunk chunk) {

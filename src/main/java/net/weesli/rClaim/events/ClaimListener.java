@@ -1,14 +1,14 @@
 package net.weesli.rClaim.events;
 
 import net.weesli.rClaim.RClaim;
+import net.weesli.rClaim.api.events.ClaimDeleteEvent;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.ui.MenuManagement;
 import net.weesli.rClaim.utils.Claim;
-import net.weesli.rClaim.utils.ClaimPermission;
 import net.weesli.rClaim.utils.ClaimStatus;
 import net.weesli.rozsLib.events.BlockRightClickEvent;
 import net.weesli.rozsLib.events.PlayerDamageByPlayerEvent;
-import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -49,8 +49,7 @@ public class ClaimListener implements Listener {
         Entity entity = e.getEntity();
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(entity.getLocation())).findFirst();
         if (claim.isPresent()){
-            Bukkit.broadcastMessage(String.valueOf(claim.get().checkStatus(ClaimStatus.EXPLOSION)));
-            if (!claim.get().checkStatus(ClaimStatus.EXPLOSION)){
+            if (claim.get().checkStatus(ClaimStatus.EXPLOSION)){
                 e.setCancelled(true);
             }
         }
@@ -100,5 +99,28 @@ public class ClaimListener implements Listener {
             player.openInventory(MenuManagement.getMainMenu(player));
         }
     }
+
+
+    @EventHandler
+    public void onDeleted(ClaimDeleteEvent e){
+        if (e.getClaim().isCenter()){
+            if (RClaim.getInstance().getConfig().getBoolean("options.hologram.enabled")){
+                RClaim.getInstance().getHologram().deleteHologram(e.getClaim().getID());
+            }
+            Chunk chunk = e.getClaim().getChunk();
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    for (int y = 70 + 1; y < chunk.getWorld().getMaxHeight(); y++) {
+                        Block block = chunk.getBlock(x, y, z);
+                        if (block.getType().equals(Material.BEDROCK)){
+                            block.setType(Material.AIR);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 }

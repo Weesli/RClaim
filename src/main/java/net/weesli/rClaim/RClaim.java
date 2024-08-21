@@ -6,6 +6,8 @@ import net.weesli.rClaim.EconomyManager.VaultEconomy;
 import net.weesli.rClaim.StorageManager.*;
 import net.weesli.rClaim.events.ClaimListener;
 import net.weesli.rClaim.events.PlayerListener;
+import net.weesli.rClaim.hooks.HPlaceholderAPI;
+import net.weesli.rClaim.hooks.Holograms.*;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rozsLib.ColorManager.ColorBuilder;
@@ -19,6 +21,7 @@ public final class RClaim extends JavaPlugin {
 
     private static StorageImpl storage;
     private static EconomyImpl economy;
+    private static HologramImpl hologram;
 
     private static RClaim instance;
 
@@ -34,12 +37,27 @@ public final class RClaim extends JavaPlugin {
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        if (this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
+            new HPlaceholderAPI().register();
+        }
         loadFiles();
         loadListeners();
         loadStorage();
         loadEconomy();
         loadData();
+        loadHologram();
         new Commands(this);
+    }
+
+    private void loadHologram() {
+        if (getConfig().getBoolean("options.hologram.enabled")){
+            HologramModule module = HologramModule.valueOf(getConfig().getString("options.hologram.hologram-module"));
+            switch (module){
+                case DecentHologram -> hologram = new HDecentHologram();
+                default -> Bukkit.getConsoleSender().sendMessage(ColorBuilder.convertColors("&cInvalid hologram module, please check config."));
+            }
+            new HologramUpdater();
+        }
     }
 
     private void loadEconomy() {
@@ -92,8 +110,10 @@ public final class RClaim extends JavaPlugin {
             StorageType type = getStorage().getStorageType();
             switch (type){
                 case YAML:
-                    claim_builder.load().set("claims." + task.getClaimId() + ".time", task.getTime());
-                    claim_builder.save();
+                    if(getStorage().hasClaim(task.getClaimId())){
+                        claim_builder.load().set("claims." + task.getClaimId() + ".time", task.getTime());
+                        claim_builder.save();
+                    }
                     break;
                 case MySQL:
                     MySQLStorage.getInstance().updateClaim(MySQLStorage.getInstance().getClaim(task.getClaimId()));
@@ -126,7 +146,7 @@ public final class RClaim extends JavaPlugin {
         return messagesFile;
     }
 
-    public static YamlFileBuilder getClaim_builder() {
+    public YamlFileBuilder getClaim_builder() {
         return claim_builder;
     }
 
@@ -136,5 +156,9 @@ public final class RClaim extends JavaPlugin {
 
     public EconomyImpl getEconomy() {
         return economy;
+    }
+
+    public HologramImpl getHologram() {
+        return hologram;
     }
 }

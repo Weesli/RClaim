@@ -19,17 +19,17 @@ import java.util.stream.Stream;
 
 public class MySQLStorage extends StorageImpl{
 
-    private String host = RClaim.getInstance().getConfig().getString("options.mysql.host");
-    private int port = RClaim.getInstance().getConfig().getInt("options.mysql.port");
-    private String user = RClaim.getInstance().getConfig().getString("options.mysql.username");
-    private String pass = RClaim.getInstance().getConfig().getString("options.mysql.password");
-    private String db = RClaim.getInstance().getConfig().getString("options.mysql.database");
+    private String host = RClaim.getInstance().getConfig().getString("options.database.host");
+    private int port = RClaim.getInstance().getConfig().getInt("options.database.port");
+    private String user = RClaim.getInstance().getConfig().getString("options.database.username");
+    private String pass = RClaim.getInstance().getConfig().getString("options.database.password");
+    private String db = RClaim.getInstance().getConfig().getString("options.database.database");
     private static MySQLStorage instance;
     private static Connection connection;
 
     MySQLBuilder builder = new MySQLBuilder(host,port,db,user,pass);
     public MySQLStorage(){
-        connection= builder.build();
+        connection = builder.build();
         createTable();
     }
 
@@ -43,6 +43,7 @@ public class MySQLStorage extends StorageImpl{
         columns.add(new Column("permissions", "TEXT(65000)", 65000));
         columns.add(new Column("time", "INT", 9999));
         columns.add(new Column("home", "VARCHAR(255)", 255));
+        columns.add(new Column("isCenter", "BOOL", 255));
         try {
             builder.createTable("rclaims_claims", connection, columns);
         } catch (SQLException e) {
@@ -50,13 +51,13 @@ public class MySQLStorage extends StorageImpl{
         }
     }
 
-    public static MySQLStorage getInstance(){
+    public static MySQLStorage getInstance() {
         try {
-            if (connection == null || connection.isClosed() || instance == null){
+            if (instance == null || connection == null || connection.isClosed()) {
                 instance = new MySQLStorage();
             }
         } catch (SQLException e) {
-            Bukkit.getServer().getConsoleSender().sendMessage(ColorBuilder.convertColors("&cMySQL database is failed. please check your config."));
+            Bukkit.getServer().getConsoleSender().sendMessage(ColorBuilder.convertColors("&cMySQL database connection failed. Please check your config."));
             Bukkit.getServer().getPluginManager().disablePlugin(RClaim.getInstance());
         }
         return instance;
@@ -75,7 +76,7 @@ public class MySQLStorage extends StorageImpl{
         if (claim.getHomeLocation() != null){
             location = claim.getHomeLocation().getWorld().getName()+ ":" + claim.getHomeLocation().getX() + ":" + claim.getHomeLocation().getY() + ":" + claim.getHomeLocation().getZ()+":"+claim.getHomeLocation().getPitch() + ":" + claim.getHomeLocation().getYaw();
         }
-        Insert insert = new Insert("rclaims_claims", List.of("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home"), List.of(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).toList().toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).toList().toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time.get(), location));
+        Insert insert = new Insert("rclaims_claims", List.of("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter"), List.of(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).toList().toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).toList().toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time.get(), location, claim.isCenter()));
         try {
             builder.insert(connection,insert);
         } catch (SQLException e) {
@@ -112,8 +113,9 @@ public class MySQLStorage extends StorageImpl{
                             .map(UUID::fromString)
                             .toList());
                     Location homeLocation = solveHome(rs.getString("home"));
+                    boolean isCenter = rs.getBoolean("isCenter");
                     Map<UUID, List<ClaimPermission>> permissions = solvePermission(rs.getString("permissions"));
-                    Claim claim = new Claim(id,owner,members,claimStatuses,chunk);
+                    Claim claim = new Claim(id,owner,members,claimStatuses,chunk, isCenter);
                     claim.setHomeLocation(homeLocation);
                     claim.setClaimPermissions(permissions);
                     return claim;
@@ -142,7 +144,7 @@ public class MySQLStorage extends StorageImpl{
         if (claim.getHomeLocation() != null){
             location = claim.getHomeLocation().getWorld().getName()+ ":" + claim.getHomeLocation().getX() + ":" + claim.getHomeLocation().getY() + ":" + claim.getHomeLocation().getZ()+":"+claim.getHomeLocation().getPitch() + ":" + claim.getHomeLocation().getYaw();
         }
-        Update update = new Update("rclaims_claims", List.of("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home"), List.of(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).toList().toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).toList().toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time, location), Map.of("id", claim.getID()));
+        Update update = new Update("rclaims_claims", List.of("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter"), List.of(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).toList().toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).toList().toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time, location, claim.isCenter()), Map.of("id", claim.getID()));
         try {
             builder.update(connection,update);
         } catch (SQLException e) {
@@ -152,10 +154,11 @@ public class MySQLStorage extends StorageImpl{
 
     @Override
     public void deleteClaim(String id) {
-        Delete delete = new Delete(connection,"rclaims_claims", Map.of("id", id));
-        try {
-            builder.delete(delete);
-        } catch (SQLException e) {
+        String sql = "DELETE FROM rclaims_claims WHERE id=?";
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setString(1,id);
+            statement.executeUpdate();
+        }catch (SQLException e){
             Bukkit.getServer().getConsoleSender().sendMessage(ColorBuilder.convertColors("&cFailed to delete claim from MySQL"));
         }
     }
@@ -206,13 +209,14 @@ public class MySQLStorage extends StorageImpl{
                         .toList());
                 Map<UUID, List<ClaimPermission>> permissions = solvePermission(rs.getString("permissions"));
                 int time = rs.getInt("time");
+                boolean isCenter = rs.getBoolean("isCenter");
                 Location homeLocation = solveHome(rs.getString("home"));
-                Claim claim = new Claim(id,owner,members,claimStatuses,chunk);
+                Claim claim = new Claim(id,owner,members,claimStatuses,chunk, isCenter);
                 claim.setClaimPermissions(permissions);
                 claim.setHomeLocation(homeLocation);
                 claims.add(claim);
                 if (!isTimerOnline(id)){
-                    ClaimManager.getTasks().add(new ClaimTask(id,time));
+                    ClaimManager.getTasks().add(new ClaimTask(id,time, isCenter));
                 }
             }
             return claims;

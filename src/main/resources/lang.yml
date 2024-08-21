@@ -12,8 +12,10 @@ TIME_UPGRADE: "&aRequest deadline extended!"
 HOME_SET: "&aHome set successfully"
 HASNT_HOME: "&cHey! You haven't a home!"
 YOU_DONT_IN_CLAIM: "&cHey! You need a claim for that!"
-CLAIM_LIST: "&eClaim list"
-CLAIM_LIST_ENTRY: "&eClaim information %claim%"
+CANNOT_CLAIM_MULTIPLE_CLAIMS: "&cYou can't claim more than one claim"
+UNCLAIMED_CLAIM: "&aClaim has been unclaimed"
+NOT_YOUR_CLAIM: "&cClaim needs to belong to you!"
+CONFIRM_UNCLAIMED: "&cAre you sure you want to delete the claim /unclaim confirm"
 
 # Permission messages
 PERMISSION_BLOCK_PLACE: "&cYou can't place a block this area!"
@@ -27,3 +29,7 @@ PERMISSION_ENTITY_INTERACT: "&cYou can't interact any entity in this area"
 
 # Status messages
 STATUS_PVP: "&cYou can't hit any player in this area!"
+
+# Admin messages
+
+DELETED_CLAIMS: "&cThe claims of %player% have been successfully deleted!"

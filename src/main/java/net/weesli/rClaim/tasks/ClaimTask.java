@@ -9,16 +9,19 @@ public class ClaimTask extends BukkitRunnable {
 
     private String claimId;
     private int time;
-    public ClaimTask(String claimId, int time) {
+    private boolean isCenter;
+    public ClaimTask(String claimId, int time, boolean isCenter) {
         this.claimId = claimId;
         this.time = time;
-        this.runTaskTimerAsynchronously(RClaim.getInstance(),0,20);
+        this.isCenter = isCenter;
+        this.runTaskTimer(RClaim.getInstance(),0,20);
     }
 
     @Override
     public void run() {
         if (time==0){
-            ClaimManager.ExplodeClaim(claimId, ExplodeCause.TIME_OUT);
+
+            ClaimManager.ExplodeClaim(claimId, ExplodeCause.TIME_OUT, isCenter);
             this.cancel();
         }
         time--;

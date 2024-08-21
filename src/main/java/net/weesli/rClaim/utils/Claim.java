@@ -16,13 +16,15 @@ public class Claim {
     private Chunk chunk;
     private Map<UUID, List<ClaimPermission>> claimPermissions = new HashMap<>();
     private Location location;
+    private boolean isCenter;
 
-    public Claim(String ID, UUID owner, List<UUID> members, List<ClaimStatus> claimStatuses, Chunk chunk) {
+    public Claim(String ID, UUID owner, List<UUID> members, List<ClaimStatus> claimStatuses, Chunk chunk, boolean isCenter) {
         this.ID = ID;
         this.owner = owner;
         this.members = members;
         this.claimStatuses = claimStatuses;
         this.chunk = chunk;
+        this.isCenter = isCenter;
     }
 
     public String getID() {
@@ -144,6 +146,14 @@ public class Claim {
 
     public void setHomeLocation(Location location) {
         this.location = location;
+    }
+
+    public boolean isCenter() {
+        return isCenter;
+    }
+
+    public void setCenter(boolean isCenter) {
+        this.isCenter = isCenter;
     }
 
 }

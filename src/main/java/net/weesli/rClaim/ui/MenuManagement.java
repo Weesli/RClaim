@@ -1,7 +1,10 @@
 package net.weesli.rClaim.ui;
 
+import de.rapha149.signgui.SignGUI;
+import de.rapha149.signgui.SignGUIAction;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.management.ClaimManager;
+import net.weesli.rClaim.management.ExplodeCause;
 import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rClaim.utils.Claim;
 import net.weesli.rClaim.utils.ClaimPermission;
@@ -17,21 +20,19 @@ import org.bukkit.entity.Player;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public class MenuManagement {
 
-    static FileConfiguration config = RClaim.getInstance().getMenusFile().load();
-
     public static Inventory getMainMenu(Player player){
+        FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors( config.getString("main-menu.title")), config.getInt("main-menu.size"));
-        builder.setItem(config.getInt("main-menu.children.claims.slot"),        new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("main-menu.children.claims"), builder.build()) {
+        builder.setItem(config.getInt("main-menu.children.claims.slot"),new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("main-menu.children.claims"), builder.build()) {
             @Override
             protected void addListener(InventoryClickEvent inventoryClickEvent) {
                 player.openInventory(getClaimsMenu(player));
@@ -59,12 +60,18 @@ public class MenuManagement {
     }
 
     public static Inventory getClaimsMenu(Player player){
+        FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         int i = 1;
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("claims-menu.title")), config.getInt("claims-menu.size"));
-        for (Claim claim : ClaimManager.getPlayerData(player.getUniqueId()).getClaims()){
+        List<Claim> claims = ClaimManager.getPlayerData(player.getUniqueId()).getClaims();
+        for (Claim claim : claims){
             ClickableItemStack itemStack = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("claims-menu.item-settings"), builder.build()) {
                 @Override
-                protected void addListener(InventoryClickEvent inventoryClickEvent) {
+                protected void addListener(InventoryClickEvent e) {
+                    if (e.isShiftClick() && e.isRightClick()){
+                        player.openInventory(verifyMenu(player,VerifyAction.UNCLAIM, claim.getID()));
+                        return;
+                    }
                     player.openInventory(getUpgradeClaimMenu(claim,player));
                 }
             }.setCancelled(true);
@@ -79,6 +86,7 @@ public class MenuManagement {
     }
 
     public static Inventory getUpgradeClaimMenu(Claim claim, Player player){
+        FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("upgrade-menu.title")), config.getInt("upgrade-menu.size"));
         ClickableItemStack itemStack = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("upgrade-menu.item-settings"), builder.build()) {
             @Override
@@ -103,6 +111,7 @@ public class MenuManagement {
     }
 
     public static Inventory getSettingsMenu(Player player){
+        FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("options-menu.title")), config.getInt("options-menu.size"));
         ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
         ClickableItemStack spawn_animal = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("options-menu.children.spawn-animal"), builder.build()) {
@@ -167,7 +176,10 @@ public class MenuManagement {
                 player.openInventory(getSettingsMenu(player));
             }
         }.setCancelled(true);
-
+        spawn_animal.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        spawn_mob.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        pvp.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        explosion.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
         for (ClaimStatus status : player_data.getClaims().get(0).getClaimStatuses()){
             switch (status){
                 case SPAWN_ANIMAL -> spawn_animal.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
@@ -184,32 +196,45 @@ public class MenuManagement {
     }
 
     public static Inventory getUsersMenu(Player player){
+        FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("members-menu.title")), config.getInt("members-menu.size"));
         for (UUID member : ClaimManager.getPlayerData(player.getUniqueId()).getClaims().get(0).getMembers()){
             ClickableItemStack itemStack = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("members-menu.item-settings"), builder.build()) {
                 @Override
                 protected void addListener(InventoryClickEvent inventoryClickEvent) {
-                    player.openInventory(getPermissionMenu(player, member));
+                    if (inventoryClickEvent.isShiftClick()){
+                        player.openInventory(verifyMenu(player, VerifyAction.UNTRUST_PLAYER, member));
+                        return;
+                    }
+                    player.openInventory(getPermissionMenu(player,member));
                 }
-            }.setCancelled(true);
+            }.setCancelled(true).setSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
             ItemMeta meta = itemStack.getItemStack().getItemMeta();
             meta.setDisplayName(meta.getDisplayName().replaceAll("<name>", Bukkit.getOfflinePlayer(member).getName()));
             itemStack.getItemStack().setItemMeta(meta);
             builder.addItem(itemStack);
         }
+        ClickableItemStack add_member = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("members-menu.add-member"), builder.build()) {
+            @Override
+            protected void addListener(InventoryClickEvent inventoryClickEvent) {
+                callSign(player);
+            }
+        }.setCancelled(true);
+        builder.setItem(config.getInt("members-menu.add-member.slot"), add_member);
         return builder.build();
     }
 
     public static Inventory getResizeInventory(Player player){
+        FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("resize-menu.title")), config.getInt("resize-menu.size"));
         setupUpgradeInventory(player,builder.build(),player.getChunk());
         return builder.build();
     }
 
     public static Inventory getPermissionMenu(Player player, UUID target){
+        FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("permissions-menu.title")), config.getInt("permissions-menu.size"));
         ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
-
         ClickableItemStack block_break = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.block-break"), builder.build()) {
             @Override
             protected void addListener(InventoryClickEvent inventoryClickEvent) {
@@ -338,6 +363,14 @@ public class MenuManagement {
             }
         }.setCancelled(true);
 
+        block_break.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        block_place.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        pickup_item.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        container_open.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        interact_entity.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        attack_animal.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        attack_monster.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
         for (ClaimPermission permission : player_data.getClaims().get(0).getClaimPermissions().getOrDefault(target, new ArrayList<>())) {
             switch (permission) {
                 case BLOCK_BREAK -> block_break.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
@@ -364,23 +397,33 @@ public class MenuManagement {
     }
 
 
-    private static void setupUpgradeInventory(Player player, Inventory inventory, Chunk chunk) {
+
+    private static void setupUpgradeInventory(Player player, Inventory inventory, Chunk centerChunk) {
         List<Chunk> chunks = new ArrayList<>();
         int chunkRadius = 4;
         int totalChunks = 54;
 
-        for (int dx = -chunkRadius; dx <= chunkRadius && chunks.size() < totalChunks; dx++) {
-            for (int dz = -chunkRadius; dz <= chunkRadius && chunks.size() < totalChunks; dz++) {
-                Chunk targeted_chunk = player.getWorld().getChunkAt(chunk.getX() + dx, chunk.getZ() + dz);
-                chunks.add(targeted_chunk);
+        int centerX = centerChunk.getX();
+        int centerZ = centerChunk.getZ();
+
+        for (int dx = -chunkRadius; dx <= chunkRadius; dx++) {
+            for (int dz = -chunkRadius; dz <= chunkRadius; dz++) {
+                if (chunks.size() < totalChunks) {
+                    Chunk targetedChunk = player.getWorld().getChunkAt(centerX + dx, centerZ + dz);
+                    chunks.add(targetedChunk);
+                }
             }
         }
-
         for (int i = 0; i < totalChunks; i++) {
-            Chunk targeted_chunk = chunks.get(i);
-            inventory.setItem(i, getAreas(inventory, player, chunk, targeted_chunk));
+            if (i < chunks.size()) {
+                Chunk targetedChunk = chunks.get(i);
+                inventory.setItem(i, getAreas(inventory, player, centerChunk, targetedChunk));
+            }
         }
     }
+
+
+
 
     private static ItemStack getAreas(Inventory inventory, Player player, Chunk currentChunk, Chunk chunk) {
         Optional<Claim> claim = ClaimManager.getClaims().stream()
@@ -424,6 +467,83 @@ public class MenuManagement {
         meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<cost>", RClaim.getInstance().getConfig().getString("claim-settings.claim-cost")).replaceAll("<x>", String.valueOf(chunk.getX()*16)).replaceAll("<z>", String.valueOf(chunk.getZ() *16))).toList());
         itemStack.getItemStack().setItemMeta(meta);
         return itemStack.getItemStack();
+    }
+
+    public static Inventory verifyMenu(Player player, VerifyAction action, Object varible){
+        FileConfiguration config = RClaim.getInstance().getMenusFile().load();
+        InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("verify-menu.title")), config.getInt("verify-menu.size"));
+        builder.setItem(config.getInt("verify-menu.children.confirm.slot"), new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("verify-menu.children.confirm"), builder.build()) {
+            @Override
+            protected void addListener(InventoryClickEvent inventoryClickEvent) {
+                switch (action){
+                    case UNTRUST_PLAYER -> {
+                        player.performCommand("claim untrust " + Bukkit.getOfflinePlayer(UUID.fromString(String.valueOf(varible))).getName());
+                        player.openInventory(getUsersMenu(player));
+                    }
+                    case UNCLAIM -> {
+                        List<Claim> claims = ClaimManager.getClaims().stream().filter(c -> c.isOwner(player.getUniqueId())).toList();
+                        boolean isCenter = claims.get(0).getID().equals(String.valueOf(varible));
+                        ClaimManager.ExplodeClaim(String.valueOf(varible), ExplodeCause.UNCLAIM, isCenter);
+                        player.sendMessage(RClaim.getInstance().getMessage("UNCLAIMED_CLAIM"));
+                        player.closeInventory();
+                    }
+                }
+            }
+        }.setCancelled(true).setSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP));
+
+        builder.setItem(config.getInt("verify-menu.children.deny.slot"), new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("verify-menu.children.deny"), builder.build()) {
+            @Override
+            protected void addListener(InventoryClickEvent inventoryClickEvent) {
+                player.openInventory(getMainMenu(player));
+            }
+        }.setCancelled(true));
+        return builder.build();
+    }
+
+
+    private static void callSign(Player player){
+        SignGUI gui = SignGUI.builder().callHandlerSynchronously(RClaim.getInstance())
+                .setLines("", "----------","Enter player name", "----------")
+                .setType(Material.DARK_OAK_SIGN)
+
+                .setColor(DyeColor.WHITE)
+
+                .setHandler((p, result) -> {
+                    String name = result.getLine(0);
+
+                    if (name.isEmpty()) {
+                        return Collections.emptyList();
+                    }else {
+                        ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
+                        if (name.equals(player.getName())){
+                            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 5, 1);
+                            return List.of(SignGUIAction.displayNewLines("", "----------", "Enter player name", "----------"));
+                        }else if (!isCheckPlayer(name)){
+                            player.getWorld().playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO, 5, 1);
+                            return List.of(SignGUIAction.displayNewLines("", "----------", "Player not found", "----------"));
+                        }else if (player_data.getClaims().get(0).getMembers().contains(Bukkit.getOfflinePlayer(name).getUniqueId())){
+                            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 5, 1);
+                            return List.of(SignGUIAction.displayNewLines("", "----------", "Enter player name", "----------"));
+                        }else {
+                            player.performCommand("claim trust " + name);
+                            player.getWorld().playSound(player.getLocation(),Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 5, 1);
+                            player.openInventory(getUsersMenu(player));
+                            return Collections.emptyList();
+                        }
+                    }
+                })
+                .build();
+        gui.open(player);
+    }
+
+
+    private static boolean isCheckPlayer(String name){
+        for (OfflinePlayer player : Bukkit.getOfflinePlayers()){
+            if (player.getName().equalsIgnoreCase(name)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

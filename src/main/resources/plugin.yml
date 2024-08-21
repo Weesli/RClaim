@@ -3,7 +3,20 @@ version: '1.0'
 main: net.weesli.rClaim.RClaim
 api-version: '1.13'
 depend: [RozsLib]
-softdepend: [Vault]
+softdepend: [Vault, PlaceholderAPI, FancyHolograms, DecentHolograms]
 commands:
   claim:
     description: creating a claim in chunk
+  unclaim:
+    description: unclaiming a claim in chunk
+  adminclaim:
+    description: all admin commands for claims
+  chome:
+    description: teleport home location in claim
+permissions:
+  rclaim.admin.clearclaim:
+    description: Permission to clear all claims of player
+    default: op
+  rclaim.admin.bypass:
+    description: Permission to bypass claim checks
+    default: op

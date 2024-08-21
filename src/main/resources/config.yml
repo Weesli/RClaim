@@ -4,6 +4,8 @@
 
 options:
   prefix: "&6Claim &8>> "
+  # If there is no plugin on your server that uses this plugin api, leave this as false!
+  use-events: false
   # Storage type can be 'YAML' or 'MySQL'
   storage-type: YAML
   # Economy type can be 'VAULT' or 'none'
@@ -16,13 +18,26 @@ options:
       - "&aThe claim region of &b%player% at coordinates &b%x% &b%z% has been destroyed!"
   time-format: "%week%w %day%d %hour%h %minute%m %second%s"
   # If you set the storage-type to 'MySQL' it will automatically use this one!
-  mysql:
+  database:
     host: localhost
     port: 3306
     username: root
     password: ""
     database: rclaims
-
+  # Hologram usage (Optional)
+  hologram:
+    enabled: false
+    # RClaim offers 1 options for holograms and which one you choose is entirely up to you.
+    # Options = 'DecentHologram'
+    # Only the person with the claim can see it
+    hologram-module: DecentHologram
+    hologram-settings:
+      hologram-lines:
+        - "&eBase Claim"
+        - "&8"
+        - "&aOwner : &f%player%"
+        - "&a"
+        - "&eRemaining time : %rclaim_<id>_time%"
 
 claim-settings:
   # if change this setting of 0, claim is be free
