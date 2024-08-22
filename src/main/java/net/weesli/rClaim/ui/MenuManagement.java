@@ -180,7 +180,9 @@ public class MenuManagement {
     public static Inventory getUsersMenu(Player player){
         FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("members-menu.title")), config.getInt("members-menu.size"));
-        for (UUID member : ClaimManager.getPlayerData(player.getUniqueId()).getClaims().get(0).getMembers()){
+        int i = 0;
+        Claim claim = ClaimManager.getPlayerData(player.getUniqueId()).getClaims().get(0);
+        for (UUID member : claim.getMembers()){
             ClickableItemStack itemStack = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("members-menu.item-settings"), builder.build())
                     .setEvent(event-> {
                         if (event.isShiftClick()){
@@ -194,7 +196,7 @@ public class MenuManagement {
             ItemMeta meta = itemStack.getItemStack().getItemMeta();
             meta.setDisplayName(meta.getDisplayName().replaceAll("<name>", Bukkit.getOfflinePlayer(member).getName()));
             itemStack.getItemStack().setItemMeta(meta);
-            builder.addItem(itemStack);
+            builder.setItem(i,itemStack); i++;
         }
         ClickableItemStack add_member = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("members-menu.add-member"), builder.build())
                 .setEvent(event -> callSign(player))
@@ -214,9 +216,9 @@ public class MenuManagement {
         FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("permissions-menu.title")), config.getInt("permissions-menu.size"));
         ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
+        List<Claim> target_claims = player_data.getClaims();
         ClickableItemStack block_break = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.block-break"), builder.build())
                 .setEvent(event-> {
-                    List<Claim> target_claims = player_data.getClaims();
                     target_claims.forEach(claim -> {
                         if (claim.checkPermission(target, ClaimPermission.BLOCK_BREAK)){
                             claim.removePermission(target, ClaimPermission.BLOCK_BREAK);
@@ -231,7 +233,6 @@ public class MenuManagement {
 
         ClickableItemStack block_place = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.block-place"), builder.build())
                 .setEvent(event -> {
-                    List<Claim> target_claims = player_data.getClaims();
                     target_claims.forEach(claim -> {
                         if (claim.checkPermission(target, ClaimPermission.BLOCK_PLACE)){
                             claim.removePermission(target, ClaimPermission.BLOCK_PLACE);
@@ -246,7 +247,6 @@ public class MenuManagement {
 
         ClickableItemStack pickup_item = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.pickup-item"), builder.build())
                 .setEvent(event -> {
-                    List<Claim> target_claims = player_data.getClaims();
                     target_claims.forEach(claim -> {
                         if (claim.checkPermission(target, ClaimPermission.PICKUP_ITEM)){
                             claim.removePermission(target, ClaimPermission.PICKUP_ITEM);
@@ -261,7 +261,6 @@ public class MenuManagement {
 
         ClickableItemStack drop_item = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.drop-item"), builder.build())
                 .setEvent(event-> {
-                    List<Claim> target_claims = player_data.getClaims();
                     target_claims.forEach(claim -> {
                         if (claim.checkPermission(target, ClaimPermission.DROP_ITEM)){
                             claim.removePermission(target, ClaimPermission.DROP_ITEM);
@@ -276,7 +275,6 @@ public class MenuManagement {
 
         ClickableItemStack container_open = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.container-open"), builder.build())
                 .setEvent(event-> {
-                    List<Claim> target_claims = player_data.getClaims();
                     target_claims.forEach(claim -> {
                         if (claim.checkPermission(target, ClaimPermission.CONTAINER_OPEN)){
                             claim.removePermission(target, ClaimPermission.CONTAINER_OPEN);
@@ -291,7 +289,6 @@ public class MenuManagement {
 
         ClickableItemStack interact_entity = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.interact-entity"), builder.build())
                 .setEvent(event-> {
-                    List<Claim> target_claims = player_data.getClaims();
                     target_claims.forEach(claim -> {
                         if (claim.checkPermission(target, ClaimPermission.INTERACT_ENTITY)){
                             claim.removePermission(target, ClaimPermission.INTERACT_ENTITY);
@@ -306,7 +303,6 @@ public class MenuManagement {
 
         ClickableItemStack attack_animal = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.attack-animal"), builder.build())
                 .setEvent(event->{
-                    List<Claim> target_claims = player_data.getClaims();
                     target_claims.forEach(claim -> {
                         if (claim.checkPermission(target, ClaimPermission.ATTACK_ANIMAL)){
                             claim.removePermission(target, ClaimPermission.ATTACK_ANIMAL);
@@ -321,7 +317,6 @@ public class MenuManagement {
 
         ClickableItemStack attack_monster = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.attack-monster"), builder.build())
                 .setEvent(event-> {
-                    List<Claim> target_claims = player_data.getClaims();
                     target_claims.forEach(claim -> {
                         if (claim.checkPermission(target, ClaimPermission.ATTACK_MONSTER)){
                             claim.removePermission(target, ClaimPermission.ATTACK_MONSTER);

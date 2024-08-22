@@ -32,6 +32,9 @@ public class ClaimManager {
     }
 
     public static Optional<Claim> getClaim(String ID) {
+        if (RClaim.getInstance().getStorage().getStorageType().equals(StorageType.MySQL)){
+            return Optional.ofNullable(RClaim.getInstance().getStorage().getClaim(ID));
+        }
         return claims.stream().filter(claim -> claim.getID().equals(ID)).findFirst();
     }
 
@@ -71,11 +74,11 @@ public class ClaimManager {
         List<UUID> members= new ArrayList<>();
         List<ClaimStatus> claimStatuses = new ArrayList<>();
         Map<UUID, List<ClaimPermission>> permissions = new HashMap<>();
-        List<Claim> claimList = getPlayerData(owner.getUniqueId()).getClaims();
-        if (!claimList.isEmpty()){
-            members = claimList.get(0).getMembers();
-            claimStatuses = claimList.get(0).getClaimStatuses();
-            permissions = claimList.get(0).getClaimPermissions();
+        Optional<Claim> center = getPlayerData(owner.getUniqueId()).getClaims().stream().filter(Claim::isCenter).findFirst();
+        if (center.isPresent()){
+            members.addAll(center.get().getMembers());
+            claimStatuses.addAll(center.get().getClaimStatuses());
+            permissions.putAll(center.get().getClaimPermissions());
         }
         Claim claim = new Claim(id, owner.getUniqueId(), members, claimStatuses, chunk, isCenter);
         getTasks().add(new ClaimTask(id, getSec(RClaim.getInstance().getConfig().getInt("claim-settings.claim-duration")), isCenter));
@@ -140,7 +143,7 @@ public class ClaimManager {
     }
 
     public static ClaimPlayer getPlayerData(UUID uuid) {
-        return playerData.getOrDefault(uuid,new ClaimPlayer(uuid,Bukkit.getOfflinePlayer(uuid).getName()));
+        return new ClaimPlayer(uuid,Bukkit.getOfflinePlayer(uuid).getName());
     }
 
     public static  Map<UUID, ClaimPlayer> getPlayerData() {

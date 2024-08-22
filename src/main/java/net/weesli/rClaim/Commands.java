@@ -85,14 +85,15 @@ public class Commands {
                             plugin.getServer().getPluginManager().callEvent(event);
                             if (!event.isCancelled()){
                                 ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
-                                if (player_data.getClaims().get(0).getMembers().contains(target.getUniqueId())){
+                                List<Claim> claims = player_data.getClaims();
+                                if (claims.get(0).getMembers().contains(target.getUniqueId())){
                                     player.sendMessage(RClaim.getInstance().getMessage("ALREADY_TRUSTED_PLAYER"));
                                     return false;
                                 }
-                                player_data.getClaims().forEach(claim -> {
+                                for (Claim claim : claims){
                                     claim.addMember(target.getUniqueId());
                                     RClaim.getInstance().getStorage().updateClaim(claim);
-                                });
+                                }
                                 ClaimManager.getPlayerData().put(player.getUniqueId(),player_data);
                                 player.sendMessage(RClaim.getInstance().getMessage("TRUSTED_PLAYER"));
                             }
@@ -112,18 +113,19 @@ public class Commands {
                         if(isCheckPlayer(strings[1])){
                             OfflinePlayer target = plugin.getServer().getOfflinePlayer(strings[1]);
                             ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
-                            if (!player_data.getClaims().get(0).getMembers().contains(target.getUniqueId())){
+                            List<Claim> claims = player_data.getClaims();
+                            if (!claims.get(0).getMembers().contains(target.getUniqueId())){
                                 player.sendMessage(RClaim.getInstance().getMessage("NOT_TRUSTED_PLAYER"));
                                 return false;
                             }
                             UnTrustedPlayerEvent event = new UnTrustedPlayerEvent(player,target.getPlayer());
                             plugin.getServer().getPluginManager().callEvent(event);
                             if (!event.isCancelled()){
-                                player_data.getClaims().forEach(claim -> {
+                                for (Claim claim : claims){
                                     claim.removeMember(target.getUniqueId());
                                     claim.getClaimPermissions().remove(target.getUniqueId());
                                     RClaim.getInstance().getStorage().updateClaim(claim);
-                                });
+                                }
                                 ClaimManager.getPlayerData().put(player.getUniqueId(),player_data);
                                 player.sendMessage(RClaim.getInstance().getMessage("UNTRUSTED_PLAYER"));
                             }

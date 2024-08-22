@@ -4,7 +4,6 @@ import net.weesli.rClaim.management.ClaimManager;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class ClaimPlayer {
 
@@ -26,7 +25,7 @@ public class ClaimPlayer {
     }
 
     public List<Claim> getClaims() {
-        return ClaimManager.getClaims().stream().filter(claim -> claim.getOwner().equals(uuid)).collect(Collectors.toList());
+        return ClaimManager.getClaims().stream().filter(claim -> claim.isOwner(uuid)).toList();
     }
 
 

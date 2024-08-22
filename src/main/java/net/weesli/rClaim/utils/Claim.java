@@ -125,7 +125,7 @@ public class Claim {
     }
 
     public void removeMember(UUID uuid) {
-        members.remove(uuid);
+        members.removeIf(member -> member.equals(uuid));
     }
 
     public Map<UUID, List<ClaimPermission>> getClaimPermissions() {
