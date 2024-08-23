@@ -8,6 +8,7 @@ import net.weesli.rClaim.events.ClaimListener;
 import net.weesli.rClaim.events.PlayerListener;
 import net.weesli.rClaim.hooks.HPlaceholderAPI;
 import net.weesli.rClaim.hooks.Holograms.*;
+import net.weesli.rClaim.hooks.Spawners.SpawnerManager;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rozsLib.ColorManager.ColorBuilder;
@@ -46,8 +47,10 @@ public final class RClaim extends JavaPlugin {
         loadEconomy();
         loadData();
         loadHologram();
+        new SpawnerManager();
         new Commands(this);
     }
+
 
     private void loadHologram() {
         if (getConfig().getBoolean("options.hologram.enabled")){
