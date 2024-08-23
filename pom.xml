@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.weesli</groupId>
-    <artifactId>weesli-rclaim</artifactId>
-    <version>1.0</version>
+    <artifactId>RClaim</artifactId>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>RClaim</name>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -59,10 +59,6 @@
 
     <repositories>
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
             <id>papermc-repo</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
@@ -83,6 +79,10 @@
             <url>https://repo.codemc.io/repository/maven-public/</url>
             <layout>default</layout>
         </repository>
+        <repository>
+            <id>SilkSpawners-Repo</id>
+            <url>https://repo.dustplanet.de/artifactory/libs-release-local</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -95,7 +95,8 @@
         <dependency>
             <groupId>net.weesli</groupId>
             <artifactId>weesli-rozslib</artifactId>
-            <version>1.4</version>
+            <version>1.5</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
@@ -107,6 +108,8 @@
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.2</version>
+            <scope>provided</scope>
+
         </dependency>
         <dependency>
             <groupId>com.github.decentsoftware-eu</groupId>
@@ -118,6 +121,26 @@
             <groupId>de.rapha149.signgui</groupId>
             <artifactId>signgui</artifactId>
             <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>mc.rellox</groupId>
+            <artifactId>spawnermeta</artifactId>
+            <version>1.0</version>
+            <scope> system</scope>
+            <systemPath>${project.basedir}/lib/SpawnerMeta.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>de.corneliusmay</groupId>
+            <artifactId>silkspawners</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/SilkSpawners_v2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.github.angeschossen</groupId>
+            <artifactId>UpgradeableSpawnersAPI</artifactId>
+            <version>4.1.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
