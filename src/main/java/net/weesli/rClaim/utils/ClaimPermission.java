@@ -9,4 +9,8 @@ public enum ClaimPermission {
     INTERACT_ENTITY,
     ATTACK_ANIMAL,
     ATTACK_MONSTER,
+    BREAK_CONTAINER,
+    USE_DOOR,
+    USE_PORTAL,
+    USE_POTION
 }

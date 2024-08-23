@@ -91,7 +91,7 @@ members-menu:
 
 options-menu:
   title: "&8Claim options"
-  size: 9
+  size: 27
   children:
     spawn-animal:
       title: "&eSpawn Animal"
@@ -100,7 +100,7 @@ options-menu:
       lore:
         - "&8"
         - "&aClick to spawn animals on your claim!"
-      slot: 1
+      slot: 10
     spawn-monster:
       title: "&eSpawn Monster"
       material: SKELETON_SPAWN_EGG
@@ -108,7 +108,7 @@ options-menu:
       lore:
         - "&8"
         - "&aClick to spawn monsters on your claim!"
-      slot: 3
+      slot: 12
     pvp:
       title: "&eEnable PVP"
       material: DIAMOND_SWORD
@@ -116,7 +116,7 @@ options-menu:
       lore:
         - "&8"
         - "&aClick to enable PVP on your claim!"
-      slot: 5
+      slot: 14
     explosion:
       title: "&eEnable Explosion"
       material: TNT
@@ -124,7 +124,7 @@ options-menu:
       lore:
         - "&8"
         - "&aClick to enable explosions on your claim!"
-      slot: 7
+      slot: 16
 
 resize-menu:
   title: "&8Resize your claim"
@@ -178,57 +178,84 @@ permissions-menu:
       custom-model-data: 0
       lore:
         - "Toggle block breaking permission"
-      slot: 2
+      slot: 1
     block-place:
       title: "Block Place"
       material: STONE
       custom-model-data: 0
       lore:
         - "Toggle block placing permission"
-      slot: 11
+      slot: 10
     pickup-item:
       title: "Pickup Item"
       material: DIAMOND
       custom-model-data: 0
       lore:
         - "Toggle item pickup permission"
-      slot: 20
+      slot: 19
     drop-item:
       title: "Drop Item"
       material: IRON_INGOT
       custom-model-data: 0
       lore:
         - "Toggle item dropping permission"
-      slot: 4
+      slot: 3
     container-open:
       title: "Open Container"
       material: CHEST
       custom-model-data: 0
       lore:
         - "Toggle container opening permission"
-      slot: 13
+      slot: 12
     interact-entity:
       title: "Interact Entity"
       material: IRON_SWORD
       custom-model-data: 0
       lore:
         - "Toggle entity interaction permission"
-      slot: 22
+      slot: 21
     attack-animal:
       title: "Attack Animal"
       material: BOW
       custom-model-data: 0
       lore:
         - "Toggle attacking animals permission"
-      slot: 6
+      slot: 5
     attack-monster:
       title: "Attack Monster"
       material: DIAMOND_SWORD
       custom-model-data: 0
       lore:
         - "Toggle attacking monsters permission"
-      slot: 15
-
+      slot: 14
+    break-container:
+      title: "Break Container"
+      material: BARREL
+      custom-model_data: 0
+      lore:
+        - "Toggle breaking containers permission"
+      slot: 23
+    use-door:
+      title: "Use Door"
+      material: LEVER
+      custom-model_data: 0
+      lore:
+        - "Toggle using doors permission"
+      slot: 7
+    use-portal:
+      title: "Use Portal"
+      material: OBSIDIAN
+      custom-model_data: 0
+      lore:
+        - "Toggle using portals permission"
+      slot: 16
+    use-potion:
+      title: "Use Potion"
+      material: POTION
+      custom-model_data: 0
+      lore:
+        - "Toggle using potions permission"
+      slot: 25
 
 verify-menu:
   title: "&8Are you sure?"

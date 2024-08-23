@@ -16,6 +16,7 @@ CANNOT_CLAIM_MULTIPLE_CLAIMS: "&cYou can't claim more than one claim"
 UNCLAIMED_CLAIM: "&aClaim has been unclaimed"
 NOT_YOUR_CLAIM: "&cClaim needs to belong to you!"
 CONFIRM_UNCLAIMED: "&cAre you sure you want to delete the claim /unclaim confirm"
+YOU_CANT_PLACE_SPAWNER: "&cYou can only place spawners in areas you own."
 
 # Permission messages
 PERMISSION_BLOCK_PLACE: "&cYou can't place a block this area!"
@@ -26,6 +27,10 @@ PERMISSION_DROP_ITEM: "&cYou can't drop an item to this area!"
 PERMISSION_ATTACK_ANIMAL: "&cYou can't attack an animal in this area"
 PERMISSION_ATTACK_MONSTER: "&cYou can't attack an monster in this area"
 PERMISSION_ENTITY_INTERACT: "&cYou can't interact any entity in this area"
+PERMISSION_BREAK_CONTAINER: "&cYou can't break a container in this area"
+PERMISSION_DOOR_OPEN: "&cYou can't interact with the door in this area!"
+PERMISSION_ENTER_PORTAL: "&cYou can't enter a portal in this area"
+PERMISSION_USE_POTION: "&cYou can't use the potion in this area'"
 
 # Status messages
 STATUS_PVP: "&cYou can't hit any player in this area!"

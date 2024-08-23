@@ -2,12 +2,15 @@ package net.weesli.rClaim.events;
 
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.api.events.ClaimDeleteEvent;
+import net.weesli.rClaim.api.events.ClaimEnterEvent;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.ui.MenuManagement;
 import net.weesli.rClaim.utils.Claim;
 import net.weesli.rClaim.utils.ClaimStatus;
+import net.weesli.rClaim.utils.FormatManager;
 import net.weesli.rozsLib.events.BlockRightClickEvent;
 import net.weesli.rozsLib.events.PlayerDamageByPlayerEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,6 +24,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class ClaimListener implements Listener {
@@ -121,6 +125,13 @@ public class ClaimListener implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onEnter(ClaimEnterEvent e){
+        FormatManager.sendMessage(e.getPlayer(), Map.of("player", Bukkit.getOfflinePlayer(e.getClaim().getOwner()).getName()));
+    }
+
+
 
 
 }

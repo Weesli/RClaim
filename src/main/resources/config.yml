@@ -16,6 +16,13 @@ options:
     enabled: true
     text:
       - "&aThe claim region of &b%player% at coordinates &b%x% &b%z% has been destroyed!"
+  enter-message:
+    enabled: true
+    # The format of the text that will appear when the player enters the region.
+    # The format types are 'actionbar', 'title' and 'bossbar'.
+    # To add a subtitle for title, you can add <> between two sentences. example. You have entered the territory of %player% <> Be careful
+    format: "bossbar"
+    text: "&cClaim owner &f%player%"
   time-format: "%week%w %day%d %hour%h %minute%m %second%s"
   # If you set the storage-type to 'MySQL' it will automatically use this one!
   database:
