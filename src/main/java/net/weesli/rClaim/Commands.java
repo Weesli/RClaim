@@ -231,8 +231,8 @@ public class Commands {
 
         @Override
         protected List<String> TabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-            if (commandSender.hasPermission("rclaim.admin.clearclaim")){
-                return Collections.singletonList("clearclaim");
+            if (commandSender.hasPermission("rclaim.admin.clearclaim") && commandSender.isOp()){
+                return Arrays.asList("clearclaim", "reload");
             }
             if (strings.length == 1 && strings[0].equalsIgnoreCase("clearclaim")){
                 return Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());
