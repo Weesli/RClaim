@@ -12,7 +12,7 @@
     <name>RClaim</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -133,13 +133,6 @@
             <version>2.4.0</version>
         </dependency>
         <dependency>
-            <groupId>mc.rellox</groupId>
-            <artifactId>spawnermeta</artifactId>
-            <version>1.0</version>
-            <scope> system</scope>
-            <systemPath>${project.basedir}/lib/SpawnerMeta.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>de.corneliusmay</groupId>
             <artifactId>silkspawners</artifactId>
             <version>1.0</version>
@@ -156,6 +149,13 @@
             <groupId>org.black_ixx</groupId>
             <artifactId>playerpoints</artifactId>
             <version>3.2.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- SpawnerMeta -->
+        <dependency>
+            <groupId>com.github.OfficialRell</groupId>
+            <artifactId>SpawnerMeta</artifactId>
+            <version>24.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
