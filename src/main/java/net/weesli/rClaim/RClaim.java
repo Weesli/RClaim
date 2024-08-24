@@ -16,7 +16,12 @@ import net.weesli.rozsLib.ConfigurationManager.YamlFileBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public final class RClaim extends JavaPlugin {
 
@@ -47,8 +52,36 @@ public final class RClaim extends JavaPlugin {
         loadEconomy();
         loadData();
         loadHologram();
+        checkVersion();
         new SpawnerManager();
         new Commands(this);
+    }
+
+    private void checkVersion() {
+        try {
+            URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=119083");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                if (!response.toString().equals(this.getDescription().getVersion())) {
+                    Bukkit.getConsoleSender().sendMessage(ColorBuilder.convertColors("&cNew version of RClaim available! Please update to version &e" + response));
+                }
+            }
+        } catch (IOException e) {
+            Bukkit.getConsoleSender().sendMessage(ColorBuilder.convertColors("&cFailed to check for new version of RClaim."));
+        }
     }
 
 

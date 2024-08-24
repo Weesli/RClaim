@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.weesli</groupId>
-    <artifactId>RClaim</artifactId>
-    <version>1.1.0</version>
+    <artifactId>weesli-rclaim</artifactId>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>RClaim</name>
@@ -83,6 +83,18 @@
             <id>SilkSpawners-Repo</id>
             <url>https://repo.dustplanet.de/artifactory/libs-release-local</url>
         </repository>
+        <repository>
+            <id>eldonexus</id>
+            <url>https://eldonexus.de/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>rosewood-repo</id>
+            <url>https://repo.rosewooddev.io/repository/public/</url>
+        </repository>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/Weesli/RLib</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -93,10 +105,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.weesli</groupId>
-            <artifactId>weesli-rozslib</artifactId>
-            <version>1.5</version>
-            <scope>provided</scope>
+            <groupId>com.github.Weesli</groupId>
+            <artifactId>RLib</artifactId>
+            <version>1.6</version>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
@@ -109,7 +120,6 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.11.2</version>
             <scope>provided</scope>
-
         </dependency>
         <dependency>
             <groupId>com.github.decentsoftware-eu</groupId>
@@ -140,6 +150,12 @@
             <groupId>com.github.angeschossen</groupId>
             <artifactId>UpgradeableSpawnersAPI</artifactId>
             <version>4.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.black_ixx</groupId>
+            <artifactId>playerpoints</artifactId>
+            <version>3.2.6</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

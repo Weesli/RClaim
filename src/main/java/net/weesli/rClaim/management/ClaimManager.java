@@ -13,9 +13,11 @@ import net.weesli.rozsLib.ColorManager.ColorBuilder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class ClaimManager {
 
@@ -101,34 +103,54 @@ public class ClaimManager {
     }
 
     public static void viewClaimRadius(Player player, Chunk chunk) {
+        PreviewViewer(player,chunk);
+    }
+    
+    
+    private static void PreviewViewer(Player player, Chunk chunk){
+        String viewerMode = RClaim.getInstance().getConfig().getString("options.viewer-mode");
         int x = chunk.getX() * 16;
         int z = chunk.getZ() * 16;
         int size = 16;
         World world = player.getWorld();
+        if (viewerMode.equalsIgnoreCase("particle")){
+            new BukkitRunnable() {
+                int time = 20;
 
-        new BukkitRunnable() {
-            int time = 20;
+                @Override
+                public void run() {
+                    if (time == 0) {
+                        this.cancel();
+                        return;
+                    }
 
-            @Override
-            public void run() {
-                if (time == 0) {
-                    this.cancel();
-                    return;
-                }
-
-                for (int i = x; i < x + size; i++) {
-                    for (int j = z; j < z + size; j++) {
-                        if (i == x || i == x + size - 1 || j == z || j == z + size - 1) {
-                            Block highestBlock = world.getHighestBlockAt(i, j);
-                            Location particleLocation = highestBlock.getLocation().add(0.5, 1, 0.5);
-                            world.spawnParticle(Particle.REDSTONE, particleLocation, 10, new Particle.DustOptions(Color.RED, 1));
+                    for (int i = x; i < x + size; i++) {
+                        for (int j = z; j < z + size; j++) {
+                            if (i == x || i == x + size - 1 || j == z || j == z + size - 1) {
+                                Block highestBlock = world.getHighestBlockAt(i, j);
+                                Location particleLocation = highestBlock.getLocation().add(0.5, 1, 0.5);
+                                world.spawnParticle(Particle.REDSTONE, particleLocation, 10, new Particle.DustOptions(Color.RED, 1));
+                            }
                         }
                     }
-                }
 
-                time--;
-            }
-        }.runTaskTimerAsynchronously(RClaim.getInstance(), 0, 5);
+                    time--;
+                }
+            }.runTaskTimerAsynchronously(RClaim.getInstance(), 0, 5);
+        } else if (viewerMode.equalsIgnoreCase("border")) {
+            WorldBorder border = Bukkit.createWorldBorder();
+            border.setCenter(x+8,z+8);
+            border.setSize(16);
+            player.setWorldBorder(border);
+            border.setSize(16,5);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    border.reset();
+                    this.cancel();
+                }
+            }.runTaskLater(RClaim.getInstance(),60);
+        }
     }
 
 

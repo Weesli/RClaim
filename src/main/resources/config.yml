@@ -4,8 +4,7 @@
 
 options:
   prefix: "&6Claim &8>> "
-  # If there is no plugin on your server that uses this plugin api, leave this as false!
-  use-events: false
+  viewer-mode: particle
   # Storage type can be 'YAML' or 'MySQL'
   storage-type: YAML
   # Economy type can be 'VAULT' or 'none'
