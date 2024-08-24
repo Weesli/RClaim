@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UpgradeableSpawners extends SpawnerIntegration{
 
@@ -28,7 +29,7 @@ public class UpgradeableSpawners extends SpawnerIntegration{
 
     @Override
     boolean checkArea(Player player, Location location) {
-        List<Claim> claim = ClaimManager.getClaims().stream().filter(claim1 -> claim1.isOwner(player.getUniqueId()) || claim1.isMember(player.getUniqueId())).toList();
+        List<Claim> claim = ClaimManager.getClaims().stream().filter(claim1 -> claim1.isOwner(player.getUniqueId()) || claim1.isMember(player.getUniqueId())).collect(Collectors.toList());
         if (!claim.isEmpty()){
             for (Claim c : claim){
                 if (c.contains(location)){

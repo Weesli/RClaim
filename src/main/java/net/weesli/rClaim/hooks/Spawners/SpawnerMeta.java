@@ -1,10 +1,8 @@
 package net.weesli.rClaim.hooks.Spawners;
 
 
-import de.corneliusmay.silkspawners.api.Bukkit;
 import mc.rellox.spawnermeta.api.APIInstance;
 import mc.rellox.spawnermeta.api.events.SpawnerPlaceEvent;
-import mc.rellox.spawnermeta.api.events.SpawnerPreSpawnEvent;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.utils.Claim;
@@ -13,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SpawnerMeta extends SpawnerIntegration {
 
@@ -35,7 +34,7 @@ public class SpawnerMeta extends SpawnerIntegration {
 
     @Override
     boolean checkArea(Player player, Location location) {
-        List<Claim> claim = ClaimManager.getClaims().stream().filter(claim1 -> claim1.isOwner(player.getUniqueId()) || claim1.isMember(player.getUniqueId())).toList();
+        List<Claim> claim = ClaimManager.getClaims().stream().filter(claim1 -> claim1.isOwner(player.getUniqueId()) || claim1.isMember(player.getUniqueId())).collect(Collectors.toList());
         if (!claim.isEmpty()){
             for (Claim c : claim){
                 if (c.contains(location)){

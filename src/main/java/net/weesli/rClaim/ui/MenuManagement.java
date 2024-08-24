@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MenuManagement {
 
@@ -63,7 +64,7 @@ public class MenuManagement {
                     });
             ItemMeta meta = itemStack.getItemStack().getItemMeta();
             meta.setDisplayName(meta.getDisplayName().replaceAll("<count>", String.valueOf(i)));
-            meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<x>", String.valueOf(claim.getX())).replaceAll("<z>", String.valueOf(claim.getZ())).replaceAll("<time>", ClaimManager.getTimeFormat(claim.getID()))).toList());
+            meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<x>", String.valueOf(claim.getX())).replaceAll("<z>", String.valueOf(claim.getZ())).replaceAll("<time>", ClaimManager.getTimeFormat(claim.getID()))).collect(Collectors.toList()));
             itemStack.getItemStack().setItemMeta(meta);
             builder.addItem(itemStack);
             i++;
@@ -89,7 +90,7 @@ public class MenuManagement {
                 })
                 .setCancelled(true);
         ItemMeta meta = itemStack.getItemStack().getItemMeta();
-        meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<cost>", RClaim.getInstance().getConfig().getString("claim-settings.claim-cost"))).toList());
+        meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<cost>", RClaim.getInstance().getConfig().getString("claim-settings.claim-cost"))).collect(Collectors.toList()));
         itemStack.getItemStack().setItemMeta(meta);
         builder.setItem(config.getInt("upgrade-menu.item-settings.slot"), itemStack);
         return builder.build();
@@ -163,10 +164,20 @@ public class MenuManagement {
         explosion.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
         for (ClaimStatus status : player_data.getClaims().get(0).getClaimStatuses()){
             switch (status){
-                case SPAWN_ANIMAL -> spawn_animal.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case SPAWN_MONSTER -> spawn_mob.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case PVP -> pvp.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case EXPLOSION -> explosion.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                case SPAWN_ANIMAL:
+                    spawn_animal.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case SPAWN_MONSTER:
+                    spawn_mob.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+
+                case PVP:
+                    pvp.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+
+                case EXPLOSION:
+                    explosion.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
             }
         }
         builder.setItem(config.getInt("options-menu.children.spawn-animal.slot"), spawn_animal);
@@ -343,19 +354,46 @@ public class MenuManagement {
 
         for (ClaimPermission permission : player_data.getClaims().get(0).getClaimPermissions().getOrDefault(target, new ArrayList<>())) {
             switch (permission) {
-                case BLOCK_BREAK -> block_break.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case BLOCK_PLACE -> block_place.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case PICKUP_ITEM -> pickup_item.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case DROP_ITEM -> drop_item.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case CONTAINER_OPEN -> container_open.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case INTERACT_ENTITY -> interact_entity.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case ATTACK_ANIMAL -> attack_animal.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case ATTACK_MONSTER -> attack_monster.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case BREAK_CONTAINER -> break_container.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case USE_DOOR -> use_door.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case USE_PORTAL -> use_portal.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
-                case USE_POTION -> use_potion.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                case BLOCK_BREAK:
+                    block_break.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case BLOCK_PLACE:
+                    block_place.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case PICKUP_ITEM:
+                    pickup_item.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case DROP_ITEM:
+                    drop_item.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case CONTAINER_OPEN:
+                    container_open.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case INTERACT_ENTITY:
+                    interact_entity.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case ATTACK_ANIMAL:
+                    attack_animal.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case ATTACK_MONSTER:
+                    attack_monster.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case BREAK_CONTAINER:
+                    break_container.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case USE_DOOR:
+                    use_door.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case USE_PORTAL:
+                    use_portal.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                case USE_POTION:
+                    use_potion.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+                default:
+                    break;
             }
+
         }
 
         builder.setItem(config.getInt("permissions-menu.children.block-break.slot"), block_break);
@@ -423,7 +461,7 @@ public class MenuManagement {
         String key;
         if (currentChunk.equals(chunk)) {
             key = "resize-menu.children.starter-claim";
-        } else if (claim.isEmpty()) {
+        } else if (!claim.isPresent()) {
             key = "resize-menu.children.empty-claim";
         } else if (claim.get().getOwner().equals(player.getUniqueId())) {
             key = "resize-menu.children.self-claim";
@@ -449,7 +487,7 @@ public class MenuManagement {
                 })
                 .setCancelled(true);
         ItemMeta meta = itemStack.getItemStack().getItemMeta();
-        meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<cost>", RClaim.getInstance().getConfig().getString("claim-settings.claim-cost")).replaceAll("<x>", String.valueOf(chunk.getX()*16)).replaceAll("<z>", String.valueOf(chunk.getZ() *16))).toList());
+        meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<cost>", RClaim.getInstance().getConfig().getString("claim-settings.claim-cost")).replaceAll("<x>", String.valueOf(chunk.getX()*16)).replaceAll("<z>", String.valueOf(chunk.getZ() *16))).collect(Collectors.toList()));
         itemStack.getItemStack().setItemMeta(meta);
         return itemStack.getItemStack();
     }
@@ -460,17 +498,17 @@ public class MenuManagement {
         builder.setItem(config.getInt("verify-menu.children.confirm.slot"), new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("verify-menu.children.confirm"), builder.build())
                 .setEvent(event->{
                             switch (action){
-                                case UNTRUST_PLAYER -> {
+                                case UNTRUST_PLAYER:
                                     player.performCommand("claim untrust " + Bukkit.getOfflinePlayer(UUID.fromString(String.valueOf(varible))).getName());
                                     player.openInventory(getUsersMenu(player));
-                                }
-                                case UNCLAIM -> {
-                                    List<Claim> claims = ClaimManager.getClaims().stream().filter(c -> c.isOwner(player.getUniqueId())).toList();
+                                    break;
+                                case UNCLAIM:
+                                    List<Claim> claims = ClaimManager.getClaims().stream().filter(c -> c.isOwner(player.getUniqueId())).collect(Collectors.toList());
                                     boolean isCenter = claims.get(0).getID().equals(String.valueOf(varible));
                                     ClaimManager.ExplodeClaim(String.valueOf(varible), ExplodeCause.UNCLAIM, isCenter);
                                     player.sendMessage(RClaim.getInstance().getMessage("UNCLAIMED_CLAIM"));
                                     player.closeInventory();
-                                }
+                                    break;
                             }
                         })
                 .setCancelled(true)
@@ -501,13 +539,13 @@ public class MenuManagement {
                         ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
                         if (name.equals(player.getName())){
                             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 5, 1);
-                            return List.of(SignGUIAction.displayNewLines("", "----------", "Enter player name", "----------"));
+                            return new ArrayList<>(Collections.singleton(SignGUIAction.displayNewLines("", "----------", "Enter player name", "----------")));
                         }else if (!isCheckPlayer(name)){
                             player.getWorld().playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO, 5, 1);
-                            return List.of(SignGUIAction.displayNewLines("", "----------", "Player not found", "----------"));
+                            return new ArrayList<>(Collections.singleton(SignGUIAction.displayNewLines("", "----------", "Player not found", "----------")));
                         }else if (player_data.getClaims().get(0).getMembers().contains(Bukkit.getOfflinePlayer(name).getUniqueId())){
                             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 5, 1);
-                            return List.of(SignGUIAction.displayNewLines("", "----------", "Enter player name", "----------"));
+                            return new ArrayList<>(Collections.singleton(SignGUIAction.displayNewLines("", "----------", "Enter player name", "----------")));
                         }else {
                             player.performCommand("claim trust " + name);
                             player.getWorld().playSound(player.getLocation(),Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 5, 1);

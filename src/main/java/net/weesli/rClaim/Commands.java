@@ -17,10 +17,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Commands {
@@ -135,7 +132,7 @@ public class Commands {
                     }
                 } else if (strings[0].equalsIgnoreCase("sethome")) {
                     Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(player.getLocation())).findFirst();
-                    if (claim.isEmpty()){
+                    if (!claim.isPresent()){
                         player.sendMessage(RClaim.getInstance().getMessage("YOU_DONT_IN_CLAIM"));
                     }
                     claim.ifPresent(c -> {
@@ -162,7 +159,7 @@ public class Commands {
             if (strings.length == 2 && strings[0].equalsIgnoreCase("untrust")){
                 return plugin.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
             }
-            return List.of("confirm", "sethome", "trust", "untrust");
+            return Arrays.asList("confirm", "sethome", "trust", "untrust");
         }
     }
 
@@ -192,7 +189,7 @@ public class Commands {
 
         @Override
         protected List<String> TabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-            return List.of();
+            return Collections.singletonList("");
         }
     }
 
@@ -235,12 +232,12 @@ public class Commands {
         @Override
         protected List<String> TabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
             if (commandSender.hasPermission("rclaim.admin.clearclaim")){
-                return List.of("clearclaim");
+                return Collections.singletonList("clearclaim");
             }
             if (strings.length == 1 && strings[0].equalsIgnoreCase("clearclaim")){
-                return Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).toList();
+                return Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());
             }
-            return List.of("reload");
+            return Collections.singletonList("reload");
         }
     }
 
@@ -288,7 +285,7 @@ public class Commands {
 
         @Override
         protected List<String> TabComplete(CommandSender commandSender, Command command, String s, String[] args) {
-            return List.of("confirm");
+            return Collections.singletonList("confirm");
         }
     }
 

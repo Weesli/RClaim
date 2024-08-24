@@ -69,14 +69,13 @@ public class MySQLStorage extends StorageImpl{
         String formatted_permissions = claim.getClaimPermissions().entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue().stream()
                         .map(ClaimPermission::name)
-                        .collect(Collectors.joining(",")))
-                .toList().stream().collect((Collectors.joining(";")));
+                        .collect(Collectors.joining(","))).collect((Collectors.joining(";")));
         Optional<Integer> time = ClaimManager.getTasks().stream().filter(task-> task.getClaimId().equals(claim.getID())).map(ClaimTask::getTime).findFirst();
         String location = "";
         if (claim.getHomeLocation() != null){
             location = claim.getHomeLocation().getWorld().getName()+ ":" + claim.getHomeLocation().getX() + ":" + claim.getHomeLocation().getY() + ":" + claim.getHomeLocation().getZ()+":"+claim.getHomeLocation().getPitch() + ":" + claim.getHomeLocation().getYaw();
         }
-        Insert insert = new Insert("rclaims_claims", List.of("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter"), List.of(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).toList().toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).toList().toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time.get(), location, claim.isCenter()));
+        Insert insert = new Insert("rclaims_claims", Arrays.asList("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter"), Arrays.asList(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()).toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()).toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time.get(), location, claim.isCenter()));
         try {
             builder.insert(connection,insert);
         } catch (SQLException e) {
@@ -92,16 +91,16 @@ public class MySQLStorage extends StorageImpl{
             try(ResultSet rs = statement.executeQuery()){
                 if (rs.next()){
                     UUID owner = UUID.fromString(rs.getString("owner"));
-                    List<ClaimStatus> claimStatuses = new ArrayList<>(Stream.of(rs.getString("claim_statues").replace("[" ,"").replaceAll("]", "").split(", ")).filter(key-> {
+                    List<ClaimStatus> claimStatuses = Stream.of(rs.getString("claim_statues").replace("[" ,"").replaceAll("]", "").split(", ")).filter(key-> {
                         try {
                             ClaimStatus.valueOf(key);
                             return true;
                         }catch (IllegalArgumentException e){
                             return false;
                         }
-                    }).map(ClaimStatus::valueOf).toList());
+                    }).map(ClaimStatus::valueOf).collect(Collectors.toList());
                     Chunk chunk = solveChunk(rs.getString("chunk"));
-                    List<UUID> members = new ArrayList<>(Arrays.stream(rs.getString("members").replace("[", "").replace("]", "").split(", ")).toList().stream()
+                    List<UUID> members = Arrays.stream(rs.getString("members").replace("[", "").replace("]", "").split(", ")).collect(Collectors.toList()).stream()
                             .filter(member -> {
                                 try {
                                     UUID.fromString(member);
@@ -111,7 +110,7 @@ public class MySQLStorage extends StorageImpl{
                                 }
                             })
                             .map(UUID::fromString)
-                            .toList());
+                            .collect(Collectors.toList());
                     Location homeLocation = solveHome(rs.getString("home"));
                     boolean isCenter = rs.getBoolean("isCenter");
                     Map<UUID, List<ClaimPermission>> permissions = solvePermission(rs.getString("permissions"));
@@ -134,7 +133,7 @@ public class MySQLStorage extends StorageImpl{
                 .map(entry -> entry.getKey() + "=" + entry.getValue().stream()
                         .map(ClaimPermission::name)
                         .collect(Collectors.joining(",")))
-                .toList().stream().collect((Collectors.joining(";")));
+                .collect(Collectors.toList()).stream().collect((Collectors.joining(";")));
         Optional<Integer> time_op = ClaimManager.getTasks().stream().filter(task-> task.getClaimId().equals(claim.getID())).map(ClaimTask::getTime).findFirst();
         int time = 555;
         if (time_op.isPresent()){
@@ -144,7 +143,9 @@ public class MySQLStorage extends StorageImpl{
         if (claim.getHomeLocation() != null){
             location = claim.getHomeLocation().getWorld().getName()+ ":" + claim.getHomeLocation().getX() + ":" + claim.getHomeLocation().getY() + ":" + claim.getHomeLocation().getZ()+":"+claim.getHomeLocation().getPitch() + ":" + claim.getHomeLocation().getYaw();
         }
-        Update update = new Update("rclaims_claims", List.of("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter"), List.of(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).toList().toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).toList().toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time, location, claim.isCenter()), Map.of("id", claim.getID()));
+        HashMap<String, String> where = new HashMap<>();
+        where.put("id", claim.getID());
+        Update update = new Update("rclaims_claims", Arrays.asList("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter"), Arrays.asList(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()).toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()).toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time, location, claim.isCenter()), where);
         try {
             builder.update(connection,update);
         } catch (SQLException e) {
@@ -187,16 +188,16 @@ public class MySQLStorage extends StorageImpl{
             while (rs.next()){
                 String id = rs.getString("id");
                 UUID owner = UUID.fromString(rs.getString("owner"));
-                List<ClaimStatus> claimStatuses = new ArrayList<>(Stream.of(rs.getString("claim_statues").replace("[" ,"").replaceAll("]", "").split(", ")).filter(key-> {
+                List<ClaimStatus> claimStatuses = Stream.of(rs.getString("claim_statues").replace("[" ,"").replaceAll("]", "").split(", ")).filter(key-> {
                     try {
                         ClaimStatus.valueOf(key);
                         return true;
                     }catch (IllegalArgumentException e){
                         return false;
                     }
-                }).map(ClaimStatus::valueOf).toList());
+                }).map(ClaimStatus::valueOf).collect(Collectors.toList());
                 Chunk chunk = solveChunk(rs.getString("chunk"));
-                List<UUID> members = new ArrayList<>(Arrays.stream(rs.getString("members").replace("[", "").replace("]", "").split(", ")).toList().stream()
+                List<UUID> members = Arrays.stream(rs.getString("members").replace("[", "").replace("]", "").split(", ")).collect(Collectors.toList()).stream()
                         .filter(member -> {
                             try {
                                 UUID.fromString(member);
@@ -206,7 +207,7 @@ public class MySQLStorage extends StorageImpl{
                             }
                         })
                         .map(UUID::fromString)
-                        .toList());
+                        .collect(Collectors.toList());
                 Map<UUID, List<ClaimPermission>> permissions = solvePermission(rs.getString("permissions"));
                 int time = rs.getInt("time");
                 boolean isCenter = rs.getBoolean("isCenter");
@@ -242,10 +243,10 @@ public class MySQLStorage extends StorageImpl{
         for (String entry : entries) {
             String[] split = entry.split("=");
             UUID uuid = UUID.fromString(split[0]);
-            List<ClaimPermission> claimPermissions = new ArrayList<>(Arrays.stream(split[1].split(","))
+            List<ClaimPermission> claimPermissions = Arrays.stream(split[1].split(","))
                     .map(String::trim)
                     .map(ClaimPermission::valueOf)
-                    .toList());
+                    .collect(Collectors.toList());
             new_maps.put(uuid, claimPermissions);
         }
         return new_maps;

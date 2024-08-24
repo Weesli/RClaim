@@ -52,7 +52,7 @@ public class ClaimManager {
 
     public static void ExplodeClaim(String ID, ExplodeCause cause, boolean isCenter){
         Optional<Claim> claim = getClaim(ID);
-        if (claim.isEmpty()){return;}
+        if (!claim.isPresent()){return;}
         ClaimDeleteEvent event = new ClaimDeleteEvent(claim.get(),cause, isCenter);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()){

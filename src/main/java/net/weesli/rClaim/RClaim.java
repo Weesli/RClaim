@@ -55,9 +55,8 @@ public final class RClaim extends JavaPlugin {
     private void loadHologram() {
         if (getConfig().getBoolean("options.hologram.enabled")){
             HologramModule module = HologramModule.valueOf(getConfig().getString("options.hologram.hologram-module"));
-            switch (module){
-                case DecentHologram -> hologram = new HDecentHologram();
-                default -> Bukkit.getConsoleSender().sendMessage(ColorBuilder.convertColors("&cInvalid hologram module, please check config."));
+            if (module.equals(HologramModule.DecentHologram)){
+                hologram = new HDecentHologram();
             }
             new HologramUpdater();
         }
@@ -65,8 +64,8 @@ public final class RClaim extends JavaPlugin {
 
     private void loadEconomy() {
         EconomyType type = EconomyType.valueOf(getConfig().getString("options.economy-type"));
-        switch (type){
-            case VAULT -> new VaultEconomy().register();
+        if (type.equals(EconomyType.VAULT)){
+            economy = new VaultEconomy();
         }
         if (economy != null && economy.isActive()){
             Bukkit.getConsoleSender().sendMessage("[RClaim] register economy type is " + economy.getEconomyType().name());
@@ -82,9 +81,10 @@ public final class RClaim extends JavaPlugin {
 
     private void loadStorage() {
         StorageType type = StorageType.valueOf(getConfig().getString("options.storage-type"));
-        switch (type){
-            case YAML -> new YamlStorage().register();
-            case MySQL -> new MySQLStorage().register();
+        if (type.equals(StorageType.MySQL)){
+            new MySQLStorage().register();
+        } else if (type.equals(StorageType.YAML)) {
+            new YamlStorage().register();
         }
         Bukkit.getConsoleSender().sendMessage("[RClaim] register storage type is " + storage.getStorageType().name());
     }

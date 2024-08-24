@@ -24,8 +24,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 public class ClaimListener implements Listener {
 
@@ -114,7 +116,7 @@ public class ClaimListener implements Listener {
             Chunk chunk = e.getClaim().getChunk();
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
-                    for (int y = 70 + 1; y < chunk.getWorld().getMaxHeight(); y++) {
+                    for (int y = 5; y < chunk.getWorld().getMaxHeight(); y++) {
                         Block block = chunk.getBlock(x, y, z);
                         if (block.getType().equals(Material.BEDROCK)){
                             block.setType(Material.AIR);
@@ -128,7 +130,9 @@ public class ClaimListener implements Listener {
 
     @EventHandler
     public void onEnter(ClaimEnterEvent e){
-        FormatManager.sendMessage(e.getPlayer(), Map.of("player", Bukkit.getOfflinePlayer(e.getClaim().getOwner()).getName()));
+        HashMap<String,String> map = new HashMap<>();
+        map.put("player", Bukkit.getOfflinePlayer(e.getClaim().getOwner()).getName());
+        FormatManager.sendMessage(e.getPlayer(), map);
     }
 
 

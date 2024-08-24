@@ -172,9 +172,10 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPotion(PotionSplashEvent e){
         ProjectileSource source = e.getPotion().getShooter();
-        if (!(source instanceof Player player)) {
+        if (!(source instanceof Player)) {
             return;
         }
+        Player player = (Player) source;
         if (player.hasPermission("rclaim.admin.bypass")){return;}
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(player.getLocation())).findFirst();
         claim.ifPresent(c -> {

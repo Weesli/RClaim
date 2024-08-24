@@ -78,10 +78,10 @@ public class YamlStorage extends StorageImpl{
     @Override
     public void updateClaim(Claim claim) {
         config_claim.set("claims." + claim.getID() + ".owner", claim.getOwner().toString());
-        config_claim.set("claims." + claim.getID() + ".status", claim.getClaimStatuses().stream().map(ClaimStatus::name).toList());
-        config_claim.set("claims." + claim.getID() + ".members", claim.getMembers().stream().map(UUID::toString).toList());
+        config_claim.set("claims." + claim.getID() + ".status", claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()));
+        config_claim.set("claims." + claim.getID() + ".members", claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()));
         claim.getClaimPermissions().forEach((key, value) -> {
-            config_claim.set("claims." + claim.getID() + ".permissions." + key, value.stream().map(ClaimPermission::name).toList());
+            config_claim.set("claims." + claim.getID() + ".permissions." + key, value.stream().map(ClaimPermission::name).collect(Collectors.toList()));
         });
         config_claim.set("claims." + claim.getID() + ".chunk.world", claim.getChunk().getWorld().getName());
         config_claim.set("claims." + claim.getID() + ".chunk.x", claim.getChunk().getX() * 16);
