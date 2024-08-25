@@ -214,4 +214,8 @@ public class ClaimManager {
     public static List<ClaimTask> getTasks() {
         return tasks;
     }
+
+    public static boolean checkWorld(String name){
+        return RClaim.getInstance().getConfig().getStringList("options.active-worlds").stream().anyMatch(s -> s.equals(name));
+    }
 }

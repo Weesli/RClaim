@@ -43,6 +43,11 @@ public class Commands {
             if (commandSender instanceof Player){
                 Player player = (Player) commandSender;
                 if(strings.length == 0){
+                    if(!ClaimManager.checkWorld(player.getWorld().getName())){
+                        player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
+                        return false;
+                    }
+
                     if (ClaimManager.isSuitable(player.getChunk())){
                         player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
                         return false;
@@ -50,6 +55,10 @@ public class Commands {
                     ClaimManager.viewClaimRadius(player,player.getChunk());
                     player.sendMessage(RClaim.getInstance().getMessage("PREVIEW_OPENED"));
                 } else if (strings.length == 1 && strings[0].equals("confirm")) {
+                    if(!ClaimManager.checkWorld(player.getWorld().getName())){
+                        player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
+                        return false;
+                    }
                     if (!ClaimManager.getPlayerData(player.getUniqueId()).getClaims().isEmpty()){
                         player.sendMessage(RClaim.getInstance().getMessage("CANNOT_CLAIM_MULTIPLE_CLAIMS"));
                         return false;
@@ -83,6 +92,10 @@ public class Commands {
                             if (!event.isCancelled()){
                                 ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
                                 List<Claim> claims = player_data.getClaims();
+                                if (claims.get(0).getMembers().size() >= RClaim.getInstance().getConfig().getInt("options.max-trusted-player")){
+                                    player.sendMessage(RClaim.getInstance().getMessage("MAX_TRUSTED_PLAYERS"));
+                                    return false;
+                                }
                                 if (claims.get(0).getMembers().contains(target.getUniqueId())){
                                     player.sendMessage(RClaim.getInstance().getMessage("ALREADY_TRUSTED_PLAYER"));
                                     return false;

@@ -4,10 +4,14 @@
 
 options:
   prefix: "&6Claim &8>> "
+  # System showing the claim zone for players
+  # 'Particle' and 'Border' are available.
   viewer-mode: particle
   # Storage type can be 'YAML' or 'MySQL'
   storage-type: YAML
-  # Economy type can be 'VAULT' or 'none'
+  # The maximum number of people a beneficiary can trust.
+  max-trusted-player: 10
+  # Economy type can be 'VAULT' or 'none' or 'PLAYER_POINTS'
   economy-type: VAULT
   # sended location to all player when Exploded claim from any causes
   # if you don't want this setting, you change enabled to false
@@ -15,6 +19,9 @@ options:
     enabled: true
     text:
       - "&aThe claim region of &b%player% at coordinates &b%x% &b%z% has been destroyed!"
+  # Worlds where Claim receipt is open
+  active-worlds:
+    - world
   enter-message:
     enabled: true
     # The format of the text that will appear when the player enters the region.

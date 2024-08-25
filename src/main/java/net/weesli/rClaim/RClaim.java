@@ -2,6 +2,7 @@ package net.weesli.rClaim;
 
 import net.weesli.rClaim.EconomyManager.EconomyImpl;
 import net.weesli.rClaim.EconomyManager.EconomyType;
+import net.weesli.rClaim.EconomyManager.PlayerPointsEconomy;
 import net.weesli.rClaim.EconomyManager.VaultEconomy;
 import net.weesli.rClaim.StorageManager.*;
 import net.weesli.rClaim.events.ClaimListener;
@@ -97,8 +98,9 @@ public final class RClaim extends JavaPlugin {
 
     private void loadEconomy() {
         EconomyType type = EconomyType.valueOf(getConfig().getString("options.economy-type"));
-        if (type.equals(EconomyType.VAULT)){
-            economy = new VaultEconomy();
+        switch (type){
+            case VAULT -> economy = new VaultEconomy();
+            case PLAYER_POINTS -> economy = new PlayerPointsEconomy();
         }
         if (economy != null && economy.isActive()){
             Bukkit.getConsoleSender().sendMessage("[RClaim] register economy type is " + economy.getEconomyType().name());

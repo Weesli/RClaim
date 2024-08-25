@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.weesli</groupId>
-    <artifactId>weesli-rclaim</artifactId>
+    <artifactId>RClaim</artifactId>
     <version>1.2.0</version>
     <packaging>jar</packaging>
 
@@ -15,13 +15,6 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/Weesli/RClaim</url>
-        </repository>
-    </distributionManagement>
 
     <build>
         <defaultGoal>clean package</defaultGoal>
@@ -145,6 +138,7 @@
             <version>4.1.1</version>
             <scope>provided</scope>
         </dependency>
+        <!-- PlayerPoints -->
         <dependency>
             <groupId>org.black_ixx</groupId>
             <artifactId>playerpoints</artifactId>

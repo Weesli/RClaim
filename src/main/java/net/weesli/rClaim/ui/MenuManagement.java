@@ -471,6 +471,10 @@ public class MenuManagement {
 
         ClickableItemStack itemStack = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack(key), inventory)
                 .setEvent(event->{
+                    if(!ClaimManager.checkWorld(player.getWorld().getName())){
+                        player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
+                        return;
+                    }
                     if (RClaim.getInstance().getEconomy().isActive()){
                         if (!RClaim.getInstance().getEconomy().hasEnough(player, RClaim.getInstance().getConfig().getInt("claim-settings.claim-cost"))){
                             player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));

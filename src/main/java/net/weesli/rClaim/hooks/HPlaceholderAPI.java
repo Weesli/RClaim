@@ -4,17 +4,14 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.api.RClaimAPI;
 import net.weesli.rClaim.management.ClaimManager;
-import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rClaim.utils.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class HPlaceholderAPI extends PlaceholderExpansion {
 
