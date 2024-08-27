@@ -45,5 +45,8 @@ public class SpawnerMeta extends SpawnerIntegration {
         return false;
     }
 
-
+    @Override
+    public String getName() {
+        return "SpawnerMeta";
+    }
 }

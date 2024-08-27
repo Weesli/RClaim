@@ -4,11 +4,10 @@ import org.bukkit.Bukkit;
 
 public class SpawnerManager {
 
-    SpawnerIntegration integration;
+    private static SpawnerIntegration integration;
 
     public SpawnerManager(){
         if (Bukkit.getPluginManager().isPluginEnabled("SilkSpawners_v2")){
-            System.out.println("awdawd");
             integration = new SilkSpawner();
         } else if (Bukkit.getPluginManager().isPluginEnabled("SpawnerMeta")) {
             integration = new SpawnerMeta();
@@ -17,4 +16,7 @@ public class SpawnerManager {
         }
     }
 
+    public SpawnerIntegration getIntegration() {
+        return integration;
+    }
 }

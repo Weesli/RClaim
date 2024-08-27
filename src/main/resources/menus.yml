@@ -125,6 +125,14 @@ options-menu:
         - "&8"
         - "&aClick to enable explosions on your claim!"
       slot: 16
+    spread:
+      title: "&eEnable Spread"
+      material: FIRE_CHARGE
+      custom-model_data: 0
+      lore:
+        - "&8"
+        - "&aClick to enable spread on your claim!"
+      slot: 22
 
 resize-menu:
   title: "&8Resize your claim"

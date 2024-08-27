@@ -238,6 +238,19 @@ public class Commands {
                 RClaim.getInstance().getMenusFile().reload();
                 RClaim.getInstance().getMessagesFile().reload();
                 commandSender.sendMessage(ColorBuilder.convertColors("&aAll files reloaded!"));
+            } else if (strings[0].equals("info")) {
+                commandSender.sendMessage(ColorBuilder.convertColors("&a--------------------------------"));
+                commandSender.sendMessage(ColorBuilder.convertColors("&aRClaims by Weesli"));
+                commandSender.sendMessage(ColorBuilder.convertColors("&a--------------------------------"));
+                commandSender.sendMessage(ColorBuilder.convertColors("&aVersion: " + RClaim.getInstance().getDescription().getVersion()));
+                commandSender.sendMessage(ColorBuilder.convertColors("&aAuthor: Weesli"));
+                commandSender.sendMessage(ColorBuilder.convertColors("&a--------------------------------"));
+                commandSender.sendMessage(ColorBuilder.convertColors("&aEconomy: &f"+ RClaim.getInstance().getEconomy().getEconomyType().name()));
+                commandSender.sendMessage(ColorBuilder.convertColors("&aStorage: &f"+ RClaim.getInstance().getStorage().getStorageType().name()));
+                commandSender.sendMessage(ColorBuilder.convertColors("&aHologram: &f"+ ((RClaim.getInstance().getHologram() == null) ? "Empty" : RClaim.getInstance().getHologram().Type().name())));
+                commandSender.sendMessage(ColorBuilder.convertColors("&aSpawner: &f"+ ((RClaim.getInstance().getSpawnerManager().getIntegration() == null) ? "Empty" : RClaim.getInstance().getSpawnerManager().getIntegration().getName())));
+                commandSender.sendMessage(ColorBuilder.convertColors("&aMinion: &f"+ ((RClaim.getInstance().getMinionsManager().getIntegration() == null) ? "Empty" : RClaim.getInstance().getMinionsManager().getIntegration().getName())));
+                commandSender.sendMessage(ColorBuilder.convertColors("&a--------------------------------"));
             }
             return false;
         }
@@ -245,7 +258,7 @@ public class Commands {
         @Override
         protected List<String> TabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
             if (commandSender.hasPermission("rclaim.admin.clearclaim") && commandSender.isOp()){
-                return Arrays.asList("clearclaim", "reload");
+                return Arrays.asList("clearclaim", "reload", "info");
             }
             if (strings.length == 1 && strings[0].equalsIgnoreCase("clearclaim")){
                 return Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());

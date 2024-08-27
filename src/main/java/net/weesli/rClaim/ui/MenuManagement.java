@@ -158,10 +158,25 @@ public class MenuManagement {
                     player.openInventory(getSettingsMenu(player));
                 })
                 .setCancelled(true);
+        ClickableItemStack spread = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("options-menu.children.spread"), builder.build());
+        spread.setEvent(event -> {
+            List<Claim> player_claims = player_data.getClaims();
+            player_claims.forEach(claim -> {
+                if (claim.checkStatus(ClaimStatus.SPREAD)){
+                    claim.removeClaimStatus(ClaimStatus.SPREAD);
+                } else {
+                    claim.addClaimStatus(ClaimStatus.SPREAD);
+                }
+                RClaim.getInstance().getStorage().updateClaim(claim);
+            });
+            player.openInventory(getSettingsMenu(player));
+        }).setCancelled(true);
+
         spawn_animal.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
         spawn_mob.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
         pvp.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
         explosion.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        spread.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
         for (ClaimStatus status : player_data.getClaims().get(0).getClaimStatuses()){
             switch (status){
                 case SPAWN_ANIMAL:
@@ -178,12 +193,18 @@ public class MenuManagement {
                 case EXPLOSION:
                     explosion.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
                     break;
+
+                case SPREAD:
+                    spread.getItemStack().addUnsafeEnchantment(Enchantment.KNOCKBACK, 2);
+                    break;
+
             }
         }
         builder.setItem(config.getInt("options-menu.children.spawn-animal.slot"), spawn_animal);
         builder.setItem(config.getInt("options-menu.children.spawn-monster.slot"), spawn_mob);
         builder.setItem(config.getInt("options-menu.children.pvp.slot"), pvp);
         builder.setItem(config.getInt("options-menu.children.explosion.slot"), explosion);
+        builder.setItem(config.getInt("options-menu.children.spread.slot"), spread);
         return builder.build();
     }
 

@@ -9,6 +9,7 @@ import net.weesli.rClaim.events.ClaimListener;
 import net.weesli.rClaim.events.PlayerListener;
 import net.weesli.rClaim.hooks.HPlaceholderAPI;
 import net.weesli.rClaim.hooks.Holograms.*;
+import net.weesli.rClaim.hooks.Minions.MinionsManager;
 import net.weesli.rClaim.hooks.Spawners.SpawnerManager;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.tasks.ClaimTask;
@@ -29,12 +30,22 @@ public final class RClaim extends JavaPlugin {
     private static StorageImpl storage;
     private static EconomyImpl economy;
     private static HologramImpl hologram;
+    private static SpawnerManager spawnerManager;
+    private static MinionsManager minionsManager;
 
     private static RClaim instance;
 
     private static YamlFileBuilder menusFile;
     private static YamlFileBuilder messagesFile;
     private static YamlFileBuilder claim_builder;
+
+    public SpawnerManager getSpawnerManager() {
+        return spawnerManager;
+    }
+
+    public MinionsManager getMinionsManager() {
+        return minionsManager;
+    }
 
     @Override
     public void onEnable() {
@@ -54,7 +65,8 @@ public final class RClaim extends JavaPlugin {
         loadData();
         loadHologram();
         checkVersion();
-        new SpawnerManager();
+        spawnerManager = new SpawnerManager();
+        minionsManager = new MinionsManager();
         new Commands(this);
     }
 
@@ -160,10 +172,6 @@ public final class RClaim extends JavaPlugin {
         }
     }
 
-    public static RClaim getInstance() {
-        return instance;
-    }
-
     public String getMessage(String path){
         return ColorBuilder.convertColors(getConfig().getString("options.prefix") + new YamlFileBuilder(this,"lang").load().getString(path));
     }
@@ -198,5 +206,9 @@ public final class RClaim extends JavaPlugin {
 
     public HologramImpl getHologram() {
         return hologram;
+    }
+
+    public static RClaim getInstance() {
+        return instance;
     }
 }

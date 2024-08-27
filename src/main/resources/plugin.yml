@@ -3,7 +3,17 @@ version: '1.2.0'
 main: net.weesli.rClaim.RClaim
 api-version: '1.13'
 depend: [RozsLib]
-softdepend: [Vault, PlaceholderAPI, FancyHolograms, DecentHolograms, SilkSpawners, UpgradeableSpawners, SpawnerMeta, PlayerPoints]
+softdepend:
+  - Vault
+  - PlaceholderAPI
+  - DecentHolograms
+  - SilkSpawners
+  - UpgradeableSpawners
+  - SpawnerMeta
+  - PlayerPoints
+  - AxMinions
+  - LitMinions
+  - JetMinions
 commands:
   claim:
     description: creating a claim in chunk

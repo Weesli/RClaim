@@ -10,4 +10,5 @@ public abstract class HologramImpl {
 
     public abstract boolean hasHologram(String ID);
 
+    public abstract HologramModule Type();
 }

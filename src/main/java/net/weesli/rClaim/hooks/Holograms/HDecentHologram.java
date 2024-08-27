@@ -50,4 +50,9 @@ public class HDecentHologram extends HologramImpl {
     public boolean hasHologram(String ID) {
         return DHAPI.getHologram(ID) != null;
     }
+
+    @Override
+    public HologramModule Type() {
+        return HologramModule.DecentHologram;
+    }
 }

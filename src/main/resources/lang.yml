@@ -19,6 +19,8 @@ CONFIRM_UNCLAIMED: "&cAre you sure you want to delete the claim /unclaim confirm
 YOU_CANT_PLACE_SPAWNER: "&cYou can only place spawners in areas you own."
 NOT_IN_CLAIMABLE_WORLD: "&cYou can't get a claim in this world!"
 MAX_TRUSTED_PLAYERS: "&cYou have reached the maximum member addition limit"
+YOU_CANT_PLACE_MINION: "&cYou need to be in your own territory to place minions!"
+
 # Permission messages
 PERMISSION_BLOCK_PLACE: "&cYou can't place a block this area!"
 PERMISSION_BLOCK_BREAK: "&cYou can't break block from this area!"

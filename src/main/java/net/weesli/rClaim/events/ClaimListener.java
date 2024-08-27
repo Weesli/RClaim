@@ -11,8 +11,6 @@ import net.weesli.rClaim.utils.FormatManager;
 import net.weesli.rozsLib.events.BlockRightClickEvent;
 import net.weesli.rozsLib.events.PlayerDamageByPlayerEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -21,13 +19,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.TreeMap;
 
 public class ClaimListener implements Listener {
 
@@ -55,7 +52,7 @@ public class ClaimListener implements Listener {
         Entity entity = e.getEntity();
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(entity.getLocation())).findFirst();
         if (claim.isPresent()){
-            if (claim.get().checkStatus(ClaimStatus.EXPLOSION)){
+            if (!claim.get().checkStatus(ClaimStatus.EXPLOSION)){
                 e.setCancelled(true);
             }
         }
@@ -82,13 +79,14 @@ public class ClaimListener implements Listener {
 
     @EventHandler
     public void onBreakBedrock(BlockBreakEvent e){
-        Player player = e.getPlayer();
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getBlock().getLocation())).findFirst();
         if (!e.getBlock().getType().equals(Material.BEDROCK)){return;}
         if (claim.isPresent()){
-            e.getBlock().getLocation().equals(new Location(claim.get().getChunk().getWorld(), claim.get().getCenter().getX(), claim.get().getCenter().getY() + 1, claim.get().getZ()));
+            boolean isBlock = e.getBlock().getLocation().equals(claim.get().getCenter());
+            if (isBlock){
                 e.setCancelled(true);
             }
+        }
     }
 
     @EventHandler
@@ -98,6 +96,10 @@ public class ClaimListener implements Listener {
         if (!block.getType().equals(Material.BEDROCK)){return;}
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(block.getLocation())).findFirst();
         if (claim.isPresent()){
+            boolean isBlock = block.getLocation().equals(claim.get().getCenter());
+            if (!isBlock){
+                return;
+            }
             if (!claim.get().isOwner(player.getUniqueId())){
                 e.setCancelled(true);
                 return;
@@ -113,17 +115,10 @@ public class ClaimListener implements Listener {
             if (RClaim.getInstance().getConfig().getBoolean("options.hologram.enabled")){
                 RClaim.getInstance().getHologram().deleteHologram(e.getClaim().getID());
             }
-            Chunk chunk = e.getClaim().getChunk();
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
-                    for (int y = 5; y < chunk.getWorld().getMaxHeight(); y++) {
-                        Block block = chunk.getBlock(x, y, z);
-                        if (block.getType().equals(Material.BEDROCK)){
-                            block.setType(Material.AIR);
-                            break;
-                        }
-                    }
-                }
+
+            Block block = e.getClaim().getCenter().getBlock();
+            if (block.getType().equals(Material.BEDROCK)){
+                block.setType(Material.AIR);
             }
         }
     }
@@ -135,6 +130,17 @@ public class ClaimListener implements Listener {
         FormatManager.sendMessage(e.getPlayer(), map);
     }
 
+
+    @EventHandler
+    public void onSpread(BlockSpreadEvent e){
+        Block block = e.getBlock();
+        Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(block.getLocation())).findFirst();
+        if (claim.isPresent()){
+            if (!claim.get().checkStatus(ClaimStatus.SPREAD)){
+                e.setCancelled(true);
+            }
+        }
+    }
 
 
 

@@ -39,5 +39,8 @@ public class SilkSpawner extends SpawnerIntegration {
         return false;
     }
 
-
+    @Override
+    public String getName() {
+        return "SilkSpawner";
+    }
 }

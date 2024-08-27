@@ -39,4 +39,9 @@ public class UpgradeableSpawners extends SpawnerIntegration{
         }
         return false;
     }
+
+    @Override
+    public String getName() {
+        return "UpgradeableSpawners";
+    }
 }
