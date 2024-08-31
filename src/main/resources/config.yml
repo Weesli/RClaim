@@ -7,10 +7,18 @@ options:
   # System showing the claim zone for players
   # 'Particle' and 'Border' are available.
   viewer-mode: particle
-  # Storage type can be 'YAML' or 'MySQL'
-  storage-type: YAML
+  # Storage type can be 'YAML' or 'MySQL' or 'SQLite'
+  storage-type: SQLite
   # The maximum number of people a beneficiary can trust.
   max-trusted-player: 10
+  # Prevents players from claiming in the areas you want
+  world-guard:
+    # If you do not want to use it, you can set it to 'false'.
+    enabled: true
+    # List of regions that are banned.
+    banned-regions:
+      - example
+      - Weesli
   # Economy type can be 'VAULT' or 'none' or 'PLAYER_POINTS'
   economy-type: VAULT
   # sended location to all player when Exploded claim from any causes

@@ -49,10 +49,10 @@ public class HPlaceholderAPI extends PlaceholderExpansion {
             return String.valueOf((int) ClaimManager.getClaims().stream().filter(c -> c.isOwner(player.getUniqueId())).count());
         }
         if (params.equals("owner")){
-            if (!ClaimManager.isSuitable(player.getChunk())){
+            if (!ClaimManager.isSuitable(player.getLocation().getChunk())){
                 return "";
             }
-            Claim claim = RClaimAPI.getInstance().getClaim(player.getChunk());
+            Claim claim = RClaimAPI.getInstance().getClaim(player.getLocation().getChunk());
             if (claim != null){
                 return Bukkit.getOfflinePlayer(claim.getOwner()).getName();
             }

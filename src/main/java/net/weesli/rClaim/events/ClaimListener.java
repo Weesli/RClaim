@@ -32,17 +32,19 @@ public class ClaimListener implements Listener {
     public void onSpawn(EntitySpawnEvent e){
         Entity entity = e.getEntity();
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(entity.getLocation())).findFirst();
-        if (claim.isPresent()){
-            // if entity in a claim and entity is a monster
-            if (entity instanceof Monster){
-                if (!claim.get().checkStatus(ClaimStatus.SPAWN_MONSTER)){
-                    e.setCancelled(true);
-                }
+        if (!claim.isPresent()){
+            return;
+        }
+        Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        // if entity in a claim and entity is a monster
+        if (entity instanceof Monster){
+            if (!target_claim.checkStatus(ClaimStatus.SPAWN_MONSTER)){
+                e.setCancelled(true);
+            }
             // if entity is a animal
-            }else {
-                if (!claim.get().checkStatus(ClaimStatus.SPAWN_ANIMAL)){
-                    e.setCancelled(true);
-                }
+        }else {
+            if (!target_claim.checkStatus(ClaimStatus.SPAWN_ANIMAL)){
+                e.setCancelled(true);
             }
         }
     }
@@ -51,10 +53,12 @@ public class ClaimListener implements Listener {
     public void onTnt(EntityExplodeEvent e){
         Entity entity = e.getEntity();
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(entity.getLocation())).findFirst();
-        if (claim.isPresent()){
-            if (!claim.get().checkStatus(ClaimStatus.EXPLOSION)){
-                e.setCancelled(true);
-            }
+        if (!claim.isPresent()){
+            return;
+        }
+        Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        if (!target_claim.checkStatus(ClaimStatus.EXPLOSION)){
+            e.setCancelled(true);
         }
     }
 
@@ -62,30 +66,33 @@ public class ClaimListener implements Listener {
     public void onPvP(PlayerDamageByPlayerEvent e){
         Optional<Claim> victim_claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getPlayer().getLocation())).findFirst();
         Optional<Claim> attacker_claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getDamager().getLocation())).findFirst();
-        if(attacker_claim.isPresent()){
-            if (!attacker_claim.get().checkStatus(ClaimStatus.PVP)){
-                e.setCancelled(true);
-                e.getDamager().sendMessage(RClaim.getInstance().getMessage("STATUS_PVP"));
-                return;
-            }
+        if (!attacker_claim.isPresent() ||!victim_claim.isPresent()){
+            return;
         }
-        if(victim_claim.isPresent()){
-            if (!victim_claim.get().checkStatus(ClaimStatus.PVP)){
-                e.setCancelled(true);
-                e.getDamager().sendMessage(RClaim.getInstance().getMessage("STATUS_PVP"));
-            }
+        Claim target_attacker_claim = (attacker_claim.get().getCenterId().isEmpty() ? attacker_claim.get() : ClaimManager.getClaim(attacker_claim.get().getCenterId()).get());
+        Claim target_victim_claim = (victim_claim.get().getCenterId().isEmpty() ? victim_claim.get() : ClaimManager.getClaim(victim_claim.get().getCenterId()).get());
+        if (!target_attacker_claim.checkStatus(ClaimStatus.PVP)){
+            e.setCancelled(true);
+            e.getDamager().sendMessage(RClaim.getInstance().getMessage("STATUS_PVP"));
+            return;
+        }
+        if (!target_victim_claim.checkStatus(ClaimStatus.PVP)){
+            e.setCancelled(true);
+            e.getDamager().sendMessage(RClaim.getInstance().getMessage("STATUS_PVP"));
         }
     }
 
     @EventHandler
     public void onBreakBedrock(BlockBreakEvent e){
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getBlock().getLocation())).findFirst();
+        if (claim.isEmpty()){
+            return;
+        }
+        Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
         if (!e.getBlock().getType().equals(Material.BEDROCK)){return;}
-        if (claim.isPresent()){
-            boolean isBlock = e.getBlock().getLocation().equals(claim.get().getCenter());
-            if (isBlock){
-                e.setCancelled(true);
-            }
+        boolean isBlock = e.getBlock().getLocation().equals(target_claim.getCenter());
+        if (isBlock){
+            e.setCancelled(true);
         }
     }
 
@@ -95,17 +102,18 @@ public class ClaimListener implements Listener {
         Block block = e.getClickedBlock();
         if (!block.getType().equals(Material.BEDROCK)){return;}
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(block.getLocation())).findFirst();
-        if (claim.isPresent()){
-            boolean isBlock = block.getLocation().equals(claim.get().getCenter());
-            if (!isBlock){
-                return;
-            }
-            if (!claim.get().isOwner(player.getUniqueId())){
-                e.setCancelled(true);
-                return;
-            }
-            player.openInventory(MenuManagement.getMainMenu(player));
+        if (claim.isEmpty() || !claim.get().isCenter()){
+            return;
         }
+        boolean isBlock = block.getLocation().equals(claim.get().getCenter());
+        if (!isBlock){
+            return;
+        }
+        if (!claim.get().isOwner(player.getUniqueId())){
+            e.setCancelled(true);
+            return;
+        }
+        player.openInventory(MenuManagement.getMainMenu(player));
     }
 
 
@@ -115,7 +123,6 @@ public class ClaimListener implements Listener {
             if (RClaim.getInstance().getConfig().getBoolean("options.hologram.enabled")){
                 RClaim.getInstance().getHologram().deleteHologram(e.getClaim().getID());
             }
-
             Block block = e.getClaim().getCenter().getBlock();
             if (block.getType().equals(Material.BEDROCK)){
                 block.setType(Material.AIR);
@@ -135,10 +142,12 @@ public class ClaimListener implements Listener {
     public void onSpread(BlockSpreadEvent e){
         Block block = e.getBlock();
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(block.getLocation())).findFirst();
-        if (claim.isPresent()){
-            if (!claim.get().checkStatus(ClaimStatus.SPREAD)){
-                e.setCancelled(true);
-            }
+        if (claim.isEmpty()){
+            return;
+        }
+        Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        if (!target_claim.checkStatus(ClaimStatus.SPREAD)){
+            e.setCancelled(true);
         }
     }
 

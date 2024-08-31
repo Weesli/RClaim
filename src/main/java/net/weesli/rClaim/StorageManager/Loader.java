@@ -4,7 +4,7 @@ import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rClaim.utils.Claim;
-import net.weesli.rozsLib.ConfigurationManager.YamlFileBuilder;
+import net.weesli.rozsLib.configuration.YamlFileBuilder;
 
 public class Loader {
 
@@ -29,6 +29,8 @@ public class Loader {
                 }
                 break;
             case MySQL:
+                break;
+            case SQLite:
                 break;
             default:
                 RClaim.getInstance().getLogger().severe("Unsupported storage type: " + type.name());

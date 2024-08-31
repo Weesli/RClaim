@@ -17,6 +17,11 @@ public class PlayerPointsEconomy extends EconomyImpl{
     }
 
     @Override
+    public void deposit(Player player, double amount) {
+        PlayerPoints.getInstance().getAPI().give(player.getUniqueId(), (int) amount);
+    }
+
+    @Override
     public EconomyType getEconomyType() {
         return EconomyType.PLAYER_POINTS;
     }

@@ -7,31 +7,37 @@ import net.weesli.rClaim.utils.Claim;
 import net.weesli.rClaim.utils.ClaimPermission;
 import net.weesli.rClaim.utils.ClaimStatus;
 import net.weesli.rozsLib.color.ColorBuilder;
-import net.weesli.rozsLib.database.mysql.*;
+import net.weesli.rozsLib.database.mysql.Column;
+import net.weesli.rozsLib.database.mysql.Insert;
+import net.weesli.rozsLib.database.mysql.Update;
+import net.weesli.rozsLib.database.sqlite.SQLiteBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
+import java.io.File;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MySQLStorage extends StorageImpl{
+public class SQLiteStorage extends StorageImpl{
 
-    private String host = RClaim.getInstance().getConfig().getString("options.database.host");
-    private int port = RClaim.getInstance().getConfig().getInt("options.database.port");
-    private String user = RClaim.getInstance().getConfig().getString("options.database.username");
-    private String pass = RClaim.getInstance().getConfig().getString("options.database.password");
-    private String db = RClaim.getInstance().getConfig().getString("options.database.database");
-    private static MySQLStorage instance;
+    private static SQLiteStorage instance;
     private static Connection connection;
+    private SQLiteBuilder builder;
 
-    MySQLBuilder builder = new MySQLBuilder(host,port,db,user,pass);
-    public MySQLStorage(){
-        connection = builder.build();
-        createTable();
+    private SQLiteStorage(){
+        SQLiteBuilder builder = new SQLiteBuilder("RClaim").setPath(new File(RClaim.getInstance().getDataFolder(), "data").getPath());
+        this.builder = builder;
+        try {
+            connection = builder.build();
+            createTable();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
+
 
     public void createTable() {
         List<Column> columns = new ArrayList<>();
@@ -52,18 +58,16 @@ public class MySQLStorage extends StorageImpl{
         }
     }
 
-    public static MySQLStorage getInstance() {
+    public static SQLiteStorage getInstance(){
         try {
-            if (instance == null || connection == null || connection.isClosed()) {
-                instance = new MySQLStorage();
+            if(instance == null || connection == null || connection.isClosed()){
+                instance = new SQLiteStorage();
             }
         } catch (SQLException e) {
-            Bukkit.getServer().getConsoleSender().sendMessage(ColorBuilder.convertColors("&cMySQL database connection failed. Please check your config."));
-            Bukkit.getServer().getPluginManager().disablePlugin(RClaim.getInstance());
+            throw new RuntimeException(e);
         }
         return instance;
     }
-
 
     @Override
     public void insertClaim(Claim claim) {
@@ -232,8 +236,20 @@ public class MySQLStorage extends StorageImpl{
     }
 
     @Override
+    public void updateTime(ClaimTask task) {
+        String sql = "UPDATE rclaims_claims SET time=? WHERE id=?";
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setInt(1, task.getTime());
+            statement.setString(2, task.getClaimId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            Bukkit.getServer().getConsoleSender().sendMessage(ColorBuilder.convertColors("&cFailed to update claim time in MySQL"));
+        }
+    }
+
+    @Override
     public StorageType getStorageType() {
-        return StorageType.MySQL;
+        return StorageType.SQLite;
     }
 
 
@@ -266,7 +282,7 @@ public class MySQLStorage extends StorageImpl{
         return chunk;
     }
 
-    private Location solveHome(String value){
+    private  Location solveHome(String value){
         if (value.isEmpty()){
             return null;
         }
@@ -277,17 +293,5 @@ public class MySQLStorage extends StorageImpl{
         float yaw = Float.parseFloat(split[5]);
         float pitch = Float.parseFloat(split[4]);
         return new Location(Bukkit.getWorld(split[0]), x, y, z, yaw, pitch);
-    }
-
-    @Override
-    public void updateTime(ClaimTask task) {
-        String sql = "UPDATE rclaims_claims SET time=? WHERE id=?";
-        try(PreparedStatement statement = connection.prepareStatement(sql)){
-            statement.setInt(1, task.getTime());
-            statement.setString(2, task.getClaimId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            Bukkit.getServer().getConsoleSender().sendMessage(ColorBuilder.convertColors("&cFailed to update claim time in MySQL"));
-        }
     }
 }

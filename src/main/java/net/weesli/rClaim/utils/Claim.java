@@ -17,6 +17,7 @@ public class Claim {
     private Map<UUID, List<ClaimPermission>> claimPermissions = new HashMap<>();
     private Location location;
     private boolean isCenter;
+    private String centerId;
 
     public Claim(String ID, UUID owner, List<UUID> members, List<ClaimStatus> claimStatuses, Chunk chunk, boolean isCenter) {
         this.ID = ID;
@@ -156,4 +157,14 @@ public class Claim {
         this.isCenter = isCenter;
     }
 
+    public String getCenterId() {
+        if (centerId == null){
+            return "";
+        }
+        return centerId;
+    }
+
+    public void setCenterId(String centerId) {
+        this.centerId = centerId;
+    }
 }

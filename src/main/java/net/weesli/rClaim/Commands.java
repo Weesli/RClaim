@@ -4,11 +4,12 @@ import net.weesli.rClaim.api.RClaimAPI;
 import net.weesli.rClaim.api.events.ClaimDeleteEvent;
 import net.weesli.rClaim.api.events.TrustedPlayerEvent;
 import net.weesli.rClaim.api.events.UnTrustedPlayerEvent;
+import net.weesli.rClaim.hooks.HWorldGuard;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.management.ExplodeCause;
 import net.weesli.rClaim.utils.Claim;
 import net.weesli.rClaim.utils.ClaimPlayer;
-import net.weesli.rozsLib.ColorManager.ColorBuilder;
+import net.weesli.rozsLib.color.ColorBuilder;
 import net.weesli.rozsLib.CommandBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -43,18 +44,26 @@ public class Commands {
             if (commandSender instanceof Player){
                 Player player = (Player) commandSender;
                 if(strings.length == 0){
+                    if (!HWorldGuard.isAreaEnabled(player)){
+                        player.sendMessage(RClaim.getInstance().getMessage("AREA_DISABLED"));
+                        return false;
+                    }
                     if(!ClaimManager.checkWorld(player.getWorld().getName())){
                         player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
                         return false;
                     }
 
-                    if (ClaimManager.isSuitable(player.getChunk())){
+                    if (ClaimManager.isSuitable(player.getLocation().getChunk())){
                         player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
                         return false;
                     }
-                    ClaimManager.viewClaimRadius(player,player.getChunk());
+                    ClaimManager.viewClaimRadius(player,player.getLocation().getChunk());
                     player.sendMessage(RClaim.getInstance().getMessage("PREVIEW_OPENED"));
                 } else if (strings.length == 1 && strings[0].equals("confirm")) {
+                    if (!HWorldGuard.isAreaEnabled(player)){
+                        player.sendMessage(RClaim.getInstance().getMessage("AREA_DISABLED"));
+                        return false;
+                    }
                     if(!ClaimManager.checkWorld(player.getWorld().getName())){
                         player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
                         return false;
@@ -70,11 +79,11 @@ public class Commands {
                         }
                         RClaim.getInstance().getEconomy().withdraw(player, RClaim.getInstance().getConfig().getInt("claim-settings.claim-cost"));
                     }
-                    if (ClaimManager.isSuitable(player.getChunk())){
+                    if (ClaimManager.isSuitable(player.getLocation().getChunk())){
                         player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
                         return false;
                     }
-                    ClaimManager.createClaim(player.getChunk(), player, true);
+                    ClaimManager.createClaim(player.getLocation().getChunk(), player, true, "");
                     player.sendMessage(RClaim.getInstance().getMessage("SUCCESS_CLAIM_CREATED"));
                 } else if (strings[0].equals("trust")) {
                     if (strings.length == 1){
@@ -276,7 +285,7 @@ public class Commands {
         protected boolean Command(CommandSender commandSender, Command command, String s, String[] args) {
             if (commandSender instanceof Player){
                 Player player = (Player) commandSender;
-                Claim claim = RClaimAPI.getInstance().getClaim(player.getChunk());
+                Claim claim = RClaimAPI.getInstance().getClaim(player.getLocation().getChunk());
                 if (claim == null){
                     player.sendMessage(RClaim.getInstance().getMessage("YOU_DONT_IN_CLAIM"));
                     return false;
@@ -317,14 +326,8 @@ public class Commands {
 
 
     private static boolean isCheckPlayer(String name){
-        for (OfflinePlayer player : Bukkit.getOfflinePlayers()){
-            if (player.getName().equalsIgnoreCase(name)){
-                return true;
-            } else if (player.getUniqueId().toString().equals(name)) {
-                return true;
-            }
-        }
-        return false;
+        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+        return player.hasPlayedBefore();
     }
 }
 

@@ -1,5 +1,5 @@
 name: RClaim
-version: '1.2.0'
+version: '${project.version}'
 main: net.weesli.rClaim.RClaim
 api-version: '1.13'
 depend: [RozsLib]
@@ -14,6 +14,7 @@ softdepend:
   - AxMinions
   - LitMinions
   - JetMinions
+  - WorldGuard
 commands:
   claim:
     description: creating a claim in chunk

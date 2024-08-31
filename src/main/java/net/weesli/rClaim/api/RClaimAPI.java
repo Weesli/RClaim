@@ -27,8 +27,8 @@ public class RClaimAPI {
      * @param owner
      * @param isCenter ( if true then created a bedrock block in center )
      */
-    public void createClaim(Chunk chunk, Player owner, boolean isCenter){
-        ClaimManager.createClaim(chunk,owner,isCenter);
+    public void createClaim(Chunk chunk, Player owner, boolean isCenter, String centerId){
+        ClaimManager.createClaim(chunk,owner,isCenter, centerId);
     }
 
     /**

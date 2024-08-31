@@ -5,7 +5,7 @@ import eu.decentsoftware.holograms.api.holograms.Hologram;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.utils.Claim;
-import net.weesli.rozsLib.ColorManager.ColorBuilder;
+import net.weesli.rozsLib.color.ColorBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

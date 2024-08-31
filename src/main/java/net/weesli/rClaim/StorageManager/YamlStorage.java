@@ -1,10 +1,13 @@
 package net.weesli.rClaim.StorageManager;
 
 import net.weesli.rClaim.RClaim;
+import net.weesli.rClaim.management.ClaimManager;
+import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rClaim.utils.Claim;
 import net.weesli.rClaim.utils.ClaimPermission;
 import net.weesli.rClaim.utils.ClaimStatus;
-import net.weesli.rozsLib.ConfigurationManager.YamlFileBuilder;
+import net.weesli.rozsLib.color.ColorBuilder;
+import net.weesli.rozsLib.configuration.YamlFileBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -12,6 +15,8 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,6 +42,7 @@ public class YamlStorage extends StorageImpl{
             claim_builder.setLocation("claims." + claim.getID() + ".home", claim.getHomeLocation());
         }
         config_claim.set("claims." + claim.getID() + ".isCenter", claim.isCenter());
+        config_claim.set("claims." + claim.getID() + ".centerId", claim.getCenterId());
         claim_builder.save();
     }
 
@@ -64,7 +70,9 @@ public class YamlStorage extends StorageImpl{
             Chunk chunk = world.getChunkAt(config_claim.getInt("claims." + id + ".chunk.x") / 16,
                     config_claim.getInt("claims." + id + ".chunk.z") / 16);
             boolean isCenter = config_claim.getBoolean("claims." + id + ".isCenter");
+            String centerId = config_claim.getString("claims." + id + ".centerId");
             Claim claim = new Claim(id, uuid, members, statuses, chunk, isCenter);
+            claim.setCenterId(centerId);
             claim.setClaimPermissions(userCache);
             if (config_claim.get("claims." + id + ".home") != null && !config_claim.getString("claims." + id + ".home").isEmpty()){
                 Location location = claim_builder.getLocation("claims." + id + ".home");
@@ -92,6 +100,7 @@ public class YamlStorage extends StorageImpl{
             claim_builder.setLocation("claims." + claim.getID() + ".home", claim.getHomeLocation());
         }
         config_claim.set("claims." + claim.getID() + ".isCenter", claim.isCenter());
+        config_claim.set("claims." + claim.getID() + ".centerId", claim.getCenterId());
         claim_builder.save();
     }
 
@@ -131,7 +140,9 @@ public class YamlStorage extends StorageImpl{
             Chunk chunk = world.getChunkAt(config_claim.getInt("claims." + id + ".chunk.x") / 16,
                     config_claim.getInt("claims." + id + ".chunk.z") / 16);
             boolean isCenter = config_claim.getBoolean("claims." + id + ".isCenter");
+            String centerId = config_claim.getString("claims." + id + ".centerId");
             Claim claim = new Claim(id, uuid, members, statuses, chunk, isCenter);
+            claim.setCenterId(centerId);
             claim.setClaimPermissions(userCache);
             if (config_claim.get("claims." + id + ".home") != null && !config_claim.getString("claims." + id + ".home").isEmpty()){
                 Location location = claim_builder.getLocation("claims." + id + ".home");
@@ -145,5 +156,11 @@ public class YamlStorage extends StorageImpl{
     @Override
     public StorageType getStorageType() {
         return StorageType.YAML;
+    }
+
+    @Override
+    public void updateTime(ClaimTask task) {
+        config_claim.set("claims." + task.getClaimId() + ".time", task.getTime());
+        claim_builder.save();
     }
 }

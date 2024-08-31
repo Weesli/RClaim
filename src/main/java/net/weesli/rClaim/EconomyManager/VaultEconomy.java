@@ -36,6 +36,11 @@ public class VaultEconomy extends EconomyImpl{
     }
 
     @Override
+    public void deposit(Player player, double amount) {
+        getEcon().depositPlayer(player, amount);
+    }
+
+    @Override
     public EconomyType getEconomyType() {
         return EconomyType.VAULT;
     }

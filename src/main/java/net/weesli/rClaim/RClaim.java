@@ -12,9 +12,10 @@ import net.weesli.rClaim.hooks.Holograms.*;
 import net.weesli.rClaim.hooks.Minions.MinionsManager;
 import net.weesli.rClaim.hooks.Spawners.SpawnerManager;
 import net.weesli.rClaim.management.ClaimManager;
+import net.weesli.rClaim.management.modules.ModuleLoader;
 import net.weesli.rClaim.tasks.ClaimTask;
-import net.weesli.rozsLib.ColorManager.ColorBuilder;
-import net.weesli.rozsLib.ConfigurationManager.YamlFileBuilder;
+import net.weesli.rozsLib.color.ColorBuilder;
+import net.weesli.rozsLib.configuration.YamlFileBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -64,10 +65,11 @@ public final class RClaim extends JavaPlugin {
         loadEconomy();
         loadData();
         loadHologram();
-        checkVersion();
+        Bukkit.getScheduler().runTaskAsynchronously(this, (this::checkVersion));
         spawnerManager = new SpawnerManager();
         minionsManager = new MinionsManager();
         new Commands(this);
+        ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");
     }
 
     private void checkVersion() {
@@ -128,10 +130,10 @@ public final class RClaim extends JavaPlugin {
 
     private void loadStorage() {
         StorageType type = StorageType.valueOf(getConfig().getString("options.storage-type"));
-        if (type.equals(StorageType.MySQL)){
-            new MySQLStorage().register();
-        } else if (type.equals(StorageType.YAML)) {
-            new YamlStorage().register();
+        switch (type){
+            case MySQL -> MySQLStorage.getInstance().register();
+            case YAML -> new YamlStorage().register();
+            case SQLite -> SQLiteStorage.getInstance().register();
         }
         Bukkit.getConsoleSender().sendMessage("[RClaim] register storage type is " + storage.getStorageType().name());
     }
@@ -156,18 +158,9 @@ public final class RClaim extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (ClaimTask task : ClaimManager.getTasks()){
-            StorageType type = getStorage().getStorageType();
-            switch (type){
-                case YAML:
-                    if(getStorage().hasClaim(task.getClaimId())){
-                        claim_builder.load().set("claims." + task.getClaimId() + ".time", task.getTime());
-                        claim_builder.save();
-                    }
-                    break;
-                case MySQL:
-                    MySQLStorage.getInstance().updateClaim(MySQLStorage.getInstance().getClaim(task.getClaimId()));
-                    break;
+        for (ClaimTask task : ClaimManager.getTasks()) {
+            if (getStorage().hasClaim(task.getClaimId())) {
+                storage.updateTime(task);
             }
         }
     }

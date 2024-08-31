@@ -9,15 +9,13 @@ import net.weesli.rClaim.utils.Claim;
 import net.weesli.rClaim.utils.ClaimPermission;
 import net.weesli.rClaim.utils.ClaimPlayer;
 import net.weesli.rClaim.utils.ClaimStatus;
-import net.weesli.rozsLib.ColorManager.ColorBuilder;
+import net.weesli.rozsLib.color.ColorBuilder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class ClaimManager {
 
@@ -36,6 +34,8 @@ public class ClaimManager {
     public static Optional<Claim> getClaim(String ID) {
         if (RClaim.getInstance().getStorage().getStorageType().equals(StorageType.MySQL)){
             return Optional.ofNullable(RClaim.getInstance().getStorage().getClaim(ID));
+        } else if (RClaim.getInstance().getStorage().getStorageType().equals(StorageType.SQLite)) {
+            return Optional.ofNullable(RClaim.getInstance().getStorage().getClaim(ID));
         }
         return claims.stream().filter(claim -> claim.getID().equals(ID)).findFirst();
     }
@@ -46,6 +46,8 @@ public class ClaimManager {
 
     public static List<Claim> getClaims() {
         if (RClaim.getInstance().getStorage().getStorageType().equals(StorageType.MySQL)){
+            return RClaim.getInstance().getStorage().getClaims();
+        } else if (RClaim.getInstance().getStorage().getStorageType().equals(StorageType.SQLite)) {
             return RClaim.getInstance().getStorage().getClaims();
         }else {
             return claims;
@@ -71,7 +73,7 @@ public class ClaimManager {
         }
     }
 
-    public static void createClaim(Chunk chunk, Player owner, boolean isCenter){
+    public static void createClaim(Chunk chunk, Player owner, boolean isCenter, String centerId){
         String id = IDCreator();
         List<UUID> members= new ArrayList<>();
         List<ClaimStatus> claimStatuses = new ArrayList<>();
@@ -93,6 +95,7 @@ public class ClaimManager {
                 }
             }
         }
+        if (!centerId.isEmpty()){claim.setCenterId(centerId);}
         claim.setClaimPermissions(permissions);
         ClaimCreateEvent event = new ClaimCreateEvent(owner, claim);
         Bukkit.getPluginManager().callEvent(event);
@@ -124,14 +127,13 @@ public class ClaimManager {
                         return;
                     }
 
-                    for (int i = x; i < x + size; i++) {
-                        for (int j = z; j < z + size; j++) {
-                            if (i == x || i == x + size - 1 || j == z || j == z + size - 1) {
-                                Block highestBlock = world.getHighestBlockAt(i, j);
-                                Location particleLocation = highestBlock.getLocation().add(0.5, 1, 0.5);
-                                world.spawnParticle(Particle.REDSTONE, particleLocation, 10, new Particle.DustOptions(Color.RED, 1));
-                            }
-                        }
+                    for (int i = 0; i < size * 4 - 4; i++) {
+                        int dx = i < size ? i : i < size * 2 - 1 ? size - 1 : i < size * 3 - 2 ? size * 3 - 3 - i : 0;
+                        int dz = i < size ? 0 : i < size * 2 - 1 ? i - size + 1 : i < size * 3 - 2 ? size - 1 : size * 4 - 4 - i;
+
+                        Block highestBlock = world.getHighestBlockAt(x + dx, z + dz);
+                        Location particleLocation = highestBlock.getLocation().add(0.5, 1, 0.5);
+                        world.spawnParticle(getParticle(), particleLocation, 10, new Particle.DustOptions(Color.RED, 1));
                     }
 
                     time--;
@@ -218,4 +220,14 @@ public class ClaimManager {
     public static boolean checkWorld(String name){
         return RClaim.getInstance().getConfig().getStringList("options.active-worlds").stream().anyMatch(s -> s.equals(name));
     }
+
+    private static Particle getParticle(){
+        String currentVersion = Bukkit.getVersion();
+        if (currentVersion.equals("1.21") || currentVersion.equals("1.21.1")){
+            return Particle.valueOf("DUST");
+        } else {
+            return Particle.valueOf("REDSTONE");
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package net.weesli.rClaim.ui;
 import de.rapha149.signgui.SignGUI;
 import de.rapha149.signgui.SignGUIAction;
 import net.weesli.rClaim.RClaim;
+import net.weesli.rClaim.hooks.HWorldGuard;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.management.ExplodeCause;
 import net.weesli.rClaim.tasks.ClaimTask;
@@ -10,9 +11,9 @@ import net.weesli.rClaim.utils.Claim;
 import net.weesli.rClaim.utils.ClaimPermission;
 import net.weesli.rClaim.utils.ClaimPlayer;
 import net.weesli.rClaim.utils.ClaimStatus;
-import net.weesli.rozsLib.ColorManager.ColorBuilder;
-import net.weesli.rozsLib.InventoryManager.ClickableItemStack;
-import net.weesli.rozsLib.InventoryManager.InventoryBuilder;
+import net.weesli.rozsLib.color.ColorBuilder;
+import net.weesli.rozsLib.inventory.ClickableItemStack;
+import net.weesli.rozsLib.inventory.InventoryBuilder;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -102,81 +103,65 @@ public class MenuManagement {
         ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
         ClickableItemStack spawn_animal = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("options-menu.children.spawn-animal"), builder.build())
                 .setEvent(event -> {
-                    List<Claim> player_claims = player_data.getClaims();
-                    player_claims.forEach(claim -> {
-                        if (claim.checkStatus(ClaimStatus.SPAWN_ANIMAL)){
-                            claim.removeClaimStatus(ClaimStatus.SPAWN_ANIMAL);
-                        }else {
-                            claim.addClaimStatus(ClaimStatus.SPAWN_ANIMAL);
-                        }
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    Claim claim = player_data.getClaims().get(0);
+                    if (claim.checkStatus(ClaimStatus.SPAWN_ANIMAL)){
+                        claim.removeClaimStatus(ClaimStatus.SPAWN_ANIMAL);
+                    }else {
+                        claim.addClaimStatus(ClaimStatus.SPAWN_ANIMAL);
+                    }
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getSettingsMenu(player));
                 })
                 .setCancelled(true);
         ClickableItemStack spawn_mob = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("options-menu.children.spawn-monster"), builder.build())
                 .setEvent(event->{
-                    List<Claim> player_claims = player_data.getClaims();
-                    player_claims.forEach(claim -> {
-                        if (claim.checkStatus(ClaimStatus.SPAWN_MONSTER)){
-                            claim.removeClaimStatus(ClaimStatus.SPAWN_MONSTER);
-                        }else {
-                            claim.addClaimStatus(ClaimStatus.SPAWN_MONSTER);
-                        }
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    Claim claim = player_data.getClaims().get(0);
+                    if (claim.checkStatus(ClaimStatus.SPAWN_MONSTER)){
+                        claim.removeClaimStatus(ClaimStatus.SPAWN_MONSTER);
+                    }else {
+                        claim.addClaimStatus(ClaimStatus.SPAWN_MONSTER);
+                    }
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getSettingsMenu(player));
                 })
                 .setCancelled(true);
 
         ClickableItemStack pvp = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("options-menu.children.pvp"), builder.build())
                 .setEvent(event -> {
-                    List<Claim> player_claims = player_data.getClaims();
-                    player_claims.forEach(claim -> {
-                        if (claim.checkStatus(ClaimStatus.PVP)){
-                            claim.removeClaimStatus(ClaimStatus.PVP);
-                        }else {
-                            claim.addClaimStatus(ClaimStatus.PVP);
-                        }
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    Claim claim = player_data.getClaims().get(0);
+                    if (claim.checkStatus(ClaimStatus.PVP)){
+                        claim.removeClaimStatus(ClaimStatus.PVP);
+                    }else {
+                        claim.addClaimStatus(ClaimStatus.PVP);
+                    }
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getSettingsMenu(player));
                 })
                 .setCancelled(true);
 
         ClickableItemStack explosion = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("options-menu.children.explosion"), builder.build())
                 .setEvent(event -> {
-                    List<Claim> player_claims = player_data.getClaims();
-                    player_claims.forEach(claim -> {
-                        if (claim.checkStatus(ClaimStatus.EXPLOSION)){
-                            claim.removeClaimStatus(ClaimStatus.EXPLOSION);
-                        } else {
-                            claim.addClaimStatus(ClaimStatus.EXPLOSION);
-                        }
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    Claim claim = player_data.getClaims().get(0);
+                    if (claim.checkStatus(ClaimStatus.EXPLOSION)){
+                        claim.removeClaimStatus(ClaimStatus.EXPLOSION);
+                    } else {
+                        claim.addClaimStatus(ClaimStatus.EXPLOSION);
+                    }
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getSettingsMenu(player));
                 })
                 .setCancelled(true);
         ClickableItemStack spread = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("options-menu.children.spread"), builder.build());
         spread.setEvent(event -> {
-            List<Claim> player_claims = player_data.getClaims();
-            player_claims.forEach(claim -> {
-                if (claim.checkStatus(ClaimStatus.SPREAD)){
-                    claim.removeClaimStatus(ClaimStatus.SPREAD);
-                } else {
-                    claim.addClaimStatus(ClaimStatus.SPREAD);
-                }
-                RClaim.getInstance().getStorage().updateClaim(claim);
-            });
+            Claim claim = player_data.getClaims().get(0);
+            if (claim.checkStatus(ClaimStatus.SPREAD)){
+                claim.removeClaimStatus(ClaimStatus.SPREAD);
+            } else {
+                claim.addClaimStatus(ClaimStatus.SPREAD);
+            }
+            RClaim.getInstance().getStorage().updateClaim(claim);
             player.openInventory(getSettingsMenu(player));
         }).setCancelled(true);
-
-        spawn_animal.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        spawn_mob.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        pvp.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        explosion.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        spread.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
         for (ClaimStatus status : player_data.getClaims().get(0).getClaimStatuses()){
             switch (status){
                 case SPAWN_ANIMAL:
@@ -200,11 +185,11 @@ public class MenuManagement {
 
             }
         }
-        builder.setItem(config.getInt("options-menu.children.spawn-animal.slot"), spawn_animal);
-        builder.setItem(config.getInt("options-menu.children.spawn-monster.slot"), spawn_mob);
-        builder.setItem(config.getInt("options-menu.children.pvp.slot"), pvp);
-        builder.setItem(config.getInt("options-menu.children.explosion.slot"), explosion);
-        builder.setItem(config.getInt("options-menu.children.spread.slot"), spread);
+        builder.setItem(config.getInt("options-menu.children.spawn-animal.slot"), setupFlagItem(spawn_animal.getItemStack()));
+        builder.setItem(config.getInt("options-menu.children.spawn-monster.slot"), setupFlagItem(spawn_mob.getItemStack()));
+        builder.setItem(config.getInt("options-menu.children.pvp.slot"), setupFlagItem(pvp.getItemStack()));
+        builder.setItem(config.getInt("options-menu.children.explosion.slot"), setupFlagItem(explosion.getItemStack()));
+        builder.setItem(config.getInt("options-menu.children.spread.slot"), setupFlagItem(spread.getItemStack()));
         return builder.build();
     }
 
@@ -239,7 +224,7 @@ public class MenuManagement {
     public static Inventory getResizeInventory(Player player){
         FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("resize-menu.title")), config.getInt("resize-menu.size"));
-        setupUpgradeInventory(player,builder.build(),player.getChunk());
+        setupUpgradeInventory(player,builder.build(),player.getLocation().getChunk());
         return builder.build();
     }
 
@@ -247,132 +232,95 @@ public class MenuManagement {
         FileConfiguration config = RClaim.getInstance().getMenusFile().load();
         InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("permissions-menu.title")), config.getInt("permissions-menu.size"));
         ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
-        List<Claim> target_claims = player_data.getClaims();
+        Claim claim = player_data.getClaims().get(0);
         ClickableItemStack block_break = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.block-break"), builder.build())
                 .setEvent(event-> {
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.BLOCK_BREAK);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    InteractPlayerPermission(target,claim,ClaimPermission.BLOCK_BREAK);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 })
                 .setCancelled(true);
 
         ClickableItemStack block_place = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.block-place"), builder.build())
                 .setEvent(event -> {
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.BLOCK_PLACE);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    InteractPlayerPermission(target,claim,ClaimPermission.BLOCK_PLACE);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 })
                 .setCancelled(true);
 
         ClickableItemStack pickup_item = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.pickup-item"), builder.build())
                 .setEvent(event -> {
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.PICKUP_ITEM);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    InteractPlayerPermission(target,claim,ClaimPermission.PICKUP_ITEM);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 })
                 .setCancelled(true);
 
         ClickableItemStack drop_item = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.drop-item"), builder.build())
                 .setEvent(event-> {
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.DROP_ITEM);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    InteractPlayerPermission(target,claim,ClaimPermission.DROP_ITEM);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 })
                 .setCancelled(true);
 
         ClickableItemStack container_open = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.container-open"), builder.build())
                 .setEvent(event-> {
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.CONTAINER_OPEN);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    InteractPlayerPermission(target,claim,ClaimPermission.CONTAINER_OPEN);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 })
                 .setCancelled(true);
 
         ClickableItemStack interact_entity = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.interact-entity"), builder.build())
                 .setEvent(event-> {
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.INTERACT_ENTITY);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    InteractPlayerPermission(target,claim,ClaimPermission.INTERACT_ENTITY);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 })
                 .setCancelled(true);
 
         ClickableItemStack attack_animal = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.attack-animal"), builder.build())
                 .setEvent(event->{
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.ATTACK_ANIMAL);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    InteractPlayerPermission(target,claim,ClaimPermission.ATTACK_ANIMAL);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 })
                 .setCancelled(true);
 
         ClickableItemStack attack_monster = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.attack-monster"), builder.build())
                 .setEvent(event-> {
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.ATTACK_MONSTER);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                        });
+                    InteractPlayerPermission(target,claim,ClaimPermission.ATTACK_MONSTER);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 })
                 .setCancelled(true);
         ClickableItemStack break_container = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.break-container"), builder.build())
                     .setEvent(event -> {
-                    target_claims.forEach(claim -> {
                         InteractPlayerPermission(target,claim,ClaimPermission.BREAK_CONTAINER);
                         RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
                     player.openInventory(getPermissionMenu(player, target));
                     })
                     .setCancelled(true);
         ClickableItemStack use_door = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.use-door"), builder.build())
                 .setEvent(event -> {
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.USE_DOOR);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    InteractPlayerPermission(target,claim,ClaimPermission.USE_DOOR);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 }).setCancelled(true);
         ClickableItemStack use_portal = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.use-portal"), builder.build())
                 .setEvent(event -> {
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.USE_PORTAL);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    InteractPlayerPermission(target,claim,ClaimPermission.USE_PORTAL);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 }).setCancelled(true);
         ClickableItemStack use_potion = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("permissions-menu.children.use-potion"), builder.build())
                 .setEvent(event -> {
-                    target_claims.forEach(claim -> {
-                        InteractPlayerPermission(target,claim,ClaimPermission.USE_POTION);
-                        RClaim.getInstance().getStorage().updateClaim(claim);
-                    });
+                    InteractPlayerPermission(target,claim,ClaimPermission.USE_POTION);
+                    RClaim.getInstance().getStorage().updateClaim(claim);
                     player.openInventory(getPermissionMenu(player, target));
                 }).setCancelled(true);
-
-        block_break.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        block_place.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        pickup_item.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        container_open.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        interact_entity.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        attack_animal.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        attack_monster.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        break_container.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        use_door.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        use_portal.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        use_potion.getItemStack().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
         for (ClaimPermission permission : player_data.getClaims().get(0).getClaimPermissions().getOrDefault(target, new ArrayList<>())) {
             switch (permission) {
                 case BLOCK_BREAK:
@@ -417,18 +365,18 @@ public class MenuManagement {
 
         }
 
-        builder.setItem(config.getInt("permissions-menu.children.block-break.slot"), block_break);
-        builder.setItem(config.getInt("permissions-menu.children.block-place.slot"), block_place);
-        builder.setItem(config.getInt("permissions-menu.children.pickup-item.slot"), pickup_item);
-        builder.setItem(config.getInt("permissions-menu.children.drop-item.slot"), drop_item);
-        builder.setItem(config.getInt("permissions-menu.children.container-open.slot"), container_open);
-        builder.setItem(config.getInt("permissions-menu.children.interact-entity.slot"), interact_entity);
-        builder.setItem(config.getInt("permissions-menu.children.attack-animal.slot"), attack_animal);
-        builder.setItem(config.getInt("permissions-menu.children.attack-monster.slot"), attack_monster);
-        builder.setItem(config.getInt("permissions-menu.children.break-container.slot"), break_container);
-        builder.setItem(config.getInt("permissions-menu.children.use-door.slot"), use_door);
-        builder.setItem(config.getInt("permissions-menu.children.use-portal.slot"), use_portal);
-        builder.setItem(config.getInt("permissions-menu.children.use-potion.slot"), use_potion);
+        builder.setItem(config.getInt("permissions-menu.children.block-break.slot"), setupFlagItem(block_break.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.block-place.slot"), setupFlagItem(block_place.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.pickup-item.slot"), setupFlagItem(pickup_item.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.drop-item.slot"), setupFlagItem(drop_item.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.container-open.slot"), setupFlagItem(container_open.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.interact-entity.slot"), setupFlagItem(interact_entity.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.attack-animal.slot"), setupFlagItem(attack_animal.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.attack-monster.slot"), setupFlagItem(attack_monster.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.break-container.slot"), setupFlagItem(break_container.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.use-door.slot"), setupFlagItem(use_door.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.use-portal.slot"), setupFlagItem(use_portal.getItemStack()));
+        builder.setItem(config.getInt("permissions-menu.children.use-potion.slot"), setupFlagItem(use_potion.getItemStack()));
 
         return builder.build();
     }
@@ -492,6 +440,10 @@ public class MenuManagement {
 
         ClickableItemStack itemStack = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack(key), inventory)
                 .setEvent(event->{
+                    if (!HWorldGuard.isAreaEnabled(player)){
+                        player.sendMessage(RClaim.getInstance().getMessage("AREA_DISABLED"));
+                        return;
+                    }
                     if(!ClaimManager.checkWorld(player.getWorld().getName())){
                         player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
                         return;
@@ -504,7 +456,7 @@ public class MenuManagement {
                         RClaim.getInstance().getEconomy().withdraw(player, RClaim.getInstance().getConfig().getInt("claim-settings.claim-cost"));
                     }
                     if (!ClaimManager.isSuitable(chunk)){
-                        ClaimManager.createClaim(chunk, player, false);
+                        ClaimManager.createClaim(chunk, player, false, ClaimManager.getPlayerData(player.getUniqueId()).getClaims().get(0).getID());
                         player.openInventory(getResizeInventory(player));
                     }else {
                         player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
@@ -585,12 +537,16 @@ public class MenuManagement {
 
 
     private static boolean isCheckPlayer(String name){
-        for (OfflinePlayer player : Bukkit.getOfflinePlayers()){
-            if (player.getName().equalsIgnoreCase(name)){
-                return true;
-            }
-        }
-        return false;
+        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+        return player.hasPlayedBefore();
+    }
+
+    private static ItemStack setupFlagItem(ItemStack itemStack){
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
 
 }

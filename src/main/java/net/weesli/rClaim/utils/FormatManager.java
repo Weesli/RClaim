@@ -1,8 +1,12 @@
 package net.weesli.rClaim.utils;
 
+import me.clip.placeholderapi.libs.kyori.adventure.text.Component;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.weesli.rClaim.RClaim;
-import net.weesli.rozsLib.BossBarManager.BossBarBuilder;
-import net.weesli.rozsLib.ColorManager.ColorBuilder;
+import net.weesli.rozsLib.bossbar.BossBarBuilder;
+import net.weesli.rozsLib.color.ColorBuilder;
 import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
 
@@ -42,7 +46,7 @@ public class FormatManager {
     }
 
     public static void sendActionBar(Player player, Map<String, String> values, String message){
-        player.sendActionBar(ColorBuilder.convertColors(message.replace("%player%", values.get("player"))));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColorBuilder.convertColors(message.replace("%player%", values.get("player")))));
     }
 
     public static void sendTitle(Player player, Map<String, String> values, String message) {
