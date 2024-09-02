@@ -1,6 +1,7 @@
 package net.weesli.rClaim.management.modules;
 
 import net.weesli.rClaim.RClaim;
+import net.weesli.rozsLib.color.ColorBuilder;
 import org.bukkit.Bukkit;
 
 import java.io.File;
@@ -28,7 +29,7 @@ public class ModuleLoader {
             Bukkit.getLogger().info("[RClaim] No module was activated");
             return;
         }
-        Bukkit.getLogger().info("[RClaim] Loading modules...");
+        Bukkit.getConsoleSender().sendMessage(ColorBuilder.convertColors("&aLoading modules...."));
         for (File file : files) {
             try {
                 loadAddon(file);
@@ -52,7 +53,7 @@ public class ModuleLoader {
                             Module addon = (Module) cls.getDeclaredConstructor().newInstance();
                             Method onEnableMethod = cls.getMethod("enable");
                             onEnableMethod.invoke(addon);
-                            Bukkit.getLogger().info("[RClaim] Module " + addon.getAddonName() + " enabled");
+                            Bukkit.getConsoleSender().sendMessage(ColorBuilder.convertColors("&bLoaded &a" + addon.getAddonName() + " &bVersion &a" + addon.getVersion()));
                         }
                     }
                 }
