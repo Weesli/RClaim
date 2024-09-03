@@ -34,8 +34,6 @@ public class ClaimManager {
     public static Optional<Claim> getClaim(String ID) {
         if (RClaim.getInstance().getStorage().getStorageType().equals(StorageType.MySQL)){
             return Optional.ofNullable(RClaim.getInstance().getStorage().getClaim(ID));
-        } else if (RClaim.getInstance().getStorage().getStorageType().equals(StorageType.SQLite)) {
-            return Optional.ofNullable(RClaim.getInstance().getStorage().getClaim(ID));
         }
         return claims.stream().filter(claim -> claim.getID().equals(ID)).findFirst();
     }
@@ -46,8 +44,6 @@ public class ClaimManager {
 
     public static List<Claim> getClaims() {
         if (RClaim.getInstance().getStorage().getStorageType().equals(StorageType.MySQL)){
-            return RClaim.getInstance().getStorage().getClaims();
-        } else if (RClaim.getInstance().getStorage().getStorageType().equals(StorageType.SQLite)) {
             return RClaim.getInstance().getStorage().getClaims();
         }else {
             return claims;

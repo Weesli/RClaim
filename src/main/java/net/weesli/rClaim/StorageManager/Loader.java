@@ -31,7 +31,9 @@ public class Loader {
             case MySQL:
                 break;
             case SQLite:
-                break;
+                for (Claim claim : plugin.getStorage().getClaims()){
+                    ClaimManager.addClaim(claim);
+                }
             default:
                 RClaim.getInstance().getLogger().severe("Unsupported storage type: " + type.name());
                 return;

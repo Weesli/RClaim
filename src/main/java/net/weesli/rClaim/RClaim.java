@@ -17,7 +17,10 @@ import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rozsLib.color.ColorBuilder;
 import net.weesli.rozsLib.configuration.YamlFileBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,6 +42,7 @@ public final class RClaim extends JavaPlugin {
     private static YamlFileBuilder menusFile;
     private static YamlFileBuilder messagesFile;
     private static YamlFileBuilder claim_builder;
+    private static FileConfiguration messages;
 
     public SpawnerManager getSpawnerManager() {
         return spawnerManager;
@@ -147,6 +151,7 @@ public final class RClaim extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ColorBuilder.convertColors("[RClaim] Loading files.."));
         messagesFile = new YamlFileBuilder(this,"lang").setResource(true);
         messagesFile.create();
+        messages = messagesFile.load();
         menusFile = new YamlFileBuilder(this, "menus").setResource(true);
         menusFile.create();
         claim_builder = new YamlFileBuilder(this, "claims").setPath(new File(this.getDataFolder(), "data"));
@@ -161,12 +166,13 @@ public final class RClaim extends JavaPlugin {
         for (ClaimTask task : ClaimManager.getTasks()) {
             if (getStorage().hasClaim(task.getClaimId())) {
                 storage.updateTime(task);
+                getStorage().updateClaim(ClaimManager.getClaim(task.getClaimId()).get());
             }
         }
     }
 
     public String getMessage(String path){
-        return ColorBuilder.convertColors(getConfig().getString("options.prefix") + new YamlFileBuilder(this,"lang").load().getString(path));
+        return ColorBuilder.convertColors(getConfig().getString("options.prefix") + messages.getString(path));
     }
 
     public void setStorage(StorageImpl storage) {

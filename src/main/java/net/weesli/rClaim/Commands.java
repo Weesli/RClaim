@@ -7,6 +7,7 @@ import net.weesli.rClaim.api.events.UnTrustedPlayerEvent;
 import net.weesli.rClaim.hooks.HWorldGuard;
 import net.weesli.rClaim.management.ClaimManager;
 import net.weesli.rClaim.management.ExplodeCause;
+import net.weesli.rClaim.ui.MenuManagement;
 import net.weesli.rClaim.utils.Claim;
 import net.weesli.rClaim.utils.ClaimPlayer;
 import net.weesli.rozsLib.color.ColorBuilder;
@@ -111,7 +112,6 @@ public class Commands {
                                 }
                                 for (Claim claim : claims){
                                     claim.addMember(target.getUniqueId());
-                                    RClaim.getInstance().getStorage().updateClaim(claim);
                                 }
                                 ClaimManager.getPlayerData().put(player.getUniqueId(),player_data);
                                 player.sendMessage(RClaim.getInstance().getMessage("TRUSTED_PLAYER"));
@@ -143,7 +143,6 @@ public class Commands {
                                 for (Claim claim : claims){
                                     claim.removeMember(target.getUniqueId());
                                     claim.getClaimPermissions().remove(target.getUniqueId());
-                                    RClaim.getInstance().getStorage().updateClaim(claim);
                                 }
                                 ClaimManager.getPlayerData().put(player.getUniqueId(),player_data);
                                 player.sendMessage(RClaim.getInstance().getMessage("UNTRUSTED_PLAYER"));
@@ -164,7 +163,6 @@ public class Commands {
                                 c1.setHomeLocation(null);
                             });
                             c.setHomeLocation(player.getLocation());
-                            RClaim.getInstance().getStorage().updateClaim(c);
                             player.sendMessage(RClaim.getInstance().getMessage("HOME_SET"));
                         }
                     });
@@ -237,7 +235,6 @@ public class Commands {
                 }
                 List<Claim> claims = ClaimManager.getPlayerData(player.getUniqueId()).getClaims();
                 claims.forEach(claim -> {
-                    RClaim.getInstance().getStorage().deleteClaim(claim.getID());
                     ClaimManager.removeClaim(claim);
                 });
                 commandSender.sendMessage(RClaim.getInstance().getMessage("DELETED_CLAIMS").replaceAll("%player%", player.getName()));
@@ -245,6 +242,7 @@ public class Commands {
                 if (!commandSender.isOp()){return false;}
                 RClaim.getInstance().reloadConfig();
                 RClaim.getInstance().getMenusFile().reload();
+                MenuManagement.config = RClaim.getInstance().getMenusFile().load();
                 RClaim.getInstance().getMessagesFile().reload();
                 commandSender.sendMessage(ColorBuilder.convertColors("&aAll files reloaded!"));
             } else if (strings[0].equals("info")) {
