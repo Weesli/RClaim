@@ -1,10 +1,10 @@
 package net.weesli.rClaim.api;
 
-import net.weesli.rClaim.management.ClaimManager;
-import net.weesli.rClaim.management.ExplodeCause;
-import net.weesli.rClaim.utils.Claim;
-import net.weesli.rClaim.utils.ClaimPermission;
-import net.weesli.rClaim.utils.ClaimStatus;
+import net.weesli.rClaim.utils.ClaimManager;
+import net.weesli.rClaim.enums.ExplodeCause;
+import net.weesli.rClaim.modal.Claim;
+import net.weesli.rClaim.enums.ClaimPermission;
+import net.weesli.rClaim.enums.ClaimStatus;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 

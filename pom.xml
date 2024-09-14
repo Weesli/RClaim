@@ -6,7 +6,7 @@
 
     <groupId>net.weesli</groupId>
     <artifactId>RClaim</artifactId>
-    <version>1.5.4</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
 
     <name>RClaim</name>
@@ -100,7 +100,7 @@
         <dependency>
             <groupId>com.github.Weesli</groupId>
             <artifactId>RLib</artifactId>
-            <version>1.7.2</version>
+            <version>1.7.5</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -177,6 +177,12 @@
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
             <version>7.0.9</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

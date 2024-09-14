@@ -5,11 +5,10 @@ import net.weesli.rClaim.api.events.ClaimDeleteEvent;
 import net.weesli.rClaim.api.events.TrustedPlayerEvent;
 import net.weesli.rClaim.api.events.UnTrustedPlayerEvent;
 import net.weesli.rClaim.hooks.HWorldGuard;
-import net.weesli.rClaim.management.ClaimManager;
-import net.weesli.rClaim.management.ExplodeCause;
-import net.weesli.rClaim.ui.MenuManagement;
-import net.weesli.rClaim.utils.Claim;
-import net.weesli.rClaim.utils.ClaimPlayer;
+import net.weesli.rClaim.utils.ClaimManager;
+import net.weesli.rClaim.enums.ExplodeCause;
+import net.weesli.rClaim.modal.Claim;
+import net.weesli.rClaim.modal.ClaimPlayer;
 import net.weesli.rozsLib.color.ColorBuilder;
 import net.weesli.rozsLib.CommandBuilder;
 import org.bukkit.Bukkit;
@@ -242,7 +241,7 @@ public class Commands {
                 if (!commandSender.isOp()){return false;}
                 RClaim.getInstance().reloadConfig();
                 RClaim.getInstance().getMenusFile().reload();
-                MenuManagement.config = RClaim.getInstance().getMenusFile().load();
+                RClaim.getInstance().getUiManager().config = RClaim.getInstance().getMenusFile().load();
                 RClaim.getInstance().getMessagesFile().reload();
                 commandSender.sendMessage(ColorBuilder.convertColors("&aAll files reloaded!"));
             } else if (strings[0].equals("info")) {

@@ -3,10 +3,9 @@ package net.weesli.rClaim.events;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.api.events.ClaimDeleteEvent;
 import net.weesli.rClaim.api.events.ClaimEnterEvent;
-import net.weesli.rClaim.management.ClaimManager;
-import net.weesli.rClaim.ui.MenuManagement;
-import net.weesli.rClaim.utils.Claim;
-import net.weesli.rClaim.utils.ClaimStatus;
+import net.weesli.rClaim.utils.ClaimManager;
+import net.weesli.rClaim.modal.Claim;
+import net.weesli.rClaim.enums.ClaimStatus;
 import net.weesli.rClaim.utils.FormatManager;
 import net.weesli.rozsLib.events.BlockRightClickEvent;
 import net.weesli.rozsLib.events.PlayerDamageByPlayerEvent;
@@ -32,7 +31,7 @@ public class ClaimListener implements Listener {
     public void onSpawn(EntitySpawnEvent e){
         Entity entity = e.getEntity();
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(entity.getLocation())).findFirst();
-        if (!claim.isPresent()){
+        if (claim.isEmpty()){
             return;
         }
         Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
@@ -53,7 +52,7 @@ public class ClaimListener implements Listener {
     public void onTnt(EntityExplodeEvent e){
         Entity entity = e.getEntity();
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(entity.getLocation())).findFirst();
-        if (!claim.isPresent()){
+        if (claim.isEmpty()){
             return;
         }
         Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
@@ -66,7 +65,7 @@ public class ClaimListener implements Listener {
     public void onPvP(PlayerDamageByPlayerEvent e){
         Optional<Claim> victim_claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getPlayer().getLocation())).findFirst();
         Optional<Claim> attacker_claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getDamager().getLocation())).findFirst();
-        if (!attacker_claim.isPresent() ||!victim_claim.isPresent()){
+        if (attacker_claim.isEmpty() || victim_claim.isEmpty()){
             return;
         }
         Claim target_attacker_claim = (attacker_claim.get().getCenterId().isEmpty() ? attacker_claim.get() : ClaimManager.getClaim(attacker_claim.get().getCenterId()).get());
@@ -113,7 +112,7 @@ public class ClaimListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        player.openInventory(MenuManagement.getMainMenu(player));
+        RClaim.getInstance().getUiManager().openInventory(player,claim.get(),RClaim.getInstance().getUiManager().getMainMenu());
     }
 
 

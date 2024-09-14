@@ -1,6 +1,6 @@
 package net.weesli.rClaim.api.events;
 
-import net.weesli.rClaim.utils.Claim;
+import net.weesli.rClaim.modal.Claim;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

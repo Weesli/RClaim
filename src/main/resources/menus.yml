@@ -98,40 +98,45 @@ options-menu:
       material: SHEEP_SPAWN_EGG
       custom-model-data: 0
       lore:
-        - "&8"
-        - "&aClick to spawn animals on your claim!"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Click to spawn animals on your claim!"
       slot: 10
     spawn-monster:
-      title: "&eSpawn Monster"
+      title: "&aSpawn Monster"
       material: SKELETON_SPAWN_EGG
       custom-model_data: 0
       lore:
-        - "&8"
-        - "&aClick to spawn monsters on your claim!"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Click to spawn monsters on your claim!"
       slot: 12
     pvp:
-      title: "&eEnable PVP"
+      title: "&aEnable PVP"
       material: DIAMOND_SWORD
       custom-model_data: 0
       lore:
-        - "&8"
-        - "&aClick to enable PVP on your claim!"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Click to enable PVP on your claim!"
       slot: 14
     explosion:
-      title: "&eEnable Explosion"
+      title: "&aEnable Explosion"
       material: TNT
       custom-model_data: 0
       lore:
-        - "&8"
-        - "&aClick to enable explosions on your claim!"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Click to enable explosions on your claim!"
       slot: 16
     spread:
-      title: "&eEnable Spread"
+      title: "&aEnable Spread"
       material: FIRE_CHARGE
       custom-model_data: 0
       lore:
-        - "&8"
-        - "&aClick to enable spread on your claim!"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Click to enable spread on your claim!"
       slot: 22
 
 resize-menu:
@@ -181,88 +186,112 @@ permissions-menu:
   size: 27
   children:
     block-break:
-      title: "Block Break"
+      title: "&aBlock Break"
       material: STONE_PICKAXE
       custom-model-data: 0
       lore:
-        - "Toggle block breaking permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle block breaking permission"
       slot: 1
     block-place:
-      title: "Block Place"
+      title: "&aBlock Place"
       material: STONE
       custom-model-data: 0
       lore:
-        - "Toggle block placing permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle block placing permission"
       slot: 10
     pickup-item:
-      title: "Pickup Item"
+      title: "&aPickup Item"
       material: DIAMOND
       custom-model-data: 0
       lore:
-        - "Toggle item pickup permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle item pickup permission"
       slot: 19
     drop-item:
-      title: "Drop Item"
+      title: "&aDrop Item"
       material: IRON_INGOT
       custom-model-data: 0
       lore:
-        - "Toggle item dropping permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle item dropping permission"
       slot: 3
     container-open:
-      title: "Open Container"
+      title: "&aOpen Container"
       material: CHEST
       custom-model-data: 0
       lore:
-        - "Toggle container opening permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle container opening permission"
       slot: 12
     interact-entity:
-      title: "Interact Entity"
+      title: "&aInteract Entity"
       material: IRON_SWORD
       custom-model-data: 0
       lore:
-        - "Toggle entity interaction permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle entity interaction permission"
       slot: 21
     attack-animal:
-      title: "Attack Animal"
+      title: "&aAttack Animal"
       material: BOW
       custom-model-data: 0
       lore:
-        - "Toggle attacking animals permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle attacking animals permission"
       slot: 5
     attack-monster:
-      title: "Attack Monster"
+      title: "&aAttack Monster"
       material: DIAMOND_SWORD
       custom-model-data: 0
       lore:
-        - "Toggle attacking monsters permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle attacking monsters permission"
       slot: 14
     break-container:
-      title: "Break Container"
+      title: "&aBreak Container"
       material: BARREL
       custom-model_data: 0
       lore:
-        - "Toggle breaking containers permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle breaking containers permission"
       slot: 23
     use-door:
-      title: "Use Door"
+      title: "&aUse Door"
       material: LEVER
       custom-model_data: 0
       lore:
-        - "Toggle using doors permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle using doors permission"
       slot: 7
     use-portal:
-      title: "Use Portal"
+      title: "&aUse Portal"
       material: OBSIDIAN
       custom-model_data: 0
       lore:
-        - "Toggle using portals permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle using portals permission"
       slot: 16
     use-potion:
-      title: "Use Potion"
+      title: "&aUse Potion"
       material: POTION
       custom-model_data: 0
       lore:
-        - "Toggle using potions permission"
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Toggle using potions permission"
       slot: 25
 
 verify-menu:

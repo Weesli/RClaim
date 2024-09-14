@@ -1,8 +1,6 @@
 package net.weesli.rClaim.utils;
 
-import me.clip.placeholderapi.libs.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rozsLib.bossbar.BossBarBuilder;
@@ -15,8 +13,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FormatManager {
-
-    private static Map<UUID, Integer> format_id = new HashMap<>();
 
     public static void sendMessage(Player player, Map<String, String> values){
         String format = RClaim.getInstance().getConfig().getString("options.enter-message.format");

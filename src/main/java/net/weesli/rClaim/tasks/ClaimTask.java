@@ -1,8 +1,8 @@
 package net.weesli.rClaim.tasks;
 
 import net.weesli.rClaim.RClaim;
-import net.weesli.rClaim.management.ClaimManager;
-import net.weesli.rClaim.management.ExplodeCause;
+import net.weesli.rClaim.utils.ClaimManager;
+import net.weesli.rClaim.enums.ExplodeCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ClaimTask extends BukkitRunnable {
@@ -10,6 +10,7 @@ public class ClaimTask extends BukkitRunnable {
     private String claimId;
     private int time;
     private boolean isCenter;
+
     public ClaimTask(String claimId, int time, boolean isCenter) {
         this.claimId = claimId;
         this.time = time;

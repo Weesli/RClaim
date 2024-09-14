@@ -1,7 +1,7 @@
 package net.weesli.rClaim.api.events;
 
-import net.weesli.rClaim.management.ExplodeCause;
-import net.weesli.rClaim.utils.Claim;
+import net.weesli.rClaim.enums.ExplodeCause;
+import net.weesli.rClaim.modal.Claim;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
