@@ -2,6 +2,7 @@ package net.weesli.rClaim;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.weesli.rClaim.command.CommandManager;
 import net.weesli.rClaim.enums.HologramModule;
 import net.weesli.rClaim.enums.StorageType;
 import net.weesli.rClaim.hooks.economy.ClaimEconomy;
@@ -19,12 +20,13 @@ import net.weesli.rClaim.module.ModuleLoader;
 import net.weesli.rClaim.ui.UIManager;
 import net.weesli.rozsLib.color.ColorBuilder;
 import net.weesli.rozsLib.configuration.YamlFileBuilder;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.CustomChart;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -62,13 +64,13 @@ public final class RClaim extends JavaPlugin {
         loadListeners();
         loadStorage();
         loadEconomy();
-        loadData();
         loadHologram();
         Bukkit.getScheduler().runTaskAsynchronously(this, (this::checkVersion));
         spawnerManager = new SpawnerManager();
         minionsManager = new MinionsManager();
         uiManager = new UIManager();
-        new Commands(this);
+        new CommandManager();
+        new Metrics(this, 	23385);
         ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");
         Loader.load();
     }
@@ -129,10 +131,6 @@ public final class RClaim extends JavaPlugin {
         }
     }
 
-    private void loadData() {
-        Bukkit.getConsoleSender().sendMessage("[RClaim] Loading data...");
-        new Loader();
-    }
 
     private void loadStorage() {
         StorageType type = StorageType.valueOf(getConfig().getString("options.storage-type"));

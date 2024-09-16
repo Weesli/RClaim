@@ -29,7 +29,11 @@ public class SQLiteStorage implements Database {
     private SQLiteBuilder builder;
 
     public SQLiteStorage(){
-        SQLiteBuilder builder = new SQLiteBuilder("RClaim").setPath(new File(RClaim.getInstance().getDataFolder(), "data").getPath());
+        File path = new File(RClaim.getInstance().getDataFolder(), "data");
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+        SQLiteBuilder builder = new SQLiteBuilder("RClaim").setPath(path.getPath());
         this.builder = builder;
         try {
             connection = builder.build();

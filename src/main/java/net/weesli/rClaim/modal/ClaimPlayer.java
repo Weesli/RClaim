@@ -1,11 +1,14 @@
 package net.weesli.rClaim.modal;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.weesli.rClaim.utils.ClaimManager;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Getter@Setter
 public class ClaimPlayer {
 
 
@@ -15,14 +18,6 @@ public class ClaimPlayer {
     public ClaimPlayer(UUID uuid, String username) {
         this.uuid = uuid;
         this.username = username;
-    }
-
-    public UUID getUUID() {
-        return uuid;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public List<Claim> getClaims() {

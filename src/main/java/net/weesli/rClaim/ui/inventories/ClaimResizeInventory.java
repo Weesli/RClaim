@@ -6,13 +6,13 @@ import net.weesli.rClaim.ui.ClaimInventory;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rozsLib.color.ColorBuilder;
-import net.weesli.rozsLib.inventory.ClickableItemStack;
-import net.weesli.rozsLib.inventory.InventoryBuilder;
+import net.weesli.rozsLib.inventory.lasest.ClickableItemStack;
+import net.weesli.rozsLib.inventory.lasest.InventoryBuilder;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -21,14 +21,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClaimResizeInventory implements ClaimInventory {
+
+
     @Override
     public void openInventory(Player player, Claim claim, FileConfiguration config) {
-        InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("resize-menu.title")), config.getInt("resize-menu.size"));
-        setupUpgradeInventory(player,builder.build(),player.getLocation().getChunk(), claim);
-        player.openInventory(builder.build());
+        InventoryBuilder builder = new InventoryBuilder().title(ColorBuilder.convertColors(config.getString("resize-menu.title"))).size(54);
+        setupUpgradeInventory(player,builder,player.getLocation().getChunk(), claim, config);
+        builder.openInventory(player);
     }
 
-    private void setupUpgradeInventory(Player player, Inventory inventory, Chunk centerChunk, Claim claim) {
+    private void setupUpgradeInventory(Player player, InventoryBuilder inventory, Chunk centerChunk, Claim claim, FileConfiguration config) {
         List<Chunk> chunks = new ArrayList<>();
         int chunkRadius = 4;
 
@@ -43,12 +45,12 @@ public class ClaimResizeInventory implements ClaimInventory {
 
         for (int i = 0; i < 54; i++) {
             if (i < chunks.size()) {
-                inventory.setItem(i, getAreas(inventory, player, centerChunk, chunks.get(i), claim));
+                getAreas(inventory, player, centerChunk, chunks.get(i), claim, i, config);
             }
         }
     }
 
-    private ItemStack getAreas(Inventory inventory, Player player, Chunk currentChunk, Chunk chunk, Claim target_claim) {
+    private void getAreas(InventoryBuilder inventory, Player player, Chunk currentChunk, Chunk chunk, Claim target_claim, int slot, FileConfiguration config) {
         Claim claim = ClaimManager.getClaims().stream()
                 .filter(c -> c.getChunk().equals(chunk))
                 .findFirst()
@@ -56,17 +58,11 @@ public class ClaimResizeInventory implements ClaimInventory {
 
         String key = getKeyForChunk(player, currentChunk, chunk, claim);
 
-        ClickableItemStack itemStack = new ClickableItemStack(
-                RClaim.getInstance(),
-                RClaim.getInstance().getMenusFile().getItemStack(key),
-                inventory
-        )
-                .setEvent(event -> handleItemClick(event, player, chunk, target_claim))
-                .setCancelled(true);
+        ClickableItemStack itemStack = new ClickableItemStack(getItemStack(key, config), slot);
+
+        inventory.setItem(itemStack, event -> handleItemClick(event, player, chunk, target_claim));
 
         updateItemMeta(itemStack, chunk);
-
-        return itemStack.getItemStack();
     }
 
     private String getKeyForChunk(Player player, Chunk currentChunk, Chunk chunk, Claim claim) {

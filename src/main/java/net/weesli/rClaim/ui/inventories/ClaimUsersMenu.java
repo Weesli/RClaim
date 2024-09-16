@@ -7,8 +7,8 @@ import net.weesli.rClaim.enums.VerifyAction;
 import net.weesli.rClaim.ui.ClaimInventory;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rozsLib.color.ColorBuilder;
-import net.weesli.rozsLib.inventory.ClickableItemStack;
-import net.weesli.rozsLib.inventory.InventoryBuilder;
+import net.weesli.rozsLib.inventory.lasest.ClickableItemStack;
+import net.weesli.rozsLib.inventory.lasest.InventoryBuilder;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -21,33 +21,28 @@ import java.util.UUID;
 public class ClaimUsersMenu implements ClaimInventory {
     @Override
     public void openInventory(Player player, Claim claim, FileConfiguration config) {
-        InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(), ColorBuilder.convertColors(config.getString("members-menu.title")), config.getInt("members-menu.size"));
+        InventoryBuilder builder = new InventoryBuilder().title(ColorBuilder.convertColors(config.getString("members-menu.title"))).size(config.getInt("members-menu.size"));
         int i = 0;
         for (UUID member : claim.getMembers()){
-            ClickableItemStack itemStack = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("members-menu.item-settings"), builder.build())
-                    .setEvent(event-> {
-                        if (event.isShiftClick()){
-                            VerifyMenu verifyMenu = RClaim.getInstance().getUiManager().getVerifyMenu();
-                            verifyMenu.setup(VerifyAction.UNTRUST_PLAYER,member.toString());
-                            RClaim.getInstance().getUiManager().openInventory(player,claim,verifyMenu);
-                            return;
-                        }
-                        ClaimPermissionMenu permissionMenu = RClaim.getInstance().getUiManager().getPermissionMenu();
-                        permissionMenu.setup(member);
-                        RClaim.getInstance().getUiManager().openInventory(player,claim,permissionMenu);
-                    })
-                    .setCancelled(true)
-                    .setSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
+            ClickableItemStack itemStack = new ClickableItemStack(getItemStack("members-menu.item-settings", config), i);
+            itemStack.setSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
             ItemMeta meta = itemStack.getItemStack().getItemMeta();
             meta.setDisplayName(meta.getDisplayName().replaceAll("<name>", Bukkit.getOfflinePlayer(member).getName()));
             itemStack.getItemStack().setItemMeta(meta);
-            builder.setItem(i,itemStack); i++;
+            builder.setItem(itemStack,event-> {
+                if (event.isShiftClick()){
+                    VerifyMenu verifyMenu = RClaim.getInstance().getUiManager().getVerifyMenu();
+                    verifyMenu.setup(VerifyAction.UNTRUST_PLAYER,member.toString());
+                    RClaim.getInstance().getUiManager().openInventory(player,claim,verifyMenu);
+                    return;
+                }
+                ClaimPermissionMenu permissionMenu = RClaim.getInstance().getUiManager().getPermissionMenu();
+                permissionMenu.setup(member);
+                RClaim.getInstance().getUiManager().openInventory(player,claim,permissionMenu);
+            }); i++;
         }
-        ClickableItemStack add_member = new ClickableItemStack(RClaim.getInstance(), RClaim.getInstance().getMenusFile().getItemStack("members-menu.add-member"), builder.build())
-                .setEvent(event -> callSign(player, claim))
-                .setCancelled(true);
-        builder.setItem(config.getInt("members-menu.add-member.slot"), add_member);
-        player.openInventory(builder.build());
+        builder.setItem(config.getInt("members-menu.add-member.slot"), getItemStack("members-menu.add-member", config),event -> callSign(player, claim));
+        builder.openInventory(player);
     }
 
     private void callSign(Player player, Claim claim){

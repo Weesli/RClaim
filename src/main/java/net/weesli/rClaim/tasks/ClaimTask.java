@@ -1,10 +1,13 @@
 package net.weesli.rClaim.tasks;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.enums.ExplodeCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
+@Getter@Setter
 public class ClaimTask extends BukkitRunnable {
 
     private String claimId;
@@ -26,14 +29,6 @@ public class ClaimTask extends BukkitRunnable {
             this.cancel();
         }
         time--;
-    }
-
-    public String getClaimId() {
-        return claimId;
-    }
-
-    public int getTime() {
-        return time;
     }
 
     public void addTime(int time) {

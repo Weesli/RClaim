@@ -5,10 +5,9 @@ import net.weesli.rClaim.enums.ClaimPermission;
 import net.weesli.rClaim.ui.ClaimInventory;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.utils.ClaimManager;
-import net.weesli.rClaim.modal.ClaimPlayer;
 import net.weesli.rozsLib.color.ColorBuilder;
-import net.weesli.rozsLib.inventory.ClickableItemStack;
-import net.weesli.rozsLib.inventory.InventoryBuilder;
+import net.weesli.rozsLib.inventory.lasest.ClickableItemStack;
+import net.weesli.rozsLib.inventory.lasest.InventoryBuilder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -30,11 +29,7 @@ public class ClaimPermissionMenu implements ClaimInventory {
 
     @Override
     public void openInventory(Player player, Claim claim, FileConfiguration config) {
-        InventoryBuilder builder = new InventoryBuilder(RClaim.getInstance(),
-                ColorBuilder.convertColors(config.getString("permissions-menu.title")),
-                config.getInt("permissions-menu.size"));
-
-        ClaimPlayer playerData = ClaimManager.getPlayerData(player.getUniqueId());
+        InventoryBuilder builder = new InventoryBuilder().title(ColorBuilder.convertColors(config.getString("permissions-menu.title"))).size(config.getInt("permissions-menu.size"));
 
         addClickableItemWithStatus(builder, player, claim, ClaimPermission.BLOCK_BREAK, "block-break", config);
         addClickableItemWithStatus(builder, player, claim, ClaimPermission.BLOCK_PLACE, "block-place", config);
@@ -49,30 +44,30 @@ public class ClaimPermissionMenu implements ClaimInventory {
         addClickableItemWithStatus(builder, player, claim, ClaimPermission.USE_PORTAL, "use-portal", config);
         addClickableItemWithStatus(builder, player, claim, ClaimPermission.USE_POTION, "use-potion", config);
 
-        player.openInventory(builder.build());
+        builder.openInventory(player);
     }
 
     private void addClickableItemWithStatus(InventoryBuilder builder, Player player, Claim claim,
                                             ClaimPermission permission, String configPath, FileConfiguration config) {
         String itemPath = "permissions-menu.children." + configPath;
-        ItemStack itemStack = RClaim.getInstance().getMenusFile().getItemStack(itemPath);
+        ItemStack itemStack = getItemStack(itemPath,config);
         String statusPlaceholder = claim.checkPermission(target, permission) ? ClaimManager.getStatus(true) : ClaimManager.getStatus(false);
 
-        ClickableItemStack clickableItem = new ClickableItemStack(RClaim.getInstance(), itemStack, builder.build())
-                .setEvent(event -> {
-                    InteractPlayerPermission(target, claim, permission);
-                    openInventory(player, claim, config);
-                })
-                .setCancelled(true);
-
-        ItemMeta meta = clickableItem.getItemStack().getItemMeta();
+        ItemMeta meta = itemStack.getItemMeta();
         List<String> lore = meta.getLore().stream()
                 .map(line -> line.replace("%status%", statusPlaceholder))
                 .toList();
         meta.setLore(lore);
-        clickableItem.getItemStack().setItemMeta(meta);
+        itemStack.setItemMeta(meta);
 
-        builder.setItem(config.getInt(itemPath + ".slot"), setupFlagItem(clickableItem.getItemStack()));
+        ItemStack target_item = setupFlagItem(itemStack);
+
+
+        builder.setItem(config.getInt(itemPath + ".slot"),target_item,event -> {
+            InteractPlayerPermission(target, claim, permission);
+            openInventory(player, claim, config);
+        });
+
     }
 
     private ItemStack setupFlagItem(ItemStack itemStack) {

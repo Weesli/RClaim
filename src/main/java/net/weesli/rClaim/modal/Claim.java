@@ -1,5 +1,7 @@
 package net.weesli.rClaim.modal;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.weesli.rClaim.enums.ClaimPermission;
 import net.weesli.rClaim.enums.ClaimStatus;
 import org.bukkit.Chunk;
@@ -9,6 +11,7 @@ import org.bukkit.block.Block;
 
 import java.util.*;
 
+@Getter@Setter
 public class Claim {
 
     private String ID;
@@ -30,25 +33,6 @@ public class Claim {
         this.isCenter = isCenter;
     }
 
-    public String getID() {
-        return ID;
-    }
-
-    public UUID getOwner() {
-        return owner;
-    }
-
-    public List<UUID> getMembers() {
-        return members;
-    }
-
-    public List<ClaimStatus> getClaimStatuses() {
-        return claimStatuses;
-    }
-
-    public Chunk getChunk() {
-        return chunk;
-    }
 
     public boolean contains(Location location) {
         int x = chunk.getX() * 16;
@@ -131,17 +115,6 @@ public class Claim {
         members.removeIf(member -> member.equals(uuid));
     }
 
-    public Map<UUID, List<ClaimPermission>> getClaimPermissions() {
-        return claimPermissions;
-    }
-
-    public void setClaimPermissions(Map<UUID, List<ClaimPermission>> claimPermissions) {
-        this.claimPermissions = claimPermissions;
-    }
-
-    public void setOwner(UUID owner) {
-        this.owner = owner;
-    }
 
     public Location getHomeLocation() {
         return location;
@@ -164,9 +137,5 @@ public class Claim {
             return "";
         }
         return centerId;
-    }
-
-    public void setCenterId(String centerId) {
-        this.centerId = centerId;
     }
 }
