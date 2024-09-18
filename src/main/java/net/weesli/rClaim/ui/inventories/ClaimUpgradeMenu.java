@@ -10,6 +10,7 @@ import net.weesli.rozsLib.inventory.lasest.ClickableItemStack;
 import net.weesli.rozsLib.inventory.lasest.InventoryBuilder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
@@ -19,11 +20,11 @@ public class ClaimUpgradeMenu implements ClaimInventory {
     @Override
     public void openInventory(Player player, Claim claim, FileConfiguration config) {
         InventoryBuilder builder = new InventoryBuilder().title(ColorBuilder.convertColors(config.getString("upgrade-menu.title"))).size(config.getInt("upgrade-menu.size"));
-        ClickableItemStack itemStack = new ClickableItemStack(getItemStack("upgrade-menu.item-settings", config), config.getInt("upgrade-menu.item-settings.slot"));
-        ItemMeta meta = itemStack.getItemStack().getItemMeta();
+        ItemStack itemStack = getItemStack("upgrade-menu.item-settings", config);
+        ItemMeta meta = itemStack.getItemMeta();
         meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<cost>", RClaim.getInstance().getConfig().getString("claim-settings.claim-cost"))).collect(Collectors.toList()));
-        itemStack.getItemStack().setItemMeta(meta);
-        builder.setItem(itemStack,event -> {
+        itemStack.setItemMeta(meta);
+        builder.setItem(config.getInt("upgrade-menu.item-settings.slot"),itemStack, event -> {
             if (RClaim.getInstance().getEconomy().isActive()){
                 if (!RClaim.getInstance().getEconomy().hasEnough(player, RClaim.getInstance().getConfig().getInt("claim-settings.claim-cost"))){
                     player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));
