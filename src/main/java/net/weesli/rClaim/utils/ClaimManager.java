@@ -1,12 +1,13 @@
 package net.weesli.rClaim.utils;
 
 import lombok.Getter;
-import lombok.Setter;
 import net.weesli.rClaim.RClaim;
+import net.weesli.rClaim.enums.Effect;
 import net.weesli.rClaim.enums.ExplodeCause;
 import net.weesli.rClaim.api.events.ClaimCreateEvent;
 import net.weesli.rClaim.api.events.ClaimDeleteEvent;
 import net.weesli.rClaim.modal.Claim;
+import net.weesli.rClaim.modal.ClaimEffect;
 import net.weesli.rClaim.modal.ClaimPlayer;
 import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rClaim.enums.ClaimPermission;
@@ -15,6 +16,8 @@ import net.weesli.rozsLib.color.ColorBuilder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -150,15 +153,11 @@ public class ClaimManager {
 
     private static void setupBlock(Claim claim){
         Block block = claim.getChunk().getWorld().getBlockAt(new Location(claim.getCenter().getWorld(), claim.getCenter().getX(), claim.getCenter().getY() + 1, claim.getCenter().getZ()));
-        block.setType(Material.BEDROCK);
+        block.setType(claim.getBlock());
     }
 
     public static ClaimPlayer getPlayerData(UUID uuid) {
         return new ClaimPlayer(uuid,Bukkit.getOfflinePlayer(uuid).getName());
-    }
-
-    public static  Map<UUID, ClaimPlayer> getPlayerData() {
-        return playerData;
     }
 
     public static String IDCreator(){
@@ -213,8 +212,53 @@ public class ClaimManager {
         }
     }
 
+    public static PotionEffectType getEffectType(String type){
+        String currentVersion = Bukkit.getVersion();
+        if (currentVersion.equals("1.21") || currentVersion.equals("1.21.1")){
+            switch (type){
+                case "jump" -> {
+                    return PotionEffectType.JUMP_BOOST;
+                }
+                case "haste" -> {
+                    return PotionEffectType.HASTE;
+                }
+                case "speed" -> {
+                    return PotionEffectType.SPEED;
+                }
+            }
+        } else {
+            switch (type){
+                case "jump" -> {
+                    return PotionEffectType.getByName("JUMP");
+                }
+                case "haste" -> {
+                    return PotionEffectType.getByName("FAST_DIGGING");
+                }
+                case "speed" -> {
+                    return PotionEffectType.SPEED;
+                }
+            }
+        }
+        return null;
+    }
+
     public static String getStatus(boolean status){
         return status? RClaim.getInstance().getConfig().getString("options.status.active") : RClaim.getInstance().getConfig().getString("options.status.non-active");
     }
 
+    public static int getCost(Effect effect, Claim claim){
+        boolean isActive = claim.hasEffect(effect);
+        int cost;
+        if (isActive){
+            cost = RClaim.getInstance().getConfig().getInt("options.effects." + effect.name().toLowerCase() + ".upgrade-cost");
+        } else {
+            cost = RClaim.getInstance().getConfig().getInt("options.effects." + effect.name().toLowerCase() + ".buy-cost");
+        }
+        return cost;
+    }
+
+    public static void changeBlockMaterial(Player player, Claim claim, Material material){
+        claim.setBlock(material);
+        player.playEffect(claim.getCenter(), org.bukkit.Effect.SMOKE, 25);
+    }
 }

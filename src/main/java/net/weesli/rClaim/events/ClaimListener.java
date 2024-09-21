@@ -3,6 +3,8 @@ package net.weesli.rClaim.events;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.api.events.ClaimDeleteEvent;
 import net.weesli.rClaim.api.events.ClaimEnterEvent;
+import net.weesli.rClaim.enums.Effect;
+import net.weesli.rClaim.modal.ClaimEffect;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.enums.ClaimStatus;
@@ -88,7 +90,7 @@ public class ClaimListener implements Listener {
             return;
         }
         Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
-        if (!e.getBlock().getType().equals(Material.BEDROCK)){return;}
+        if (!e.getBlock().getType().equals(target_claim.getBlock())){return;}
         boolean isBlock = e.getBlock().getLocation().equals(target_claim.getCenter());
         if (isBlock){
             e.setCancelled(true);
@@ -99,11 +101,11 @@ public class ClaimListener implements Listener {
     public void onClickBedrock(BlockRightClickEvent e){
         Player player = e.getPlayer();
         Block block = e.getClickedBlock();
-        if (!block.getType().equals(Material.BEDROCK)){return;}
         Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(block.getLocation())).findFirst();
         if (claim.isEmpty() || !claim.get().isCenter()){
             return;
         }
+        if (!block.getType().equals(claim.get().getBlock())){return;}
         boolean isBlock = block.getLocation().equals(claim.get().getCenter());
         if (!isBlock){
             return;
@@ -123,8 +125,15 @@ public class ClaimListener implements Listener {
                 RClaim.getInstance().getHologram().deleteHologram(e.getClaim().getID());
             }
             Block block = e.getClaim().getCenter().getBlock();
-            if (block.getType().equals(Material.BEDROCK)){
+            if (block.getType().equals(e.getClaim().getBlock())){
                 block.setType(Material.AIR);
+            }
+        }
+        for (Player player : e.getClaim().getCenter().getWorld().getPlayers()){
+            for (ClaimEffect effect : e.getClaim().getEffects()){
+                if (player.hasPotionEffect(effect.getEffect().getType())){
+                    player.removePotionEffect(effect.getEffect().getType());
+                }
             }
         }
     }

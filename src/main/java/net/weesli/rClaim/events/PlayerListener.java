@@ -3,6 +3,7 @@ package net.weesli.rClaim.events;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.api.events.ClaimEnterEvent;
 import net.weesli.rClaim.api.events.ClaimLeaveEvent;
+import net.weesli.rClaim.modal.ClaimEffect;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.enums.ClaimPermission;
@@ -20,9 +21,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Optional;
 
 public class PlayerListener implements Listener {
@@ -265,5 +268,33 @@ public class PlayerListener implements Listener {
         }
     }
 
+    // this place is for claim effects
 
+    @EventHandler
+    public void onClaimEnter(ClaimEnterEvent e){
+        Player player = e.getPlayer();
+        Claim claim = (e.getClaim().isCenter() ? e.getClaim() : ClaimManager.getClaim(e.getClaim().getCenterId()).get());
+        if (claim.isOwner(player.getUniqueId()) || claim.isMember(player.getUniqueId())){
+            List<ClaimEffect> effects = claim.getEffects();
+            for (ClaimEffect effect : effects){
+                if (effect.isEnabled()){
+                    player.addPotionEffect(new PotionEffect(effect.getEffect().getType(), 999999, effect.getLevel() - 1));
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onClaimLeave(ClaimLeaveEvent e){
+        Player player = e.getPlayer();
+        Claim claim = (e.getClaim().isCenter() ? e.getClaim() : ClaimManager.getClaim(e.getClaim().getCenterId()).get());
+        if (claim.isOwner(player.getUniqueId()) || claim.isMember(player.getUniqueId())){
+            List<ClaimEffect> effects = claim.getEffects();
+            for (ClaimEffect effect : effects){
+                if (player.hasPotionEffect(effect.getEffect().getType())){
+                    player.removePotionEffect(effect.getEffect().getType());
+                }
+            }
+        }
+    }
 }

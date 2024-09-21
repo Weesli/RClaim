@@ -1,7 +1,10 @@
 package net.weesli.rClaim.database;
 
+import com.google.common.reflect.TypeToken;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.enums.StorageType;
+import net.weesli.rClaim.gson.GsonProvider;
+import net.weesli.rClaim.modal.ClaimEffect;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rClaim.modal.Claim;
@@ -12,6 +15,7 @@ import net.weesli.rozsLib.database.mysql.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 import java.sql.*;
 import java.util.*;
@@ -33,7 +37,6 @@ public class MySQLStorage implements Database {
         connection = builder.build();
         createTable();
     }
-
     public void createTable() {
         List<Column> columns = new ArrayList<>();
         columns.add(new Column("id", "VARCHAR(255)", 255).setPrimary(true));
@@ -46,26 +49,15 @@ public class MySQLStorage implements Database {
         columns.add(new Column("home", "VARCHAR(255)", 255));
         columns.add(new Column("isCenter", "BOOL", 255));
         columns.add(new Column("centerId", "VARCHAR(255)", 255));
+        columns.add(new Column("effects", "VARCHAR(255)", 65000));
         try {
             builder.createTable("rclaims_claims", connection, columns);
         } catch (SQLException e) {
             Bukkit.getServer().getConsoleSender().sendMessage(ColorBuilder.convertColors("&cFailed to create table: rclaims_claims"));
         }
+        addColumn("effects");
+        addColumn("block");
     }
-
-    public static MySQLStorage getInstance() {
-        try {
-            if (instance == null || connection == null || connection.isClosed()) {
-                instance = new MySQLStorage();
-            }
-        } catch (SQLException e) {
-            Bukkit.getServer().getConsoleSender().sendMessage(ColorBuilder.convertColors("&cMySQL database connection failed. Please check your config."));
-            Bukkit.getServer().getPluginManager().disablePlugin(RClaim.getInstance());
-        }
-        return instance;
-    }
-
-
     @Override
     public void insertClaim(Claim claim) {
         String formatted_permissions = claim.getClaimPermissions().entrySet().stream()
@@ -77,7 +69,12 @@ public class MySQLStorage implements Database {
         if (claim.getHomeLocation() != null){
             location = claim.getHomeLocation().getWorld().getName()+ ":" + claim.getHomeLocation().getX() + ":" + claim.getHomeLocation().getY() + ":" + claim.getHomeLocation().getZ()+":"+claim.getHomeLocation().getPitch() + ":" + claim.getHomeLocation().getYaw();
         }
-        Insert insert = new Insert("rclaims_claims", Arrays.asList("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter", "centerId"), Arrays.asList(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()).toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()).toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time.get(), location, claim.isCenter(), claim.getCenterId()));
+        List<String> effect = (claim.getEffects() != null) ?
+                claim.getEffects().stream()
+                        .map(claimEffect -> GsonProvider.getGson().toJson(claimEffect))
+                        .toList() :
+                Collections.emptyList();
+        Insert insert = new Insert("rclaims_claims", Arrays.asList("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter", "centerId", "effects", "block"), Arrays.asList(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()).toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()).toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time.get(), location, claim.isCenter(), claim.getCenterId(), effect.toString(), claim.getBlock().name()));
         try {
             builder.insert(connection,insert);
         } catch (SQLException e) {
@@ -117,10 +114,14 @@ public class MySQLStorage implements Database {
                     boolean isCenter = rs.getBoolean("isCenter");
                     String centerId = rs.getString("centerId");
                     Map<UUID, List<ClaimPermission>> permissions = solvePermission(rs.getString("permissions"));
+                    List<ClaimEffect> effects = GsonProvider.getGson().fromJson(rs.getString("effects"), new TypeToken<List<ClaimEffect>>(){}.getType());
+                    Material material = (rs.getString("block") == null ? Material.BEDROCK : Material.getMaterial(rs.getString("block")));
                     Claim claim = new Claim(id,owner,members,claimStatuses,chunk, isCenter);
                     claim.setCenterId(centerId);
                     claim.setHomeLocation(homeLocation);
                     claim.setClaimPermissions(permissions);
+                    claim.setEffects(new ArrayList<>(effects));
+                    claim.setBlock(material);
                     return claim;
                 }
             }
@@ -149,7 +150,13 @@ public class MySQLStorage implements Database {
         }
         HashMap<String, String> where = new HashMap<>();
         where.put("id", claim.getID());
-        Update update = new Update("rclaims_claims", Arrays.asList("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter", "centerId"), Arrays.asList(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()).toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()).toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time, location, claim.isCenter(), claim.getCenterId()), where);
+        List<String> effect = (claim.getEffects() != null) ?
+                claim.getEffects().stream()
+                        .map(claimEffect -> GsonProvider.getGson().toJson(claimEffect))
+                        .toList() :
+                Collections.emptyList();
+        Update update = new Update("rclaims_claims", Arrays.asList("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter", "centerId", "effects", "block" +
+                ""), Arrays.asList(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()).toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()).toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time, location, claim.isCenter(), claim.getCenterId(), effect.toString(), claim.getBlock().name()), where);
         try {
             builder.update(connection,update);
         } catch (SQLException e) {
@@ -217,10 +224,14 @@ public class MySQLStorage implements Database {
                 boolean isCenter = rs.getBoolean("isCenter");
                 String centerId = rs.getString("centerId");
                 Location homeLocation = solveHome(rs.getString("home"));
+                List<ClaimEffect> effects = GsonProvider.getGson().fromJson(rs.getString("effects"), new TypeToken<List<ClaimEffect>>(){}.getType());
+                Material material = (rs.getString("block") == null ? Material.BEDROCK : Material.getMaterial(rs.getString("block")));
                 Claim claim = new Claim(id,owner,members,claimStatuses,chunk, isCenter);
                 claim.setCenterId(centerId);
                 claim.setClaimPermissions(permissions);
                 claim.setHomeLocation(homeLocation);
+                claim.setEffects(new ArrayList<>(effects));
+                claim.setBlock(material);
                 claims.add(claim);
                 if (!isTimerOnline(id)){
                     ClaimManager.getTasks().add(new ClaimTask(id,time, isCenter));
@@ -234,7 +245,7 @@ public class MySQLStorage implements Database {
 
     @Override
     public StorageType getStorageType() {
-        return StorageType.MySQL;
+        return StorageType.SQLite;
     }
 
 
@@ -267,7 +278,7 @@ public class MySQLStorage implements Database {
         return chunk;
     }
 
-    private Location solveHome(String value){
+    private  Location solveHome(String value){
         if (value.isEmpty()){
             return null;
         }
@@ -280,4 +291,21 @@ public class MySQLStorage implements Database {
         return new Location(Bukkit.getWorld(split[0]), x, y, z, yaw, pitch);
     }
 
+    public void addColumn(String value) {
+        String tableName = "rclaims_claims";
+
+        try {
+            DatabaseMetaData dbMetaData = connection.getMetaData();
+            ResultSet columns = dbMetaData.getColumns(null, null, tableName, value);
+
+            if (!columns.next()) {
+                String alterTableSQL = "ALTER TABLE " + tableName + " ADD COLUMN " + value + " TEXT(65000);";
+                try (Statement statement = connection.createStatement()) {
+                    statement.execute(alterTableSQL);
+                }
+            }
+        } catch (SQLException e) {
+            Bukkit.getServer().getConsoleSender().sendMessage(ColorBuilder.convertColors("&cFailed to add column '" + value + "' to table: " + tableName));
+        }
+    }
 }

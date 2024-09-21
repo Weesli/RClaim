@@ -9,11 +9,9 @@ import net.weesli.rozsLib.color.ColorBuilder;
 import net.weesli.rozsLib.inventory.lasest.ClickableItemStack;
 import net.weesli.rozsLib.inventory.lasest.InventoryBuilder;
 import org.bukkit.Chunk;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;

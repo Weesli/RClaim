@@ -5,6 +5,7 @@ import net.weesli.rozsLib.color.ColorBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -24,6 +25,8 @@ public interface ClaimInventory {
         if (config.getInt(path + ".custom-model-data") != 0){
             itemMeta.setCustomModelData(config.getInt(path + ".custom-model-data"));
         }
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

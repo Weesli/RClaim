@@ -8,9 +8,7 @@ import net.weesli.rozsLib.color.ColorBuilder;
 import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class FormatManager {
 

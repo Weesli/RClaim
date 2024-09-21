@@ -4,7 +4,6 @@ import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.ui.ClaimInventory;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rozsLib.color.ColorBuilder;
-import net.weesli.rozsLib.inventory.ClickableItemStack;
 import net.weesli.rozsLib.inventory.lasest.InventoryBuilder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -26,6 +25,10 @@ public class ClaimMainMenu implements ClaimInventory {
         builder.setItem(config.getInt("main-menu.children.options.slot"),
                 getItemStack("main-menu.children.options", config),
                 event -> RClaim.getInstance().getUiManager().openInventory(player, claim, RClaim.getInstance().getUiManager().getSettingsMenu()));
+        builder.setItem(config.getInt("main-menu.children.effects.slot"), getItemStack("main-menu.children.effects", config),
+                event -> RClaim.getInstance().getUiManager().openInventory(player,claim,RClaim.getInstance().getUiManager().getEffectMenu()));
+        builder.setItem(config.getInt("main-menu.children.block.slot"), getItemStack("main-menu.children.block", config),
+                event -> RClaim.getInstance().getUiManager().openInventory(player,claim,RClaim.getInstance().getUiManager().getBlockMenu()));
         builder.openInventory(player);
     }
 }

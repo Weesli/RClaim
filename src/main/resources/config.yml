@@ -19,6 +19,28 @@ options:
     banned-regions:
       - example
       - Weesli
+  # Map support. Currently 'Dynmap supports'
+  map:
+    dynmap-support: false
+  # In Claim, players can buy effects and upgrade these ethics.
+  # You can disable this if you want.
+  effects:
+    enabled: true
+    max-level-message: "&6MAX LEVEL"
+    speed:
+      buy-cost: 1500
+      upgrade-cost: 3500
+    jump:
+      buy-cost: 1500
+      upgrade-cost: 3500
+    haste:
+      buy-cost: 1500
+      upgrade-cost: 3500
+  block-types:
+    - BEDROCK
+    - STONE
+    - DIAMOND_BLOCK
+    - GLOWSTONE
   status:
     active: "Active"
     non-active: "non-active"

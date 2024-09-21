@@ -6,7 +6,7 @@
 
     <groupId>net.weesli</groupId>
     <artifactId>RClaim</artifactId>
-    <version>1.6.1</version>
+    <version>1.7</version>
     <packaging>jar</packaging>
 
     <name>RClaim</name>
@@ -99,6 +99,14 @@
         <repository>
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+        <repository>
+            <id>MikeRepo</id>
+            <url>https://repo.mikeprimm.com/</url>
+        </repository>
+        <repository>
+            <id>bluecolored</id>
+            <url>https://repo.bluecolored.de/releases</url>
         </repository>
     </repositories>
 
@@ -207,6 +215,12 @@
             <artifactId>bstats-bukkit</artifactId>
             <version>3.0.3</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>us.dynmap</groupId>
+            <artifactId>DynmapCoreAPI</artifactId>
+            <version>3.7-beta-6</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

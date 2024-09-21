@@ -5,6 +5,7 @@ import lombok.Setter;
 import net.weesli.rClaim.command.CommandManager;
 import net.weesli.rClaim.enums.HologramModule;
 import net.weesli.rClaim.enums.StorageType;
+import net.weesli.rClaim.hooks.map.HDynmap;
 import net.weesli.rClaim.hooks.economy.ClaimEconomy;
 import net.weesli.rClaim.enums.EconomyType;
 import net.weesli.rClaim.hooks.economy.PlayerPointsEconomy;
@@ -14,6 +15,7 @@ import net.weesli.rClaim.events.ClaimListener;
 import net.weesli.rClaim.events.PlayerListener;
 import net.weesli.rClaim.hooks.HPlaceholderAPI;
 import net.weesli.rClaim.hooks.hologram.*;
+import net.weesli.rClaim.hooks.map.MapLoader;
 import net.weesli.rClaim.hooks.minion.MinionsManager;
 import net.weesli.rClaim.hooks.spawner.SpawnerManager;
 import net.weesli.rClaim.module.ModuleLoader;
@@ -21,7 +23,6 @@ import net.weesli.rClaim.ui.UIManager;
 import net.weesli.rozsLib.color.ColorBuilder;
 import net.weesli.rozsLib.configuration.YamlFileBuilder;
 import org.bstats.bukkit.Metrics;
-import org.bstats.charts.CustomChart;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -73,6 +74,7 @@ public final class RClaim extends JavaPlugin {
         new Metrics(this, 	23385);
         ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");
         Loader.load();
+        new MapLoader();
     }
 
     @Override
@@ -161,5 +163,4 @@ public final class RClaim extends JavaPlugin {
     public String getMessage(String path){
         return ColorBuilder.convertColors(getConfig().getString("options.prefix") + messages.getString(path));
     }
-
 }

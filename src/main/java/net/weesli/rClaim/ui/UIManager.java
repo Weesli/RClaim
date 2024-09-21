@@ -20,6 +20,8 @@ public class UIManager {
     private final ClaimUpgradeMenu upgradeMenu;
     private final ClaimUsersMenu usersMenu;
     private final VerifyMenu verifyMenu;
+    private final ClaimEffectMenu effectMenu;
+    private final ClaimBlockMenu blockMenu;
 
     public UIManager() {
         mainMenu = new ClaimMainMenu();
@@ -30,6 +32,8 @@ public class UIManager {
         upgradeMenu = new ClaimUpgradeMenu();
         usersMenu = new ClaimUsersMenu();
         verifyMenu = new VerifyMenu();
+        effectMenu = new ClaimEffectMenu();
+        blockMenu = new ClaimBlockMenu();
     }
 
     public void openInventory(Player player, Claim claim, ClaimInventory claimInventory){

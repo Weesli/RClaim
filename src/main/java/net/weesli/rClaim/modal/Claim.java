@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import net.weesli.rClaim.enums.ClaimPermission;
 import net.weesli.rClaim.enums.ClaimStatus;
+import net.weesli.rClaim.enums.Effect;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
@@ -23,6 +25,8 @@ public class Claim {
     private Location location;
     private boolean isCenter;
     private String centerId;
+    private List<ClaimEffect> effects;
+    private Material block;
 
     public Claim(String ID, UUID owner, List<UUID> members, List<ClaimStatus> claimStatuses, Chunk chunk, boolean isCenter) {
         this.ID = ID;
@@ -31,6 +35,8 @@ public class Claim {
         this.claimStatuses = claimStatuses;
         this.chunk = chunk;
         this.isCenter = isCenter;
+        effects = new ArrayList<>();
+        block = Material.BEDROCK;
     }
 
 
@@ -138,4 +144,27 @@ public class Claim {
         }
         return centerId;
     }
+
+    public void addEffect(Effect effect) {
+        effects.add(new ClaimEffect(effect, 1, effect.getMaxLevel(), true));
+    }
+
+    public void removeEffect(Effect effect) {
+        effects.removeIf(e -> e.getEffect().equals(effect));
+    }
+
+    public boolean hasEffect(Effect effect) {
+        return effects.stream().anyMatch(e -> e.getEffect().equals(effect));
+    }
+
+    public ClaimEffect getEffect(Effect effect){
+        return effects.stream().filter(e -> e.getEffect().equals(effect)).findFirst().orElse(null);
+    }
+
+    public void setBlock(Material material){
+        this.block = material;
+        Block center_block = getCenter().getBlock();
+        center_block.setType(material);
+    }
+
 }

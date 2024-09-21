@@ -38,6 +38,22 @@ main-menu:
         - "&8"
         - "&aClick and settings your claims!"
       slot: 16
+    effects:
+      title: "&eClaim Effects"
+      material: BREWING_STAND
+      custom-model-data: 0
+      lore:
+        - "&8"
+        - "&aClick to enable or disable claim effects!"
+      slot: 22
+    block:
+      title: "&eClaim Block"
+      material: BEDROCK
+      custom-model-data: 0
+      lore:
+        - "&8"
+        - "&aClick to manage claim block!"
+      slot: 26
 claims-menu:
   title: "&8Your claims"
   size: 54
@@ -314,3 +330,52 @@ verify-menu:
         - "&8"
         - "&aClick to cancel your action!"
       slot: 6
+
+effect-menu:
+  title: "&8Effect Menu"
+  size: 27
+  children:
+    speed:
+      title: "&aSpeed"
+      material: DIAMOND_BOOTS
+      custom-model_data: 0
+      lore:
+        - "&7status: &f%status%"
+        - "&7Level: &f%level%"
+        - "&7"
+        - "&7Cost: &f%cost%" # The prices required to purchase or upgrade this effect are in the Setting config.yml.
+        - "&7"
+        - "&7Click and upgrade effect."
+        - "&7Shift-Click and enable/disable effect."
+      slot: 11
+    jump:
+      title: "&aJump"
+      material: IRON_BOOTS
+      custom-model_data: 0
+      lore:
+        - "&7status: &f%status%"
+        - "&7Level: &f%level%"
+        - "&7"
+        - "&7Cost: &f%cost%"
+        - "&7"
+        - "&7Click and upgrade effect."
+        - "&7Shift-Click and enable/disable effect."
+      slot: 13
+    haste:
+      title: "&aHaste"
+      material: GOLDEN_PICKAXE
+      custom-model_data: 0
+      lore:
+        - "&7status: &f%status%"
+        - "&7Level: &f%level%"
+        - "&7"
+        - "&7Cost: &f%cost%"
+        - "&7"
+        - "&7Click and upgrade effect."
+        - "&7Shift-Click and enable/disable effect."
+      slot: 15
+
+block-menu:
+  title: "&8Setting claim block"
+  previous-item-name: "&ePrevious Page"
+  next-item-name: "&eNext Page"
