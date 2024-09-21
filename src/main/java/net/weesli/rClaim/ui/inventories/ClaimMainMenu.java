@@ -25,8 +25,10 @@ public class ClaimMainMenu implements ClaimInventory {
         builder.setItem(config.getInt("main-menu.children.options.slot"),
                 getItemStack("main-menu.children.options", config),
                 event -> RClaim.getInstance().getUiManager().openInventory(player, claim, RClaim.getInstance().getUiManager().getSettingsMenu()));
-        builder.setItem(config.getInt("main-menu.children.effects.slot"), getItemStack("main-menu.children.effects", config),
-                event -> RClaim.getInstance().getUiManager().openInventory(player,claim,RClaim.getInstance().getUiManager().getEffectMenu()));
+        if(RClaim.getInstance().getConfig().getBoolean("options.effects.enabled")){
+            builder.setItem(config.getInt("main-menu.children.effects.slot"), getItemStack("main-menu.children.effects", config),
+                    event -> RClaim.getInstance().getUiManager().openInventory(player,claim,RClaim.getInstance().getUiManager().getEffectMenu()));
+        }
         builder.setItem(config.getInt("main-menu.children.block.slot"), getItemStack("main-menu.children.block", config),
                 event -> RClaim.getInstance().getUiManager().openInventory(player,claim,RClaim.getInstance().getUiManager().getBlockMenu()));
         builder.openInventory(player);
