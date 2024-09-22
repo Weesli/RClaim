@@ -108,6 +108,11 @@
             <id>bluecolored</id>
             <url>https://repo.bluecolored.de/releases</url>
         </repository>
+        <repository>
+            <id>reposilite-repository</id>
+            <name>Reposilite Repository</name>
+            <url>https://repo.triumphteam.dev/</url>
+        </repository>
     </repositories>
 
     <dependencies>
