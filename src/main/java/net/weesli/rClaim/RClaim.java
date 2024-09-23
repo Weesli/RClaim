@@ -5,6 +5,7 @@ import lombok.Setter;
 import net.weesli.rClaim.command.CommandManager;
 import net.weesli.rClaim.enums.HologramModule;
 import net.weesli.rClaim.enums.StorageType;
+import net.weesli.rClaim.hooks.combat.CombatManager;
 import net.weesli.rClaim.hooks.map.HDynmap;
 import net.weesli.rClaim.hooks.economy.ClaimEconomy;
 import net.weesli.rClaim.enums.EconomyType;
@@ -43,6 +44,7 @@ public final class RClaim extends JavaPlugin {
     private ClaimHologram hologram;
     private SpawnerManager spawnerManager;
     private MinionsManager minionsManager;
+    private CombatManager combatManager;
 
    @Getter private static RClaim instance;
 
@@ -70,6 +72,9 @@ public final class RClaim extends JavaPlugin {
         spawnerManager = new SpawnerManager();
         minionsManager = new MinionsManager();
         uiManager = new UIManager();
+        if (getConfig().getBoolean("options.combat-system")){
+            combatManager = new CombatManager(this);
+        }
         new CommandManager();
         new Metrics(this, 	23385);
         ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");
@@ -162,5 +167,12 @@ public final class RClaim extends JavaPlugin {
 
     public String getMessage(String path){
         return ColorBuilder.convertColors(getConfig().getString("options.prefix") + messages.getString(path));
+    }
+
+    public CombatManager getCombatManager() {
+        if (combatManager.getCombat() == null || !combatManager.getCombat().isEnabled()){
+            return null;
+        }
+        return combatManager;
     }
 }

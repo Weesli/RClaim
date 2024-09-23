@@ -154,6 +154,24 @@ options-menu:
         - "&7"
         - "&7Click to enable spread on your claim!"
       slot: 22
+    weather:
+      title: "&aChange Weather Status"
+      material: WATER_BUCKET
+      custom-model_data: 0
+      lore:
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Click to change weather status!"
+      slot: 19
+    time:
+      title: "&aChange Time Status"
+      material: CLOCK
+      custom-model_data: 0
+      lore:
+        - "&7status: &f%status%"
+        - "&7"
+        - "&7Click to change time status!"
+      slot: 25
 
 resize-menu:
   title: "&8Resize your claim"

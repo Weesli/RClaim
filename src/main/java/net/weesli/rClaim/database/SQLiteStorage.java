@@ -143,7 +143,9 @@ public class SQLiteStorage implements Database {
                     claim.setHomeLocation(homeLocation);
                     claim.setClaimPermissions(permissions);
                     claim.setEffects(new ArrayList<>(effects));
-                    claim.setBlock(material);
+                    if (claim.isCenter()){
+                        claim.setBlock(material);
+                    }
                     return claim;
                 }
             }
@@ -252,7 +254,9 @@ public class SQLiteStorage implements Database {
                 claim.setClaimPermissions(permissions);
                 claim.setHomeLocation(homeLocation);
                 claim.setEffects(new ArrayList<>(effects));
-                claim.setBlock(material);
+                if (claim.isCenter()){
+                    claim.setBlock(material);
+                }
                 claims.add(claim);
                 if (!isTimerOnline(id)){
                     ClaimManager.getTasks().add(new ClaimTask(id,time, isCenter));

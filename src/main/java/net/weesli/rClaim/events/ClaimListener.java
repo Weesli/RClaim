@@ -3,7 +3,7 @@ package net.weesli.rClaim.events;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.api.events.ClaimDeleteEvent;
 import net.weesli.rClaim.api.events.ClaimEnterEvent;
-import net.weesli.rClaim.enums.Effect;
+import net.weesli.rClaim.api.events.ClaimStatusChangeEvent;
 import net.weesli.rClaim.modal.ClaimEffect;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.modal.Claim;
@@ -13,6 +13,7 @@ import net.weesli.rozsLib.events.BlockRightClickEvent;
 import net.weesli.rozsLib.events.PlayerDamageByPlayerEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.WeatherType;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
@@ -24,6 +25,7 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -159,6 +161,24 @@ public class ClaimListener implements Listener {
         }
     }
 
-
+    @EventHandler
+    public void onClaimStatusChangeEvent(ClaimStatusChangeEvent e){
+        Player player = e.getPlayer();
+        if (!e.isChangeStatus()){
+            if (e.getStatus().equals(ClaimStatus.WEATHER)){
+                Arrays.stream(e.getClaim().getChunk().getEntities()).filter(entity -> entity instanceof Player).forEach(founded_player -> ((Player) founded_player).resetPlayerWeather());
+            }
+            if (e.getStatus().equals(ClaimStatus.TIME)){
+                Arrays.stream(e.getClaim().getChunk().getEntities()).filter(entity -> entity instanceof Player).forEach(founded_player -> ((Player) founded_player).resetPlayerTime());
+            }
+        }else {
+            if (e.getStatus().equals(ClaimStatus.WEATHER)){
+                Arrays.stream(e.getClaim().getChunk().getEntities()).filter(entity -> entity instanceof Player).forEach(founded_player -> ((Player) founded_player).setPlayerWeather(WeatherType.CLEAR));
+            }
+            if (e.getStatus().equals(ClaimStatus.TIME)){
+                Arrays.stream(e.getClaim().getChunk().getEntities()).filter(entity -> entity instanceof Player).forEach(founded_player -> ((Player) founded_player).setPlayerTime(6000,false));
+            }
+        }
+    }
 
 }

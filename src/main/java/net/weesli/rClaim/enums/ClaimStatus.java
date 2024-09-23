@@ -6,5 +6,7 @@ public enum ClaimStatus {
     SPAWN_MONSTER,
     EXPLOSION,
     PVP,
-    SPREAD
+    SPREAD,
+    WEATHER,
+    TIME
 }

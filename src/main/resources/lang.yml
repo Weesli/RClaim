@@ -24,6 +24,11 @@ AREA_DISABLED: "&cYou cannot buy a claim in this area!"
 EFFECT_BOUGHT: "&aThe Claim effect has been purchased!"
 EFFECT_LEVEL_UP: "&aClaim effect increased to &b%level%&a!"
 EFFECT_MAX_LEVEL: "&cThis effect is currently max level!"
+
+# Hook messages
+
+COMBAT_SYSTEM_MESSAGE: "&cYou cannot enter a claim while in combat!"
+
 # Permission messages
 PERMISSION_BLOCK_PLACE: "&cYou can't place a block this area!"
 PERMISSION_BLOCK_BREAK: "&cYou can't break block from this area!"

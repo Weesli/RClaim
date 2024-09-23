@@ -3,6 +3,7 @@ package net.weesli.rClaim.events;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.api.events.ClaimEnterEvent;
 import net.weesli.rClaim.api.events.ClaimLeaveEvent;
+import net.weesli.rClaim.enums.ClaimStatus;
 import net.weesli.rClaim.modal.ClaimEffect;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.modal.Claim;
@@ -10,6 +11,7 @@ import net.weesli.rClaim.enums.ClaimPermission;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.WeatherType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -23,8 +25,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.util.Vector;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -268,12 +270,13 @@ public class PlayerListener implements Listener {
         }
     }
 
-    // this place is for claim effects
+    // this place is for claim effects and Weather types and time
 
     @EventHandler
     public void onClaimEnter(ClaimEnterEvent e){
         Player player = e.getPlayer();
         Claim claim = (e.getClaim().isCenter() ? e.getClaim() : ClaimManager.getClaim(e.getClaim().getCenterId()).get());
+        // for claim effects
         if (claim.isOwner(player.getUniqueId()) || claim.isMember(player.getUniqueId())){
             List<ClaimEffect> effects = claim.getEffects();
             for (ClaimEffect effect : effects){
@@ -282,12 +285,30 @@ public class PlayerListener implements Listener {
                 }
             }
         }
+        // for weather types
+        if (claim.getClaimStatuses().contains(ClaimStatus.WEATHER)){
+            player.setPlayerWeather(WeatherType.CLEAR);
+        }
+        // for time
+        if (claim.getClaimStatuses().contains(ClaimStatus.TIME)){
+            player.setPlayerTime(6000,false);
+        }
+
+        // for combat system
+
+        if (RClaim.getInstance().getCombatManager() != null){
+            if (RClaim.getInstance().getCombatManager().getCombat().isPvP(player)){
+                player.setVelocity(player.getLocation().getDirection().normalize().multiply(-2).setY(0.5));
+                player.sendMessage(RClaim.getInstance().getMessage("COMBAT_SYSTEM_MESSAGE"));
+            }
+        }
     }
 
     @EventHandler
     public void onClaimLeave(ClaimLeaveEvent e){
         Player player = e.getPlayer();
         Claim claim = (e.getClaim().isCenter() ? e.getClaim() : ClaimManager.getClaim(e.getClaim().getCenterId()).get());
+        // for claim effects
         if (claim.isOwner(player.getUniqueId()) || claim.isMember(player.getUniqueId())){
             List<ClaimEffect> effects = claim.getEffects();
             for (ClaimEffect effect : effects){
@@ -295,6 +316,14 @@ public class PlayerListener implements Listener {
                     player.removePotionEffect(effect.getEffect().getType());
                 }
             }
+        }
+        // for weather types
+        if (claim.getClaimStatuses().contains(ClaimStatus.WEATHER)){
+            player.resetPlayerWeather();
+        }
+        // for time
+        if (claim.getClaimStatuses().contains(ClaimStatus.TIME)){
+            player.resetPlayerTime();
         }
     }
 }

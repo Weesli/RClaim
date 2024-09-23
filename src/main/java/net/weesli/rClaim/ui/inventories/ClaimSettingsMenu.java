@@ -1,6 +1,7 @@
 package net.weesli.rClaim.ui.inventories;
 
 import net.weesli.rClaim.RClaim;
+import net.weesli.rClaim.api.events.ClaimStatusChangeEvent;
 import net.weesli.rClaim.enums.ClaimStatus;
 import net.weesli.rClaim.ui.ClaimInventory;
 import net.weesli.rClaim.modal.Claim;
@@ -22,7 +23,8 @@ public class ClaimSettingsMenu implements ClaimInventory {
         addClickableItem(builder, claim, player, ClaimStatus.PVP, "pvp", config);
         addClickableItem(builder, claim, player, ClaimStatus.EXPLOSION, "explosion", config);
         addClickableItem(builder, claim, player, ClaimStatus.SPREAD, "spread", config);
-
+        addClickableItem(builder,claim,player,ClaimStatus.TIME, "time", config);
+        addClickableItem(builder,claim,player,ClaimStatus.WEATHER, "weather", config);
         builder.openInventory(player);
     }
 
@@ -41,8 +43,13 @@ public class ClaimSettingsMenu implements ClaimInventory {
         builder.setItem(clickableItem,event -> {
             if (claim.checkStatus(status)) {
                 claim.removeClaimStatus(status);
+                ClaimStatusChangeEvent changeEvent = new ClaimStatusChangeEvent(player,claim,status,false);
+                RClaim.getInstance().getServer().getPluginManager().callEvent(changeEvent);
             } else {
                 claim.addClaimStatus(status);
+                ClaimStatusChangeEvent changeEvent = new ClaimStatusChangeEvent(player,claim,status,true);
+                RClaim.getInstance().getServer().getPluginManager().callEvent(changeEvent);
+
             }
             openInventory(player,claim,config);
         });

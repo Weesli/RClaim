@@ -16,6 +16,7 @@ softdepend:
   - JetMinions
   - WorldGuard
   - dynmap
+  - CombatLogX
 commands:
   claim:
     description: creating a claim in chunk

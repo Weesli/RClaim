@@ -22,6 +22,9 @@ options:
   # Map support. Currently 'Dynmap supports'
   map:
     dynmap-support: false
+  # Prevents players from fleeing to their own space when fighting within the server
+  # 'CombatLogX' supports.
+  combat-system: true
   # In Claim, players can buy effects and upgrade these ethics.
   # You can disable this if you want.
   effects:
