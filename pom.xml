@@ -63,13 +63,14 @@
     </build>
 
     <repositories>
+        <!-- SirBlobman Public Repository -->
+        <repository>
+            <id>sirblobman-public</id>
+            <url>https://nexus.sirblobman.xyz/public/</url>
+        </repository>
         <repository>
             <id>triumphteam</id>
             <url>https://repo.triumphteam.dev/snapshots</url>
-        </repository>
-        <repository>
-            <id>jitpack</id>
-            <url>https://jitpack.io/</url>
         </repository>
         <repository>
             <id>papermc-repo</id>
@@ -80,8 +81,9 @@
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
         <repository>
-            <id>placeholderapi</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <id>helpchat-repo-releases</id>
+            <name>HelpChat Maven Repository</name>
+            <url>https://repo.helpch.at/releases</url>
         </repository>
         <repository>
             <id>codemc-repo</id>
@@ -113,8 +115,8 @@
             <url>https://repo.bluecolored.de/releases</url>
         </repository>
         <repository>
-            <id>sirblobman-public</id>
-            <url>https://nexus.sirblobman.xyz/public/</url>
+            <id>jitpack</id>
+            <url>https://jitpack.io/</url>
         </repository>
     </repositories>
 
@@ -140,7 +142,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.2</version>
+            <version>2.11.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
