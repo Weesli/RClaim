@@ -11,6 +11,8 @@ public class CombatManager {
     public CombatManager(Plugin plugin){
         if (plugin.getServer().getPluginManager().isPluginEnabled("CombatLogX")){
             combat = new CombatLogX();
+        } else if (plugin.getServer().getPluginManager().isPluginEnabled("PvPManager")) {
+            combat = new PvPManager();
         }
     }
 }

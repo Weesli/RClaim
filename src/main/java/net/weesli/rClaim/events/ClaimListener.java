@@ -21,9 +21,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,14 +56,16 @@ public class ClaimListener implements Listener {
 
     @EventHandler
     public void onTnt(EntityExplodeEvent e){
-        Entity entity = e.getEntity();
-        Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(entity.getLocation())).findFirst();
-        if (claim.isEmpty()){
-            return;
-        }
-        Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
-        if (!target_claim.checkStatus(ClaimStatus.EXPLOSION)){
-            e.setCancelled(true);
+        for (Block block : e.blockList()){
+            Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(block.getLocation())).findFirst();
+            if (claim.isEmpty()){
+                return;
+            }
+            Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+            if (!target_claim.checkStatus(ClaimStatus.EXPLOSION)){
+                e.setCancelled(true);
+                break;
+            }
         }
     }
 

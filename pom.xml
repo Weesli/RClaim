@@ -6,7 +6,7 @@
 
     <groupId>net.weesli</groupId>
     <artifactId>RClaim</artifactId>
-    <version>1.8.0</version>
+    <version>1.9.0</version>
     <packaging>jar</packaging>
 
     <name>RClaim</name>
@@ -117,6 +117,10 @@
         <repository>
             <id>jitpack</id>
             <url>https://jitpack.io/</url>
+        </repository>
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -244,6 +248,13 @@
             <groupId>com.github.sirblobman.api</groupId>
             <artifactId>core</artifactId>
             <version>2.9-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- PvPManager -->
+        <dependency>
+            <groupId>me.NoChance.PvPManager</groupId>
+            <artifactId>pvpmanager</artifactId>
+            <version>3.18.21</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

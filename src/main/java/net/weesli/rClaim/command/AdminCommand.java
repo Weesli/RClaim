@@ -67,6 +67,7 @@ public class AdminCommand extends BaseCommand {
         commandSender.sendMessage(ColorBuilder.convertColors("&aHologram: &f"+ ((RClaim.getInstance().getHologram() == null) ? "Empty" : RClaim.getInstance().getHologram().Type().name())));
         commandSender.sendMessage(ColorBuilder.convertColors("&aSpawner: &f"+ ((RClaim.getInstance().getSpawnerManager().getIntegration() == null) ? "Empty" : RClaim.getInstance().getSpawnerManager().getIntegration().getName())));
         commandSender.sendMessage(ColorBuilder.convertColors("&aMinion: &f"+ ((RClaim.getInstance().getMinionsManager().getIntegration() == null) ? "Empty" : RClaim.getInstance().getMinionsManager().getIntegration().getName())));
+        commandSender.sendMessage(ColorBuilder.convertColors("&aCombat System: &f"+ ((RClaim.getInstance().getCombatManager() == null) ? "Empty" : RClaim.getInstance().getCombatManager().getCombat().getName())));
         commandSender.sendMessage(ColorBuilder.convertColors("&a--------------------------------"));
     }
 

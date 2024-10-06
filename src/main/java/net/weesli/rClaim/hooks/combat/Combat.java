@@ -7,4 +7,6 @@ public interface Combat {
     boolean isPvP(Player player);
 
     boolean isEnabled();
+
+    String getName();
 }

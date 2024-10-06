@@ -33,4 +33,9 @@ public class CombatLogX implements Combat{
     public boolean isEnabled() {
         return enabled;
     }
+
+    @Override
+    public String getName() {
+        return "CombatLogX";
+    }
 }

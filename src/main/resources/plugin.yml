@@ -17,6 +17,7 @@ softdepend:
   - WorldGuard
   - dynmap
   - CombatLogX
+  - PvPManager
 commands:
   claim:
     description: creating a claim in chunk
