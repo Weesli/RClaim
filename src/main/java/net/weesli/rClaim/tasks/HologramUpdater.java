@@ -1,14 +1,12 @@
-package net.weesli.rClaim.hooks.hologram;
+package net.weesli.rClaim.tasks;
 
 import net.weesli.rClaim.RClaim;
+import net.weesli.rClaim.enums.HologramModule;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.modal.Claim;
 import org.bukkit.scheduler.BukkitRunnable;
 
 
-/**
- * This class run with async timer
- */
 public class HologramUpdater extends BukkitRunnable {
 
     public HologramUpdater(){

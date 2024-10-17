@@ -6,7 +6,6 @@ import net.weesli.rClaim.command.CommandManager;
 import net.weesli.rClaim.enums.HologramModule;
 import net.weesli.rClaim.enums.StorageType;
 import net.weesli.rClaim.hooks.combat.CombatManager;
-import net.weesli.rClaim.hooks.map.HDynmap;
 import net.weesli.rClaim.hooks.economy.ClaimEconomy;
 import net.weesli.rClaim.enums.EconomyType;
 import net.weesli.rClaim.hooks.economy.PlayerPointsEconomy;
@@ -20,7 +19,9 @@ import net.weesli.rClaim.hooks.map.MapLoader;
 import net.weesli.rClaim.hooks.minion.MinionsManager;
 import net.weesli.rClaim.hooks.spawner.SpawnerManager;
 import net.weesli.rClaim.module.ModuleLoader;
+import net.weesli.rClaim.tasks.HologramUpdater;
 import net.weesli.rClaim.ui.UIManager;
+import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rozsLib.color.ColorBuilder;
 import net.weesli.rozsLib.configuration.YamlFileBuilder;
 import org.bstats.bukkit.Metrics;
@@ -118,8 +119,8 @@ public final class RClaim extends JavaPlugin {
     private void loadHologram() {
         if (getConfig().getBoolean("options.hologram.enabled")){
             HologramModule module = HologramModule.valueOf(getConfig().getString("options.hologram.hologram-module"));
-            if (module.equals(HologramModule.DecentHologram)){
-                hologram = new HDecentHologram();
+            switch (module){
+                case DecentHologram -> hologram = new HDecentHologram();
             }
             new HologramUpdater();
         }

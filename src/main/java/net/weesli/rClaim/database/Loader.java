@@ -1,8 +1,12 @@
 package net.weesli.rClaim.database;
 
 import net.weesli.rClaim.RClaim;
+import net.weesli.rClaim.modal.ClaimTag;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.modal.Claim;
+import net.weesli.rClaim.utils.TagManager;
+
+import java.util.List;
 
 public class Loader {
 

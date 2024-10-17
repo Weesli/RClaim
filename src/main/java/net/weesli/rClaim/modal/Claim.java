@@ -27,6 +27,7 @@ public class Claim {
     private String centerId;
     private List<ClaimEffect> effects;
     private Material block;
+    private List<ClaimTag> claimTags;
 
     public Claim(String ID, UUID owner, List<UUID> members, List<ClaimStatus> claimStatuses, Chunk chunk, boolean isCenter) {
         this.ID = ID;
@@ -37,6 +38,7 @@ public class Claim {
         this.isCenter = isCenter;
         effects = new ArrayList<>();
         block = Material.BEDROCK;
+        claimTags = new ArrayList<>();
     }
 
 
@@ -165,6 +167,14 @@ public class Claim {
         this.block = material;
         Block center_block = getCenter().getBlock();
         center_block.setType(material);
+    }
+
+    public void addClaimTag(ClaimTag claimTag) {
+        claimTags.add(claimTag);
+    }
+
+    public void removeClaimTag(ClaimTag claimTag) {
+        claimTags.remove(claimTag);
     }
 
 }

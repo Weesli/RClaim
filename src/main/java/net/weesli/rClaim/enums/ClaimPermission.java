@@ -1,5 +1,7 @@
 package net.weesli.rClaim.enums;
 
+import net.weesli.rClaim.RClaim;
+
 public enum ClaimPermission {
     BLOCK_BREAK,
     BLOCK_PLACE,
@@ -12,5 +14,10 @@ public enum ClaimPermission {
     BREAK_CONTAINER,
     USE_DOOR,
     USE_PORTAL,
-    USE_POTION
+    USE_POTION;
+
+    public String getDisplayName() {
+        return RClaim.getInstance().getUiManager().getConfig().getString("tag-permissions-menu.permissions-name." + name());
+    }
+
 }

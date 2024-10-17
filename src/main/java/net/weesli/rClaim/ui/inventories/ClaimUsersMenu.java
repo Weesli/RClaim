@@ -6,6 +6,7 @@ import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.enums.VerifyAction;
 import net.weesli.rClaim.ui.ClaimInventory;
 import net.weesli.rClaim.modal.Claim;
+import net.weesli.rClaim.utils.PlayerUtils;
 import net.weesli.rozsLib.color.ColorBuilder;
 import net.weesli.rozsLib.inventory.lasest.ClickableItemStack;
 import net.weesli.rozsLib.inventory.lasest.InventoryBuilder;
@@ -61,7 +62,7 @@ public class ClaimUsersMenu implements ClaimInventory {
                         if (name.equals(player.getName())){
                             Bukkit.getScheduler().runTask(RClaim.getInstance(),()-> player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 5, 1));
                             return new ArrayList<>(Collections.singleton(SignGUIAction.displayNewLines("", "----------", "Enter player name", "----------")));
-                        }else if (!isCheckPlayer(name)){
+                        }else if (PlayerUtils.getPlayer(name) == null){
                             Bukkit.getScheduler().runTask(RClaim.getInstance(),()-> player.getWorld().playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 5, 1));
                             return new ArrayList<>(Collections.singleton(SignGUIAction.displayNewLines("", "----------", "Player not found", "----------")));
                         }else if (claim.getMembers().contains(Bukkit.getOfflinePlayer(name).getUniqueId())){
@@ -76,11 +77,5 @@ public class ClaimUsersMenu implements ClaimInventory {
                 })
                 .build();
         gui.open(player);
-    }
-
-
-    private boolean isCheckPlayer(String name){
-        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-        return player.hasPlayedBefore();
     }
 }

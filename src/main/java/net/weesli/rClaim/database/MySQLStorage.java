@@ -5,6 +5,7 @@ import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.enums.StorageType;
 import net.weesli.rClaim.gson.GsonProvider;
 import net.weesli.rClaim.modal.ClaimEffect;
+import net.weesli.rClaim.modal.ClaimTag;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rClaim.modal.Claim;
@@ -57,6 +58,7 @@ public class MySQLStorage implements Database {
         }
         addColumn("effects");
         addColumn("block");
+        addColumn("tags");
     }
     @Override
     public void insertClaim(Claim claim) {
@@ -74,7 +76,8 @@ public class MySQLStorage implements Database {
                         .map(claimEffect -> GsonProvider.getGson().toJson(claimEffect))
                         .toList() :
                 Collections.emptyList();
-        Insert insert = new Insert("rclaims_claims", Arrays.asList("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter", "centerId", "effects", "block"), Arrays.asList(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()).toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()).toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time.get(), location, claim.isCenter(), claim.getCenterId(), effect.toString(), claim.getBlock().name()));
+        List<String> tags = claim.getClaimTags().stream().map(element -> GsonProvider.getGson().toJson(element)).toList();
+        Insert insert = new Insert("rclaims_claims", Arrays.asList("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter", "centerId", "effects", "block", "tags"), Arrays.asList(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()).toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()).toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time.get(), location, claim.isCenter(), claim.getCenterId(), effect.toString(), claim.getBlock().name(), tags));
         try {
             builder.insert(connection,insert);
         } catch (SQLException e) {
@@ -88,6 +91,7 @@ public class MySQLStorage implements Database {
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setString(1,id);
             try(ResultSet rs = statement.executeQuery()){
+                Result result = new Result(rs);
                 if (rs.next()){
                     UUID owner = UUID.fromString(rs.getString("owner"));
                     List<ClaimStatus> claimStatuses = Stream.of(rs.getString("claim_statues").replace("[" ,"").replaceAll("]", "").split(", ")).filter(key-> {
@@ -116,11 +120,13 @@ public class MySQLStorage implements Database {
                     Map<UUID, List<ClaimPermission>> permissions = solvePermission(rs.getString("permissions"));
                     List<ClaimEffect> effects = GsonProvider.getGson().fromJson(rs.getString("effects"), new TypeToken<List<ClaimEffect>>(){}.getType());
                     Material material = (rs.getString("block") == null ? Material.BEDROCK : Material.getMaterial(rs.getString("block")));
+                    List<ClaimTag> claimTags = new ArrayList<>((result.getStringList("tags") == null ? new ArrayList<>() : result.getStringList("tags").stream().map(element -> GsonProvider.getGson().fromJson(element, ClaimTag.class)).toList()));
                     Claim claim = new Claim(id,owner,members,claimStatuses,chunk, isCenter);
                     claim.setCenterId(centerId);
                     claim.setHomeLocation(homeLocation);
                     claim.setClaimPermissions(permissions);
                     claim.setEffects(new ArrayList<>(effects));
+                    claim.setClaimTags(claimTags);
                     if (claim.isCenter()){
                         claim.setBlock(material);
                     }
@@ -157,8 +163,8 @@ public class MySQLStorage implements Database {
                         .map(claimEffect -> GsonProvider.getGson().toJson(claimEffect))
                         .toList() :
                 Collections.emptyList();
-        Update update = new Update("rclaims_claims", Arrays.asList("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter", "centerId", "effects", "block" +
-                ""), Arrays.asList(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()).toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()).toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time, location, claim.isCenter(), claim.getCenterId(), effect.toString(), claim.getBlock().name()), where);
+        List<String> tags = claim.getClaimTags().stream().map(element -> GsonProvider.getGson().toJson(element)).toList();
+        Update update = new Update("rclaims_claims", Arrays.asList("id", "owner", "members", "claim_statues", "chunk", "permissions", "time", "home", "isCenter", "centerId", "effects", "block", "tags"), Arrays.asList(claim.getID(),claim.getOwner().toString(), claim.getMembers().stream().map(UUID::toString).collect(Collectors.toList()).toString(),claim.getClaimStatuses().stream().map(ClaimStatus::name).collect(Collectors.toList()).toString(), claim.getChunk().getWorld().getName() + ":" + claim.getChunk().getX() + ":" + claim.getChunk().getZ(), formatted_permissions, time, location, claim.isCenter(), claim.getCenterId(), effect.toString(), claim.getBlock().name(), tags), where);
         try {
             builder.update(connection,update);
         } catch (SQLException e) {
@@ -194,51 +200,17 @@ public class MySQLStorage implements Database {
 
     @Override
     public List<Claim> getClaims() {
-        String sql = "SELECT * FROM rclaims_claims";
+        String sql = "SELECT id, time FROM rclaims_claims";
         try(Statement statement = connection.createStatement()){
             ResultSet rs = statement.executeQuery(sql);
             List<Claim> claims = new ArrayList<>();
             while (rs.next()){
                 String id = rs.getString("id");
-                UUID owner = UUID.fromString(rs.getString("owner"));
-                List<ClaimStatus> claimStatuses = Stream.of(rs.getString("claim_statues").replace("[" ,"").replaceAll("]", "").split(", ")).filter(key-> {
-                    try {
-                        ClaimStatus.valueOf(key);
-                        return true;
-                    }catch (IllegalArgumentException e){
-                        return false;
-                    }
-                }).map(ClaimStatus::valueOf).collect(Collectors.toList());
-                Chunk chunk = solveChunk(rs.getString("chunk"));
-                List<UUID> members = Arrays.stream(rs.getString("members").replace("[", "").replace("]", "").split(", ")).collect(Collectors.toList()).stream()
-                        .filter(member -> {
-                            try {
-                                UUID.fromString(member);
-                                return true;
-                            } catch (IllegalArgumentException e) {
-                                return false;
-                            }
-                        })
-                        .map(UUID::fromString)
-                        .collect(Collectors.toList());
-                Map<UUID, List<ClaimPermission>> permissions = solvePermission(rs.getString("permissions"));
+                Claim claim = getClaim(id);
                 int time = rs.getInt("time");
-                boolean isCenter = rs.getBoolean("isCenter");
-                String centerId = rs.getString("centerId");
-                Location homeLocation = solveHome(rs.getString("home"));
-                List<ClaimEffect> effects = GsonProvider.getGson().fromJson(rs.getString("effects"), new TypeToken<List<ClaimEffect>>(){}.getType());
-                Material material = (rs.getString("block") == null ? Material.BEDROCK : Material.getMaterial(rs.getString("block")));
-                Claim claim = new Claim(id,owner,members,claimStatuses,chunk, isCenter);
-                claim.setCenterId(centerId);
-                claim.setClaimPermissions(permissions);
-                claim.setHomeLocation(homeLocation);
-                claim.setEffects(new ArrayList<>(effects));
-                if (claim.isCenter()){
-                    claim.setBlock(material);
-                }
                 claims.add(claim);
                 if (!isTimerOnline(id)){
-                    ClaimManager.getTasks().add(new ClaimTask(id,time, isCenter));
+                    ClaimManager.getTasks().add(new ClaimTask(id,time, claim.isCenter()));
                 }
             }
             return claims;
@@ -246,10 +218,9 @@ public class MySQLStorage implements Database {
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public StorageType getStorageType() {
-        return StorageType.SQLite;
+        return StorageType.MySQL;
     }
 
 

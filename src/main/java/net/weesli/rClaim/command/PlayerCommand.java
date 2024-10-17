@@ -12,6 +12,7 @@ import net.weesli.rClaim.hooks.HWorldGuard;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.modal.ClaimPlayer;
 import net.weesli.rClaim.utils.ClaimManager;
+import net.weesli.rClaim.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -79,7 +80,7 @@ public class PlayerCommand extends BaseCommand {
         if (player.getName().equalsIgnoreCase(targetPlayer)){
             return;
         }
-        if(isCheckPlayer(targetPlayer)){
+        if(PlayerUtils.getPlayer(targetPlayer) != null){
             OfflinePlayer target = Bukkit.getOfflinePlayer(targetPlayer);
             TrustedPlayerEvent event = new TrustedPlayerEvent(player,target.getPlayer());
             RClaim.getInstance().getServer().getPluginManager().callEvent(event);
@@ -114,7 +115,7 @@ public class PlayerCommand extends BaseCommand {
         if (player.getName().equalsIgnoreCase(targetPlayer)){
             return;
         }
-        if(isCheckPlayer(targetPlayer)){
+        if(PlayerUtils.getPlayer(targetPlayer) != null){
             OfflinePlayer target = RClaim.getInstance().getServer().getOfflinePlayer(targetPlayer);
             ClaimPlayer player_data = ClaimManager.getPlayerData(player.getUniqueId());
             List<Claim> claims = player_data.getClaims();
@@ -153,12 +154,6 @@ public class PlayerCommand extends BaseCommand {
                 player.sendMessage(RClaim.getInstance().getMessage("HOME_SET"));
             }
         });
-    }
-
-
-    private static boolean isCheckPlayer(String name){
-        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-        return player.hasPlayedBefore();
     }
 
 

@@ -31,6 +31,9 @@ public class ClaimMainMenu implements ClaimInventory {
         }
         builder.setItem(config.getInt("main-menu.children.block.slot"), getItemStack("main-menu.children.block", config),
                 event -> RClaim.getInstance().getUiManager().openInventory(player,claim,RClaim.getInstance().getUiManager().getBlockMenu()));
+        builder.setItem(config.getInt("main-menu.children.tags.slot"), getItemStack("main-menu.children.tags", config),
+                event -> RClaim.getInstance().getUiManager().openInventory(player, claim,
+                        RClaim.getInstance().getUiManager().getTagMainMenu()));
         builder.openInventory(player);
     }
 }

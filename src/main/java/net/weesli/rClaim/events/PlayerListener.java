@@ -5,9 +5,11 @@ import net.weesli.rClaim.api.events.ClaimEnterEvent;
 import net.weesli.rClaim.api.events.ClaimLeaveEvent;
 import net.weesli.rClaim.enums.ClaimStatus;
 import net.weesli.rClaim.modal.ClaimEffect;
+import net.weesli.rClaim.modal.ClaimTag;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.enums.ClaimPermission;
+import net.weesli.rClaim.utils.TagManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,7 +27,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +42,12 @@ public class PlayerListener implements Listener {
         }
         Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
         if (target_claim.isOwner(e.getPlayer().getUniqueId())){return;}
+        ClaimTag tag = TagManager.isPlayerInTag(e.getPlayer(), target_claim.getID());
+        if (tag != null){
+            if (tag.getPermissions().contains(ClaimPermission.BLOCK_PLACE)){
+                return;
+            }
+        }
         if (!target_claim.checkPermission(e.getPlayer().getUniqueId(), ClaimPermission.BLOCK_PLACE)){
             e.setCancelled(true);
             e.getPlayer().sendMessage(RClaim.getInstance().getMessage("PERMISSION_BLOCK_PLACE"));
@@ -56,10 +63,21 @@ public class PlayerListener implements Listener {
         }
         Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
         if (c.isOwner(e.getPlayer().getUniqueId())){return;}
+        ClaimTag tag = TagManager.isPlayerInTag(e.getPlayer(), c.getID());
         if (e.getBlock().getState() instanceof InventoryHolder){
+            if (tag != null){
+                if (tag.getPermissions().contains(ClaimPermission.BREAK_CONTAINER)){
+                    return;
+                }
+            }
             if (!c.checkPermission(e.getPlayer().getUniqueId(),ClaimPermission.BREAK_CONTAINER)){
                 e.setCancelled(true);
                 e.getPlayer().sendMessage(RClaim.getInstance().getMessage("PERMISSION_BREAK_CONTAINER"));
+            }
+        }
+        if (tag != null){
+            if (tag.getPermissions().contains(ClaimPermission.BLOCK_BREAK)){
+                return;
             }
         }
         if (!c.checkPermission(e.getPlayer().getUniqueId(), ClaimPermission.BLOCK_BREAK)){
@@ -80,6 +98,12 @@ public class PlayerListener implements Listener {
             }
             Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
             if (c.isOwner(player.getUniqueId())){return;}
+            ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
+            if (tag != null){
+                if (tag.getPermissions().contains(ClaimPermission.CONTAINER_OPEN)){
+                    return;
+                }
+            }
             if (!c.checkPermission(player.getUniqueId(), ClaimPermission.CONTAINER_OPEN)){
                 e.setCancelled(true);
                 player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_CONTAINER_OPEN"));
@@ -92,6 +116,12 @@ public class PlayerListener implements Listener {
             }
             Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
             if (c.isOwner(player.getUniqueId())){return;}
+            ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
+            if (tag != null){
+                if (tag.getPermissions().contains(ClaimPermission.USE_DOOR)){
+                    return;
+                }
+            }
             if (!c.checkPermission(player.getUniqueId(), ClaimPermission.USE_DOOR)){
                 e.setCancelled(true);
                 player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_DOOR_OPEN"));
@@ -109,6 +139,12 @@ public class PlayerListener implements Listener {
         }
         Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
         if (c.isOwner(player.getUniqueId())){return;}
+        ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
+        if (tag != null){
+            if (tag.getPermissions().contains(ClaimPermission.INTERACT_ENTITY)){
+                return;
+            }
+        }
         if (!c.checkPermission(player.getUniqueId(), ClaimPermission.INTERACT_ENTITY)){
             e.setCancelled(true);
             player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_ENTITY_INTERACT"));
@@ -127,12 +163,23 @@ public class PlayerListener implements Listener {
             }
             Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
             if (c.isOwner(player.getUniqueId())){return;}
+            ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
             if (e.getEntity() instanceof Monster){
+                if (tag != null){
+                    if (tag.getPermissions().contains(ClaimPermission.ATTACK_MONSTER)){
+                        return;
+                    }
+                }
                 if (!c.checkPermission(player.getUniqueId(), ClaimPermission.ATTACK_MONSTER)){
                     e.setCancelled(true);
                     player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_ATTACK_MONSTER"));
                 }
             }else {
+                if (tag != null){
+                    if (tag.getPermissions().contains(ClaimPermission.ATTACK_ANIMAL)){
+                        return;
+                    }
+                }
                 if (!c.checkPermission(player.getUniqueId(), ClaimPermission.ATTACK_ANIMAL)){
                     e.setCancelled(true);
                     player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_ATTACK_ANIMAL"));
@@ -151,6 +198,12 @@ public class PlayerListener implements Listener {
         }
         Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
         if (c.isOwner(player.getUniqueId())){return;}
+        ClaimTag tag = TagManager.isPlayerInTag(player,c.getID());
+        if (tag != null){
+            if (tag.getPermissions().contains(ClaimPermission.DROP_ITEM)){
+                return;
+            }
+        }
         if (!c.checkPermission(player.getUniqueId(), ClaimPermission.DROP_ITEM)){
             e.setCancelled(true);
             player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_DROP_ITEM"));
@@ -168,6 +221,12 @@ public class PlayerListener implements Listener {
         Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
         if (c.isOwner(player.getUniqueId())){return;}
         if (!c.isMember(player.getUniqueId())){return;}
+        ClaimTag tag = TagManager.isPlayerInTag(player,c.getID());
+        if (tag != null){
+            if (tag.getPermissions().contains(ClaimPermission.PICKUP_ITEM)){
+                return;
+            }
+        }
         if (!c.checkPermission(player.getUniqueId(), ClaimPermission.PICKUP_ITEM)){
             e.setCancelled(true);
             player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_PICKUP_ITEM"));
@@ -185,6 +244,12 @@ public class PlayerListener implements Listener {
             }
             Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
             if (c.isOwner(player.getUniqueId())){return;}
+            ClaimTag tag = TagManager.isPlayerInTag(player,c.getID());
+            if (tag != null){
+                if (tag.getPermissions().contains(ClaimPermission.USE_PORTAL)){
+                    return;
+                }
+            }
             if (!c.checkPermission(player.getUniqueId(), ClaimPermission.USE_PORTAL)){
                 e.setCancelled(true);
                 player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_ENTER_PORTAL"));
@@ -206,7 +271,13 @@ public class PlayerListener implements Listener {
         }
         Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
         if (c.isOwner(player.getUniqueId())){return;}
-        if (!c.checkPermission(player.getUniqueId(), ClaimPermission.USE_PORTAL)){
+        ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
+        if (tag != null){
+            if (tag.getPermissions().contains(ClaimPermission.USE_POTION)){
+                return;
+            }
+        }
+        if (!c.checkPermission(player.getUniqueId(), ClaimPermission.USE_POTION)){
             e.setCancelled(true);
             player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_USE_POTION"));
         }
@@ -223,7 +294,13 @@ public class PlayerListener implements Listener {
             }
             Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
             if (c.isOwner(player.getUniqueId())){return;}
-            if (!c.checkPermission(player.getUniqueId(), ClaimPermission.USE_PORTAL)){
+            ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
+            if (tag != null){
+                if (tag.getPermissions().contains(ClaimPermission.USE_POTION)){
+                    return;
+                }
+            }
+            if (!c.checkPermission(player.getUniqueId(), ClaimPermission.USE_POTION)){
                 e.setCancelled(true);
                 player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_USE_POTION"));
             }

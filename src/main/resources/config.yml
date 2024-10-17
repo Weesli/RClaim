@@ -82,11 +82,10 @@ options:
     hologram-module: DecentHologram
     hologram-settings:
       hologram-lines:
-        - "&eBase Claim"
-        - "&8"
-        - "&aOwner : &f%player%"
+        - "&aBase Claim"
+        - "&aOwner: &f%player%"
         - "&a"
-        - "&eRemaining time : %rclaim_<id>_time%"
+        - "&aRemaining time: &f%rclaim_<id>_time%"
 
 claim-settings:
   # if change this setting of 0, claim is be free

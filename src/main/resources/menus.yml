@@ -54,6 +54,14 @@ main-menu:
         - "&8"
         - "&aClick to manage claim block!"
       slot: 26
+    tags:
+      title: "&eClaim Tags"
+      material: NAME_TAG
+      custom-model-data: 0
+      lore:
+        - "&8"
+        - "&aClick to manage claim tags!"
+      slot: 0
 claims-menu:
   title: "&8Your claims"
   size: 54
@@ -397,3 +405,95 @@ block-menu:
   title: "&8Setting claim block"
   previous-item-name: "&ePrevious Page"
   next-item-name: "&eNext Page"
+
+tag-main-menu:
+  title: "&8Tag Menu"
+  children:
+    add-tag:
+      slot: 22
+      title: "&eAdd Tag"
+      material: OAK_SIGN
+      custom-model_data: 0
+      lore:
+        - "&7"
+        - "&eClick to add a new tag."
+        - "&7"
+  item-settings:
+    title: "&a<name>"
+    material: OAK_SIGN
+    custom-model_data: 0
+    lore:
+      - "&7"
+      - "&eClick to change tag permission or users."
+      - "&7Shift-Click and disable tag."
+  next-item-name: "&8Next Page"
+  previous-item-name: "&8Previous Page"
+
+tag-edit-menu:
+  title: "&8Tag Editor"
+  size: 27
+  children:
+    users:
+      slot: 12
+      title: "&eUsers"
+      material: PLAYER_HEAD
+      custom-model_data: 0
+      lore:
+        - "&7"
+        - "&eAdd/remove users from this tag."
+        - "&7"
+    permissions:
+      slot: 14
+      title: "&ePermissions"
+      material: BOOK
+      custom-model_data: 0
+      lore:
+        - "&7"
+        - "&eAdd/remove permission from this tag."
+        - "&7"
+  previous-item-name: "&9Previous page"
+  next-item-name: "&9Next page"
+tag-users-menu:
+  title: "&8Tag Users"
+  children:
+    add-user:
+      slot: 22
+      title: "&eAdd User"
+      material: NAME_TAG
+      custom-model_data: 0
+      lore:
+        - "&7"
+        - "&aClick to add a player to this tag."
+    item-settings:
+      title: "&e<name>"
+      material: PLAYER_HEAD
+      custom-model_data: 0
+      lore:
+        - "&7"
+        - "&eClick and remove player from this tag!"
+
+tag-permissions-menu:
+  title: "&8Tag Permissions"
+  item-settings:
+    title: "&a<permission>"
+    # this option is invalid.
+    material: PAPER
+    custom-model_data: 0
+    lore:
+      - "&7"
+      - "&aStatus: &f%status%"
+      - "&eClick to toggle permission for this tag."
+      - "&7"
+  permissions-name:
+    BLOCK_BREAK: "Block Break"
+    BLOCK_PLACE: "Block Place"
+    PICKUP_ITEM: "Pickup Item"
+    DROP_ITEM: "Drop Item"
+    CONTAINER_OPEN: "Container Open"
+    INTERACT_ENTITY: "Interact Entity"
+    ATTACK_ANIMAL: "Attack Animal"
+    ATTACK_MONSTER: "Attack Monster"
+    BREAK_CONTAINER: "Break Container"
+    USE_DOOR: "Use Door"
+    USE_PORTAL: "Use Portal"
+    USE_POTION: "Use Potion"
