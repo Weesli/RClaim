@@ -18,6 +18,7 @@ softdepend:
   - dynmap
   - CombatLogX
   - PvPManager
+  - BetterRTP
 commands:
   claim:
     description: creating a claim in chunk
