@@ -89,15 +89,14 @@ public class ClaimResizeInventory implements ClaimInventory {
             player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));
             return;
         }
-        RClaim.getInstance().getEconomy().withdraw(player, RClaim.getInstance().getConfig().getInt("claim-settings.claim-cost"));
-
-        if (!ClaimManager.isSuitable(chunk)) {
-            ClaimManager.createClaim(chunk, player, false,
-                    ClaimManager.getPlayerData(player.getUniqueId()).getClaims().get(0).getID());
-            RClaim.getInstance().getUiManager().openInventory(player,claim,this);
-        } else {
+        if (ClaimManager.isSuitable(chunk)) {
             player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
+            return;
         }
+        ClaimManager.createClaim(chunk, player, false,
+                ClaimManager.getPlayerData(player.getUniqueId()).getClaims().get(0).getID());
+        RClaim.getInstance().getUiManager().openInventory(player,claim,this);
+        RClaim.getInstance().getEconomy().withdraw(player, RClaim.getInstance().getConfig().getInt("claim-settings.claim-cost"));
     }
 
     private void updateItemMeta(ClickableItemStack itemStack, Chunk chunk) {
