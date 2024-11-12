@@ -6,7 +6,6 @@ import net.weesli.rClaim.ui.ClaimInventory;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rozsLib.color.ColorBuilder;
-import net.weesli.rozsLib.inventory.lasest.ClickableItemStack;
 import net.weesli.rozsLib.inventory.lasest.InventoryBuilder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;

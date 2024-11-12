@@ -5,6 +5,7 @@ import lombok.Setter;
 import net.weesli.rClaim.command.CommandManager;
 import net.weesli.rClaim.enums.HologramModule;
 import net.weesli.rClaim.enums.StorageType;
+import net.weesli.rClaim.hooks.HBetterRTP;
 import net.weesli.rClaim.hooks.combat.CombatManager;
 import net.weesli.rClaim.hooks.economy.ClaimEconomy;
 import net.weesli.rClaim.enums.EconomyType;
@@ -38,7 +39,7 @@ import java.net.URL;
 @Getter@Setter
 public final class RClaim extends JavaPlugin {
 
-    private Database storage;
+    private AbstractDatabase storage;
     private UIManager uiManager;
 
     private ClaimEconomy economy;
@@ -81,6 +82,8 @@ public final class RClaim extends JavaPlugin {
         ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");
         Loader.load();
         new MapLoader();
+        // initialize betterRTP hook if plugin is enabled
+        if (getServer().getPluginManager().isPluginEnabled("BetterRTP")) new HBetterRTP(this);
     }
 
     @Override
