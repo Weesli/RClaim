@@ -59,18 +59,20 @@ public class ClaimTagUsersMenu implements TagInventory{
 
         }
 
-        for (int i : glass_slots){
-            builder.setItem(i, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+        if(config.getBoolean("tag-users-menu.glass")){
+            for (int i : glass_slots){
+                builder.setItem(i, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+            }
         }
 
         if (page > 0) {
-            builder.setItem(21, createArrowItem(ColorBuilder.convertColors(config.getString("block-menu.previous-item-name")), Material.ARROW), event -> {
+            builder.setItem(21, createArrowItem(ColorBuilder.convertColors(config.getString("tag-users-menu.previous-item-name")), Material.ARROW), event -> {
                 openPage(player, tag, config, users, page - 1, totalPages);
             });
         }
 
         if (page < totalPages - 1) {
-            builder.setItem(23, createArrowItem(ColorBuilder.convertColors(config.getString("block-menu.next-item-name")), Material.ARROW), event -> {
+            builder.setItem(23, createArrowItem(ColorBuilder.convertColors(config.getString("tag-users-menu.next-item-name")), Material.ARROW), event -> {
                 openPage(player, tag, config, users, page + 1, totalPages);
             });
         }

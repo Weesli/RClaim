@@ -5,6 +5,7 @@ import net.weesli.rClaim.hooks.HWorldGuard;
 import net.weesli.rClaim.ui.ClaimInventory;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.utils.ClaimManager;
+import net.weesli.rClaim.utils.ClaimUtils;
 import net.weesli.rozsLib.color.ColorBuilder;
 import net.weesli.rozsLib.inventory.lasest.ClickableItemStack;
 import net.weesli.rozsLib.inventory.lasest.InventoryBuilder;
@@ -49,10 +50,7 @@ public class ClaimResizeInventory implements ClaimInventory {
     }
 
     private void getAreas(InventoryBuilder inventory, Player player, Chunk currentChunk, Chunk chunk, Claim target_claim, int slot, FileConfiguration config) {
-        Claim claim = ClaimManager.getClaims().stream()
-                .filter(c -> c.getChunk().equals(chunk))
-                .findFirst()
-                .orElse(null);
+        Claim claim = ClaimUtils.getClaim(chunk);
 
         String key = getKeyForChunk(player, currentChunk, chunk, claim);
 

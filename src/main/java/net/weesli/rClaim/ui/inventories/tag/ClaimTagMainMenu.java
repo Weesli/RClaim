@@ -66,10 +66,11 @@ public class ClaimTagMainMenu implements ClaimInventory {
             }
         }
 
-        for (int i : glass_slots){
-            inv.setItem(i, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+        if (config.getBoolean("tag-main-menu.glass")){
+            for (int i : glass_slots){
+                inv.setItem(i, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+            }
         }
-
         if (page > 0) {
             inv.setItem(21, createArrowItem(ColorBuilder.convertColors(config.getString("tag-main-menu.previous-item-name")), Material.ARROW), event -> {
                 openPage(player, claim, config, tags, page - 1, totalPages);

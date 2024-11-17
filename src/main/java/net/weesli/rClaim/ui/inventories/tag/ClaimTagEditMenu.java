@@ -29,8 +29,10 @@ public class ClaimTagEditMenu implements TagInventory{
                 }
             });
         }
-        for (int slot : glass_slots){
-            inv.setItem(slot, new ItemStack(Material.GRAY_STAINED_GLASS_PANE),e -> {});
+        if (config.getBoolean("tag-edit-menu.glass")){
+            for (int slot : glass_slots){
+                inv.setItem(slot, new ItemStack(Material.GRAY_STAINED_GLASS_PANE),e -> {});
+            }
         }
 
         inv.openInventory(player);

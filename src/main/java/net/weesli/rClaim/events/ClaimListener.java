@@ -8,6 +8,7 @@ import net.weesli.rClaim.modal.ClaimEffect;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.enums.ClaimStatus;
+import net.weesli.rClaim.utils.ClaimUtils;
 import net.weesli.rClaim.utils.FormatManager;
 import net.weesli.rozsLib.events.BlockRightClickEvent;
 import net.weesli.rozsLib.events.PlayerDamageByPlayerEvent;
@@ -27,7 +28,6 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Optional;
 
 public class ClaimListener implements Listener {
 
@@ -35,13 +35,11 @@ public class ClaimListener implements Listener {
     public void onSpawn(EntitySpawnEvent e) {
         Entity entity = e.getEntity();
         // Find if the entity is inside a claim
-        Optional<Claim> claim = ClaimManager.getClaims().stream()
-                .filter(c -> c.contains(entity.getLocation()))
-                .findFirst();
-        if (claim.isEmpty()) {
+        Claim claim = ClaimUtils.getClaim(e.getLocation());
+        if (claim == null) {
             return;
         }
-        Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        Claim target_claim = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
 
         // Cancel spawning if the claim does not allow monsters or animals
         if (entity instanceof Monster) {
@@ -59,13 +57,11 @@ public class ClaimListener implements Listener {
     public void onTnt(EntityExplodeEvent e) {
         // Prevent TNT explosions in claims where explosions are not allowed
         for (Block block : e.blockList()) {
-            Optional<Claim> claim = ClaimManager.getClaims().stream()
-                    .filter(c -> c.contains(block.getLocation()))
-                    .findFirst();
-            if (claim.isEmpty()) {
+            Claim claim = ClaimUtils.getClaim(block.getLocation());
+            if (claim == null) {
                 return;
             }
-            Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+            Claim target_claim = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
             if (!target_claim.checkStatus(ClaimStatus.EXPLOSION)) {
                 e.setCancelled(true);
                 break;
@@ -76,17 +72,13 @@ public class ClaimListener implements Listener {
     @EventHandler
     public void onPvP(PlayerDamageByPlayerEvent e) {
         // Check if PvP is allowed in both the victim's and the attacker's claims
-        Optional<Claim> victim_claim = ClaimManager.getClaims().stream()
-                .filter(c -> c.contains(e.getPlayer().getLocation()))
-                .findFirst();
-        Optional<Claim> attacker_claim = ClaimManager.getClaims().stream()
-                .filter(c -> c.contains(e.getDamager().getLocation()))
-                .findFirst();
-        if (attacker_claim.isEmpty() || victim_claim.isEmpty()) {
+        Claim victim_claim = ClaimUtils.getClaim(e.getPlayer().getLocation());
+        Claim attacker_claim = ClaimUtils.getClaim(e.getDamager().getLocation());
+        if (attacker_claim == null || victim_claim == null) {
             return;
         }
-        Claim target_attacker_claim = (attacker_claim.get().getCenterId().isEmpty() ? attacker_claim.get() : ClaimManager.getClaim(attacker_claim.get().getCenterId()).get());
-        Claim target_victim_claim = (victim_claim.get().getCenterId().isEmpty() ? victim_claim.get() : ClaimManager.getClaim(victim_claim.get().getCenterId()).get());
+        Claim target_attacker_claim = (attacker_claim.getCenterId().isEmpty() ? attacker_claim : ClaimManager.getClaim(attacker_claim.getCenterId()).get());
+        Claim target_victim_claim = (victim_claim.getCenterId().isEmpty() ? victim_claim : ClaimManager.getClaim(victim_claim.getCenterId()).get());
 
         // Cancel the event and notify the player if PvP is not allowed
         if (!target_attacker_claim.checkStatus(ClaimStatus.PVP)) {
@@ -103,13 +95,11 @@ public class ClaimListener implements Listener {
     @EventHandler
     public void onBreakBedrock(BlockBreakEvent e) {
         // Prevent breaking bedrock blocks that mark the center of a claim
-        Optional<Claim> claim = ClaimManager.getClaims().stream()
-                .filter(c -> c.contains(e.getBlock().getLocation()))
-                .findFirst();
-        if (claim.isEmpty()) {
+        Claim claim = ClaimUtils.getClaim(e.getBlock().getLocation());
+        if (claim == null) {
             return;
         }
-        Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        Claim target_claim = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
         if (!e.getBlock().getType().equals(target_claim.getBlock())) {
             return;
         }
@@ -124,24 +114,25 @@ public class ClaimListener implements Listener {
         // Handle clicking on the center bedrock block to open claim UI
         Player player = e.getPlayer();
         Block block = e.getClickedBlock();
-        Optional<Claim> claim = ClaimManager.getClaims().stream()
-                .filter(c -> c.contains(block.getLocation()))
-                .findFirst();
-        if (claim.isEmpty() || !claim.get().isCenter()) {
+        Claim claim = ClaimUtils.getClaim(e.getClickedBlock().getLocation());
+        if (claim == null) {
             return;
         }
-        if (!block.getType().equals(claim.get().getBlock())) {
+        if (!claim.isCenter()) {
             return;
         }
-        boolean isBlock = block.getLocation().equals(claim.get().getCenter());
+        if (!block.getType().equals(claim.getBlock())) {
+            return;
+        }
+        boolean isBlock = block.getLocation().equals(claim.getCenter());
         if (!isBlock) {
             return;
         }
-        if (!claim.get().isOwner(player.getUniqueId())) {
+        if (!claim.isOwner(player.getUniqueId())) {
             e.setCancelled(true);
             return;
         }
-        RClaim.getInstance().getUiManager().openInventory(player, claim.get(), RClaim.getInstance().getUiManager().getMainMenu());
+        RClaim.getInstance().getUiManager().openInventory(player, claim, RClaim.getInstance().getUiManager().getMainMenu());
     }
 
     @EventHandler
@@ -179,13 +170,11 @@ public class ClaimListener implements Listener {
     public void onSpread(BlockSpreadEvent e) {
         // Prevent block spreading (e.g., fire, grass) in claims if not allowed
         Block block = e.getBlock();
-        Optional<Claim> claim = ClaimManager.getClaims().stream()
-                .filter(c -> c.contains(block.getLocation()))
-                .findFirst();
-        if (claim.isEmpty()) {
+        Claim claim = ClaimUtils.getClaim(e.getBlock().getLocation());
+        if (claim == null) {
             return;
         }
-        Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        Claim target_claim = (claim).getCenterId().isEmpty() ? claim : ClaimManager.getClaim(claim.getCenterId()).get();
         if (!target_claim.checkStatus(ClaimStatus.SPREAD)) {
             e.setCancelled(true);
         }

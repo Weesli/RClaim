@@ -9,6 +9,7 @@ import net.weesli.rClaim.modal.ClaimTag;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.enums.ClaimPermission;
+import net.weesli.rClaim.utils.ClaimUtils;
 import net.weesli.rClaim.utils.TagManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,11 +37,11 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlaceBlock(BlockPlaceEvent e){
         if (e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
-        Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getBlock().getLocation())).findFirst();
-        if (claim.isEmpty()){
+        Claim claim = ClaimUtils.getClaim(e.getBlock().getLocation().getChunk());
+        if (claim == null){
             return;
         }
-        Claim target_claim = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        Claim target_claim = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
         if (target_claim.isOwner(e.getPlayer().getUniqueId())){return;}
         ClaimTag tag = TagManager.isPlayerInTag(e.getPlayer(), target_claim.getID());
         if (tag != null){
@@ -57,11 +58,11 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onBreakBlock(BlockBreakEvent e){
         if (e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
-        Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getBlock().getLocation())).findFirst();
-        if (claim.isEmpty()){
+        Claim claim = ClaimUtils.getClaim(e.getBlock().getLocation().getChunk());
+        if (claim == null){
             return;
         }
-        Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        Claim c = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
         if (c.isOwner(e.getPlayer().getUniqueId())){return;}
         ClaimTag tag = TagManager.isPlayerInTag(e.getPlayer(), c.getID());
         if (e.getBlock().getState() instanceof InventoryHolder){
@@ -92,11 +93,11 @@ public class PlayerListener implements Listener {
         Player player = e.getPlayer();
         if (e.getClickedBlock() == null){return;}
         if (e.getClickedBlock().getState() instanceof InventoryHolder){
-            Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getClickedBlock().getLocation())).findFirst();
-            if (claim.isEmpty()){
+            Claim claim = ClaimUtils.getClaim(e.getPlayer().getLocation().getChunk());
+            if (claim == null){
                 return;
             }
-            Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+            Claim c = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
             if (c.isOwner(player.getUniqueId())){return;}
             ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
             if (tag != null){
@@ -110,11 +111,11 @@ public class PlayerListener implements Listener {
             }
         }
         if (e.getClickedBlock().getType().name().contains("DOOR")){
-            Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getClickedBlock().getLocation())).findFirst();
-            if (claim.isEmpty()){
+            Claim claim = ClaimUtils.getClaim(e.getPlayer().getLocation().getChunk());
+            if (claim == null){
                 return;
             }
-            Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+            Claim c = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
             if (c.isOwner(player.getUniqueId())){return;}
             ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
             if (tag != null){
@@ -133,11 +134,11 @@ public class PlayerListener implements Listener {
     public void onInteractEntity(PlayerInteractEntityEvent e){
         if (e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
         Player player = e.getPlayer();
-        Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c-> c.contains(e.getRightClicked().getLocation())).findFirst();
-        if (claim.isEmpty()){
+        Claim claim = ClaimUtils.getClaim(e.getPlayer().getLocation().getChunk());
+        if (claim == null){
             return;
         }
-        Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        Claim c = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
         if (c.isOwner(player.getUniqueId())){return;}
         ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
         if (tag != null){
@@ -157,11 +158,11 @@ public class PlayerListener implements Listener {
         if (e.getDamager() instanceof Player){
             Player player = (Player) e.getDamager();
             if (player.hasPermission("rclaim.admin.bypass")){return;}
-            Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getEntity().getLocation())).findFirst();
-            if (claim.isEmpty()){
+            Claim claim = ClaimUtils.getClaim(e.getEntity().getLocation().getChunk());
+            if (claim == null){
                 return;
             }
-            Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+            Claim c = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
             if (c.isOwner(player.getUniqueId())){return;}
             ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
             if (e.getEntity() instanceof Monster){
@@ -192,11 +193,11 @@ public class PlayerListener implements Listener {
     public void onDrop(PlayerDropItemEvent e){
         if (e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
         Player player = e.getPlayer();
-        Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getItemDrop().getLocation())).findFirst();
-        if (claim.isEmpty()){
+        Claim claim = ClaimUtils.getClaim(e.getPlayer().getLocation().getChunk());
+        if (claim == null){
             return;
         }
-        Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        Claim c = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
         if (c.isOwner(player.getUniqueId())){return;}
         ClaimTag tag = TagManager.isPlayerInTag(player,c.getID());
         if (tag != null){
@@ -214,11 +215,11 @@ public class PlayerListener implements Listener {
     public void onPickup(PlayerPickupItemEvent e){
         if (e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
         Player player = e.getPlayer();
-        Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(e.getItem().getLocation())).findFirst();
-        if (claim.isEmpty()){
+        Claim claim = ClaimUtils.getClaim(e.getPlayer().getLocation().getChunk());
+        if (claim == null){
             return;
         }
-        Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        Claim c = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
         if (c.isOwner(player.getUniqueId())){return;}
         if (!c.isMember(player.getUniqueId())){return;}
         ClaimTag tag = TagManager.isPlayerInTag(player,c.getID());
@@ -238,11 +239,11 @@ public class PlayerListener implements Listener {
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) || e.getCause().equals(PlayerTeleportEvent.TeleportCause.END_PORTAL)){
             if (e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
             Player player = e.getPlayer();
-            Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(player.getLocation())).findFirst();
-            if (claim.isEmpty()){
+            Claim claim = ClaimUtils.getClaim(e.getPlayer().getLocation().getChunk());
+            if (claim == null){
                 return;
             }
-            Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+            Claim c = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
             if (c.isOwner(player.getUniqueId())){return;}
             ClaimTag tag = TagManager.isPlayerInTag(player,c.getID());
             if (tag != null){
@@ -260,16 +261,15 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPotion(PotionSplashEvent e){
         ProjectileSource source = e.getPotion().getShooter();
-        if (!(source instanceof Player)) {
+        if (!(source instanceof Player player)) {
             return;
         }
-        Player player = (Player) source;
         if (player.hasPermission("rclaim.admin.bypass")){return;}
-        Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(player.getLocation())).findFirst();
-        if (claim.isEmpty()){
+        Claim claim = ClaimUtils.getClaim(player.getLocation().getChunk());
+        if (claim == null){
             return;
         }
-        Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+        Claim c = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
         if (c.isOwner(player.getUniqueId())){return;}
         ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
         if (tag != null){
@@ -288,11 +288,11 @@ public class PlayerListener implements Listener {
         if (e.getItem().getType().equals(Material.POTION)){
             Player player = e.getPlayer();
             if (player.hasPermission("rclaim.admin.bypass")){return;}
-            Optional<Claim> claim = ClaimManager.getClaims().stream().filter(c -> c.contains(player.getLocation())).findFirst();
-            if (claim.isEmpty()){
+            Claim claim = ClaimUtils.getClaim(e.getPlayer().getLocation().getChunk());
+            if (claim == null){
                 return;
             }
-            Claim c = (claim.get().getCenterId().isEmpty() ? claim.get() : ClaimManager.getClaim(claim.get().getCenterId()).get());
+            Claim c = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId()));
             if (c.isOwner(player.getUniqueId())){return;}
             ClaimTag tag = TagManager.isPlayerInTag(player, c.getID());
             if (tag != null){
@@ -321,12 +321,8 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        Optional<Claim> leavedChunk = ClaimManager.getClaims().stream()
-                .filter(c -> c.getChunk().getX() == from.getChunk().getX() && c.getChunk().getZ() == from.getChunk().getZ())
-                .findFirst();
-        Optional<Claim> enteredChunk = ClaimManager.getClaims().stream()
-                .filter(c -> c.getChunk().getX() == to.getChunk().getX() && c.getChunk().getZ() == to.getChunk().getZ())
-                .findFirst();
+        Optional<Claim> leavedChunk = Optional.ofNullable(ClaimUtils.getClaim(from));
+        Optional<Claim> enteredChunk = Optional.ofNullable(ClaimUtils.getClaim(to));
 
         if (leavedChunk.isPresent() && enteredChunk.isPresent()) {
             if (leavedChunk.get().isOwner(enteredChunk.get().getOwner())) {

@@ -7,7 +7,6 @@ import net.weesli.rClaim.enums.ExplodeCause;
 import net.weesli.rClaim.api.events.ClaimCreateEvent;
 import net.weesli.rClaim.api.events.ClaimDeleteEvent;
 import net.weesli.rClaim.modal.Claim;
-import net.weesli.rClaim.modal.ClaimEffect;
 import net.weesli.rClaim.modal.ClaimPlayer;
 import net.weesli.rClaim.tasks.ClaimTask;
 import net.weesli.rClaim.enums.ClaimPermission;
@@ -16,7 +15,7 @@ import net.weesli.rozsLib.color.ColorBuilder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -93,6 +92,7 @@ public class ClaimManager {
             addClaim(claim);
             RClaim.getInstance().getStorage().insertClaim(claim);
         }
+        chunk.getPersistentDataContainer().set(RClaimNameSpaceKey.getKey(), PersistentDataType.STRING, claim.getID());
     }
 
     public static void viewClaimRadius(Player player, Chunk chunk) {

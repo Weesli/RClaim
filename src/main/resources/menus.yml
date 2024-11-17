@@ -53,7 +53,7 @@ main-menu:
       lore:
         - "&8"
         - "&aClick to manage claim block!"
-      slot: 26
+      slot: 12
     tags:
       title: "&eClaim Tags"
       material: NAME_TAG
@@ -61,7 +61,8 @@ main-menu:
       lore:
         - "&8"
         - "&aClick to manage claim tags!"
-      slot: 0
+      slot: 14
+
 claims-menu:
   title: "&8Your claims"
   size: 54
@@ -408,6 +409,7 @@ block-menu:
 
 tag-main-menu:
   title: "&8Tag Menu"
+  glass: true
   children:
     add-tag:
       slot: 22
@@ -431,6 +433,7 @@ tag-main-menu:
 
 tag-edit-menu:
   title: "&8Tag Editor"
+  glass: true
   size: 27
   children:
     users:
@@ -453,8 +456,10 @@ tag-edit-menu:
         - "&7"
   previous-item-name: "&9Previous page"
   next-item-name: "&9Next page"
+
 tag-users-menu:
   title: "&8Tag Users"
+  glass: true
   children:
     add-user:
       slot: 22
@@ -471,6 +476,8 @@ tag-users-menu:
       lore:
         - "&7"
         - "&eClick and remove player from this tag!"
+  previous-item-name: "&9Previous page"
+  next-item-name: "&9Next page"
 
 tag-permissions-menu:
   title: "&8Tag Permissions"
