@@ -20,6 +20,7 @@ public class CommandManager {
 
     private void registerArgs() {
         commandManager.registerSuggestion(SuggestionKey.of("name"), (key,value) ->  List.of("<name>"));
+        commandManager.registerSuggestion(SuggestionKey.of("amount"), (key,value) -> List.of("<amount>"));
     }
 
 

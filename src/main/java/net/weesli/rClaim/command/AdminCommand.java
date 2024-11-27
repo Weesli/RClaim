@@ -7,11 +7,13 @@ import dev.triumphteam.cmd.core.annotation.SubCommand;
 import dev.triumphteam.cmd.core.annotation.Suggestion;
 import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.modal.Claim;
+import net.weesli.rClaim.utils.ClaimBlockUtils;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rozsLib.color.ColorBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -52,6 +54,13 @@ public class AdminCommand extends BaseCommand {
         RClaim.getInstance().getMessagesFile().reload();
         commandSender.sendMessage(ColorBuilder.convertColors("&aAll files reloaded!"));
     }
+
+    @SubCommand("claimblock")
+    public void claimblock(CommandSender commandSender, Player target, @Suggestion("amount") int amount){
+        if (!commandSender.isOp()){return;}
+        ClaimBlockUtils.giveBlock(target, amount);
+    }
+
 
     @SubCommand("info")
     public void info(CommandSender commandSender){

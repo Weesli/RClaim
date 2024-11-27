@@ -86,7 +86,18 @@ options:
         - "&aOwner: &f%player%"
         - "&a"
         - "&aRemaining time: &f%rclaim_<id>_time%"
-
+  claim-block:
+    enabled: true
+    item:
+      material: STONE
+      custom-model-data: 0
+      title: "&aClaim Block"
+      lore:
+        - "&7"
+        - "&7It allows you to claim the area where you put it."
+        - "&cFor single use only, Operation is irreversible!"
+        - "&7"
+        - "&7Place and create claim"
 claim-settings:
   # if change this setting of 0, claim is be free
   claim-cost: 10000

@@ -7,6 +7,7 @@ import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.enums.ClaimPermission;
 import net.weesli.rClaim.enums.ClaimStatus;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 

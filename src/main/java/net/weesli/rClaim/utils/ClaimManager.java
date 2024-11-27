@@ -62,38 +62,76 @@ public class ClaimManager {
         }
     }
 
-    public static void createClaim(Chunk chunk, Player owner, boolean isCenter, String centerId){
+    public static void createClaim(Chunk chunk, Player owner, boolean isCenter, String centerId) {
         String id = IDCreator();
-        List<UUID> members= new ArrayList<>();
+        List<UUID> members = new ArrayList<>();
         List<ClaimStatus> claimStatuses = new ArrayList<>();
         Map<UUID, List<ClaimPermission>> permissions = new HashMap<>();
-        Optional<Claim> center = getPlayerData(owner.getUniqueId()).getClaims().stream().filter(Claim::isCenter).findFirst();
-        if (center.isPresent()){
-            members.addAll(center.get().getMembers());
-            claimStatuses.addAll(center.get().getClaimStatuses());
-            permissions.putAll(center.get().getClaimPermissions());
+
+        Optional<Claim> center = getPlayerData(owner.getUniqueId())
+                .getClaims()
+                .stream()
+                .filter(Claim::isCenter)
+                .findFirst();
+
+        if (center.isPresent()) {
+            Claim centerClaim = center.get();
+            members.addAll(centerClaim.getMembers());
+            claimStatuses.addAll(centerClaim.getClaimStatuses());
+            permissions.putAll(centerClaim.getClaimPermissions());
         }
+
         Claim claim = new Claim(id, owner.getUniqueId(), members, claimStatuses, chunk, isCenter);
-        getTasks().add(new ClaimTask(id, getSec(RClaim.getInstance().getConfig().getInt("claim-settings.claim-duration")), isCenter));
-        if (isCenter){
-            setupBlock(claim);
-            for (String default_permission_value : RClaim.getInstance().getConfig().getConfigurationSection("claim-settings.default-claim-status").getKeys(false)){
-                if (RClaim.getInstance().getConfig().getBoolean("claim-settings.default-claim-status." + default_permission_value)){
-                    ClaimStatus status = ClaimStatus.valueOf(default_permission_value);
-                    claim.addClaimStatus(status);
-                }
-            }
+
+        getTasks().add(new ClaimTask(
+                id,
+                getSec(RClaim.getInstance().getConfig().getInt("claim-settings.claim-duration")),
+                isCenter
+        ));
+
+        if (isCenter) {
+            Block block = claim.getChunk().getWorld().getBlockAt(new Location(
+                    claim.getCenter().getWorld(),
+                    claim.getCenter().getX(),
+                    claim.getCenter().getY() + 1,
+                    claim.getCenter().getZ()
+            ));
+            block.setType(Material.BEDROCK);
+            RClaim.getInstance()
+                    .getConfig()
+                    .getConfigurationSection("claim-settings.default-claim-status")
+                    .getKeys(false)
+                    .forEach(defaultPermissionValue -> {
+                        if (RClaim.getInstance()
+                                .getConfig()
+                                .getBoolean("claim-settings.default-claim-status." + defaultPermissionValue)) {
+                            ClaimStatus status = ClaimStatus.valueOf(defaultPermissionValue);
+                            claim.addClaimStatus(status);
+                        }
+                    });
         }
-        if (!centerId.isEmpty()){claim.setCenterId(centerId);}
+
+        if (!centerId.isEmpty()) {
+            claim.setCenterId(centerId);
+        }
+
         claim.setClaimPermissions(permissions);
+
         ClaimCreateEvent event = new ClaimCreateEvent(owner, claim);
         Bukkit.getPluginManager().callEvent(event);
-        if (!event.isCancelled()){
+
+        if (!event.isCancelled()) {
             addClaim(claim);
             RClaim.getInstance().getStorage().insertClaim(claim);
         }
-        chunk.getPersistentDataContainer().set(RClaimNameSpaceKey.getKey(), PersistentDataType.STRING, claim.getID());
+
+        chunk.getPersistentDataContainer().set(
+                RClaimNameSpaceKey.getKey(),
+                PersistentDataType.STRING,
+                claim.getID()
+        );
     }
+
 
     public static void viewClaimRadius(Player player, Chunk chunk) {
         PreviewViewer(player,chunk);
@@ -147,13 +185,8 @@ public class ClaimManager {
 
 
     public static boolean isSuitable(Chunk chunk){
-        Optional<Claim> claim = getClaims().stream().filter(c -> c.getChunk().getX() == chunk.getX() && c.getChunk().getZ() == chunk.getZ()).findFirst();
-        return claim.isPresent();
-    }
-
-    private static void setupBlock(Claim claim){
-        Block block = claim.getChunk().getWorld().getBlockAt(new Location(claim.getCenter().getWorld(), claim.getCenter().getX(), claim.getCenter().getY() + 1, claim.getCenter().getZ()));
-        block.setType(claim.getBlock());
+        Claim claim = ClaimUtils.getClaim(chunk);
+        return claim != null;
     }
 
     public static ClaimPlayer getPlayerData(UUID uuid) {

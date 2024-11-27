@@ -4,8 +4,11 @@ import net.weesli.rClaim.RClaim;
 import net.weesli.rClaim.api.events.ClaimEnterEvent;
 import net.weesli.rClaim.api.events.ClaimLeaveEvent;
 import net.weesli.rClaim.enums.ClaimStatus;
+import net.weesli.rClaim.hooks.HWorldGuard;
 import net.weesli.rClaim.modal.ClaimEffect;
+import net.weesli.rClaim.modal.ClaimPlayer;
 import net.weesli.rClaim.modal.ClaimTag;
+import net.weesli.rClaim.utils.ClaimBlockUtils;
 import net.weesli.rClaim.utils.ClaimManager;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.enums.ClaimPermission;
@@ -26,6 +29,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -398,5 +402,40 @@ public class PlayerListener implements Listener {
         if (claim.getClaimStatuses().contains(ClaimStatus.TIME)){
             player.resetPlayerTime();
         }
+    }
+
+    // added 2.2.0 for claim block listener
+    @EventHandler
+    public void onPlaceClaimBlock(BlockPlaceEvent e){
+        if (!ClaimBlockUtils.isEnabled()) return;
+        Player player = e.getPlayer();
+        ItemStack itemStack = e.getItemInHand();
+        if (itemStack.getType().equals(Material.AIR)) return;
+        boolean isSimilar = ClaimBlockUtils.isSimilar(itemStack);
+        if (!isSimilar) return;
+        e.setCancelled(true);
+        // check area status
+        if (!HWorldGuard.isAreaEnabled(player)){
+            player.sendMessage(RClaim.getInstance().getMessage("AREA_DISABLED"));
+            return;
+        }
+        if(!ClaimManager.checkWorld(player.getWorld().getName())){
+            player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
+            return;
+        }
+        if (ClaimManager.isSuitable(player.getLocation().getChunk())){
+            player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
+            return;
+        }
+        ClaimPlayer user = ClaimManager.getPlayerData(player.getUniqueId());
+        if (!user.getClaims().isEmpty()){
+            player.sendMessage(RClaim.getInstance().getMessage("CANNOT_CLAIM_MULTIPLE_CLAIMS"));
+            return;
+        }
+        // register a new claim in placed location
+        ClaimManager.createClaim(e.getBlockPlaced().getChunk(), player,true,"");
+        itemStack.setAmount(itemStack.getAmount()-1);
+        e.getPlayer().getInventory().setItemInMainHand(itemStack);
+        player.sendMessage(RClaim.getInstance().getMessage("SUCCESS_CLAIM_CREATED"));
     }
 }

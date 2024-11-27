@@ -12,6 +12,7 @@ import net.weesli.rClaim.hooks.HWorldGuard;
 import net.weesli.rClaim.modal.Claim;
 import net.weesli.rClaim.modal.ClaimPlayer;
 import net.weesli.rClaim.utils.ClaimManager;
+import net.weesli.rClaim.utils.ClaimUtils;
 import net.weesli.rClaim.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -29,15 +30,26 @@ public class PlayerCommand extends BaseCommand {
             player.sendMessage(RClaim.getInstance().getMessage("AREA_DISABLED"));
             return;
         }
+
         if(!ClaimManager.checkWorld(player.getWorld().getName())){
             player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
             return;
+        }
+        // If the player is in their own request when the 'claim' command is used, the administration menu opens. (since 2.2.0)
+        Claim claim = ClaimUtils.getClaim(player.getLocation());
+        if (claim != null){
+            if (claim.getOwner().equals(player.getUniqueId())){
+                Claim managementClaim = (claim.getCenterId().isEmpty() ? claim : ClaimUtils.getClaim(claim.getCenterId())); // get Main claim
+                RClaim.getInstance().getUiManager().openInventory(player, managementClaim, RClaim.getInstance().getUiManager().getMainMenu());
+                return;
+            }
         }
 
         if (ClaimManager.isSuitable(player.getLocation().getChunk())){
             player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
             return;
         }
+
         ClaimManager.viewClaimRadius(player,player.getLocation().getChunk());
         player.sendMessage(RClaim.getInstance().getMessage("PREVIEW_OPENED"));
     }
