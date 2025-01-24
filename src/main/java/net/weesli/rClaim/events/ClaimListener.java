@@ -156,6 +156,17 @@ public class ClaimListener implements Listener {
                 }
             }
         }
+
+        // effects clear
+        for (Entity entity : e.getClaim().getChunk().getEntities()){
+            if (entity instanceof Player player) {
+                for (ClaimEffect effect : e.getClaim().getEffects()) {
+                    if (player.hasPotionEffect(effect.getEffect().getType())) {
+                        player.removePotionEffect(effect.getEffect().getType());
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler
