@@ -19,6 +19,7 @@ softdepend:
   - CombatLogX
   - PvPManager
   - BetterRTP
+  - Multiverse-Core
 commands:
   claim:
     description: creating a claim in chunk
