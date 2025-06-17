@@ -6,10 +6,13 @@
 
     <groupId>net.weesli</groupId>
     <artifactId>RClaim</artifactId>
-    <version>2.2.0</version>
-    <packaging>jar</packaging>
+    <version>2.3.0</version>
+    <packaging>pom</packaging>
 
-    <name>RClaim</name>
+    <modules>
+        <module>plugin</module>
+        <module>api</module>
+    </modules>
 
     <properties>
         <java.version>17</java.version>
@@ -32,30 +35,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.5.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>de.rapha149.signgui</pattern>
-                                    <shadedPattern>net.weesli.signgui</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>dev.triumphteam.cmd</pattern>
-                                    <shadedPattern>net.weesli.cmd</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.bstats</pattern>
-                                    <shadedPattern>net.weesli.bstats</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <resources>
@@ -71,65 +50,9 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
-        <!-- SirBlobman Public Repository -->
-        <repository>
-            <id>sirblobman-public</id>
-            <url>https://nexus.sirblobman.xyz/public/</url>
-        </repository>
-        <repository>
-            <id>triumphteam</id>
-            <url>https://repo.triumphteam.dev/snapshots</url>
-        </repository>
-        <repository>
-            <id>papermc-repo</id>
-            <url>https://repo.papermc.io/repository/maven-public/</url>
-        </repository>
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>helpchat-repo-releases</id>
-            <name>HelpChat Maven Repository</name>
-            <url>https://repo.helpch.at/releases</url>
-        </repository>
-        <repository>
-            <id>codemc-repo</id>
-            <url>https://repo.codemc.io/repository/maven-public/</url>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <id>SilkSpawners-Repo</id>
-            <url>https://repo.dustplanet.de/artifactory/libs-release-local</url>
-        </repository>
-        <repository>
-            <id>eldonexus</id>
-            <url>https://eldonexus.de/repository/maven-releases/</url>
-        </repository>
-        <repository>
-            <id>rosewood-repo</id>
-            <url>https://repo.rosewooddev.io/repository/public/</url>
-        </repository>
-        <repository>
-            <id>sk89q-repo</id>
-            <url>https://maven.enginehub.org/repo/</url>
-        </repository>
-        <repository>
-            <id>MikeRepo</id>
-            <url>https://repo.mikeprimm.com/</url>
-        </repository>
-        <repository>
-            <id>bluecolored</id>
-            <url>https://repo.bluecolored.de/releases</url>
-        </repository>
-        <repository>
-            <id>CodeMC</id>
-            <url>https://repo.codemc.org/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>ronanplugins-releases</id>
-            <name>Ronan Plugins</name>
-            <url>https://repo.ronanplugins.com/releases</url>
         </repository>
     </repositories>
 
@@ -141,138 +64,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.Weesli</groupId>
-            <artifactId>RLib</artifactId>
-            <version>2.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.11.6</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.decentsoftware-eu</groupId>
-            <artifactId>decentholograms</artifactId>
-            <version>2.8.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.rapha149.signgui</groupId>
-            <artifactId>signgui</artifactId>
-            <version>2.4.3</version>
-        </dependency>
-        <dependency>
-            <groupId>de.corneliusmay</groupId>
-            <artifactId>silkspawners</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/SilkSpawners_v2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.github.angeschossen</groupId>
-            <artifactId>UpgradeableSpawnersAPI</artifactId>
-            <version>4.1.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- PlayerPoints -->
-        <dependency>
-            <groupId>org.black_ixx</groupId>
-            <artifactId>playerpoints</artifactId>
-            <version>3.2.6</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- SpawnerMeta -->
-        <dependency>
-            <groupId>com.github.OfficialRell</groupId>
-            <artifactId>SpawnerMeta</artifactId>
-            <version>24.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.artillexstudios</groupId>
-            <artifactId>axminions</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/AxMinions-1.0.11-all.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.github.WaterArchery</groupId>
-            <artifactId>LitMinionsAPI</artifactId>
-            <version>3.1.7</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.jet315</groupId>
-            <artifactId>JetMinions</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/JetsMinions-API.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.sk89q.worldguard</groupId>
-            <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.9</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.34</version>
+            <version>1.18.36</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>dev.triumphteam</groupId>
-            <artifactId>triumph-cmd-bukkit</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>us.dynmap</groupId>
-            <artifactId>DynmapCoreAPI</artifactId>
-            <version>3.7-beta-6</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- CombatLogX API -->
-        <dependency>
-            <groupId>com.github.sirblobman.combatlogx</groupId>
-            <artifactId>api</artifactId>
-            <version>11.4-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- BlueSlimeCore -->
-        <dependency>
-            <groupId>com.github.sirblobman.api</groupId>
-            <artifactId>core</artifactId>
-            <version>2.9-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- PvPManager -->
-        <dependency>
-            <groupId>me.NoChance.PvPManager</groupId>
-            <artifactId>pvpmanager</artifactId>
-            <version>3.18.21</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- BetterRTP -->
-        <dependency>
-            <groupId>me.superronancraft</groupId>
-            <artifactId>BetterRTP</artifactId>
-            <version>3.6.13</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/BetterRTP-3.6.13.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

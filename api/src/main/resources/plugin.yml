@@ -1,0 +1,5 @@
+name: api
+version: '1.0'
+main: net.weesli.api.Api
+api-version: '1.21'
+authors: [Weesli]

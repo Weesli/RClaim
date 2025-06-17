@@ -1,82 +1,79 @@
 
-# RClaim
-
-Beautify your server with an advanced chunk-based claim system!
-
+## RClaim
+***
+<p>The best and advanced claim plugin!<br>
+The amazing features, advanced settings, easy management for players, and more.<br>
+Open source and free. You can use it for free.</p>
 
 
 ## Links
+***
+[![](https://jitpack.io/v/Weesli/RClaim.svg)](https://jitpack.io/#Weesli/RClaim) <a href="https://www.spigotmc.org/resources/rclaim-the-best-claim-plugin-user-management-gui-support-advanced-features.119083/">
+<img src="https://avatars.githubusercontent.com/u/4350249?s=200&v=4" width="20" height="20"/>
+</a>
 
-[![](https://jitpack.io/v/Weesli/RClaim.svg)](https://jitpack.io/#Weesli/RClaim)
+
 ## Fuatures
+***
 
-- Stack-based demand system buys the stack region without the need for shovel.
-- Yaml and MySQL database support.
-- Fully GUI based management.
-- Personalized authorization setting (Block breaking, Block putting etc.)
-- Claim settings (PvP, Creature spawn etc.)
-- Home system
-- Economy support (Currently only Vault can be added on request, please letme know)
-- Demand duration and duration increase
-- Demand resizing (GUI based)
-- Hologram support (Optional)
-- Minion Support
-- Spawner Support
-- Claim enter message with Actionbar, bossbar, title
+- Chunk-based claim system
+- Advanced economy supports
+- Adding, deleting and authorizing members.
+- Claim customizations.
+    - Creature killing
+    - Animal killing
+    - Explosion protection
+    - Time and weather
+    - etc.
+- Advanced member authorization
+    - Block breaking and putting
+    - door interactions
+    - live interactions
+    - pvp status
+    - crate, barrel opening situations
+    - etc.
+- Advanced plug-in hooks (for more information visit spigot mc page)
+- 100% GUI-based management
+- Claim purchase limitations and extensions
+- Claim duration management
+- Claim block and name management
+  etc.
 
-
-  
+> for more information visit spigot mc page
+ 
 ## Languages
+***
 
-[Türkçe (Turkish) ](https://github.com/Weesli/RClaim/wiki/Languages)
+> This plugin support multi languages. You can change the language in the config file. The default language is 'en' and 'tr'. <br>
+> if you wish support me for  more languages, please translate config files and send me in Discord.
 
+## Installation
+***
 
+- Download the plugin from [here](https://github.com/Weesli/RClaim/releases)
+- Put the plugin in the plugins folder
+- Restart the server
+- Use the plugin
 
-  
-## API
+## Build or compile
+***
 
-**Maven**
-
+- If you want to build the plugin yourself, you can use maven.
 ```
-	<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
-```
-
-```
-	<dependency>
-	    <groupId>com.github.Weesli</groupId>
-	    <artifactId>RClaim</artifactId>
-	    <version>Tag</version>
-	</dependency>
+git clone https://github.com/Weesli/RClaim.git
+cd RClaim
+mvn install
+mvn clean package
 ```
 
+## Contributing
+***
 
-**Gradle**
+If you want to contribute to this project, you can fork the repository and make a pull request.
 
-```
-	dependencyResolutionManagement {
-		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-		repositories {
-			mavenCentral()
-			maven { url 'https://jitpack.io' }
-		}
-	}
-```
-
-```
-	dependencies {
-	        implementation 'com.github.Weesli:RClaim:Tag'
-	}
-```
-
-
-## Wiki
-
+## Wiki (beta)
+***
 [Wiki](https://github.com/Weesli/RClaim/wiki)
 ## Contact me
-
-For any problems and suggestions you can contact [Here](https://github.com/Weesli/RClaim/issues) or [weesli](https://discord.com/users/509803473106239528) account.
+***
+For any problems and suggestions you can contact [Here](https://github.com/Weesli/RClaim/issues) or [weesli](https://discord.gg/9nsNtRzrSu) account.
