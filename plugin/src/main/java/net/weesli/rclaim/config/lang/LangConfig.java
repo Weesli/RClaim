@@ -103,6 +103,10 @@ public class LangConfig extends OkaeriConfig {
         private String hasntTpPermission = "&cYou don't have permission to teleport!";
         @CustomKey("IS_NOT_ADJACENT")
         private String isNotAdjacent = "&cThis area is not adjacent to the claim!";
+        @CustomKey("BLOCK_ENABLED")
+        private String blockEnabled = "&aClaim block is now enabled!";
+        @CustomKey("BLOCK_DISABLED")
+        private String blockDisabled = "&aClaim block is now disabled!";
         // Hook messages
 
         @CustomKey("COMBAT_SYSTEM_MESSAGE")

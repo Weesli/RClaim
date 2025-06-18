@@ -14,6 +14,7 @@ public class HologramUpdater extends BukkitRunnable {
     @Override
     public void run() {
         for (Claim claim : RClaim.getInstance().getCacheManager().getClaims().getCache().values()){
+            if (!claim.isEnableBlock())continue;
             if (RClaim.getInstance().getHologramManager().getHologramIntegration().hasHologram(claim.getID())){
                 RClaim.getInstance().getHologramManager().getHologramIntegration().updateHologram(claim.getID());
             }else {

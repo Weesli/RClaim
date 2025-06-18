@@ -296,8 +296,15 @@ public class ClaimImpl implements Claim {
 
     public void toggleBlockStatus(){
         this.enableBlock = !this.enableBlock;
-        Block block = getBlockLocation().getBlock();
-        block.setType(enableBlock ? block.getType() : Material.AIR);
+        if (enableBlock){
+            RClaim.getInstance().getHologramManager().getHologramIntegration().createHologram(getID());
+            Block block = getBlockLocation().getBlock();
+            block.setType(getBlock());
+        }else {
+            RClaim.getInstance().getHologramManager().getHologramIntegration().deleteHologram(getID());
+            Block block = getBlockLocation().getBlock();
+            block.setType(Material.AIR);
+        }
     }
 
     public void delete(boolean explode){

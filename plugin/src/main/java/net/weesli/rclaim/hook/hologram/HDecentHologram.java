@@ -17,8 +17,15 @@ public class HDecentHologram implements IClaimHologram {
     @Override
     public void createHologram(String ID) {
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(ID);
+        if (claim == null)return;
         Location hologramLocation = claim.getBlockLocation().clone().add(0.5,3.5,0.5);
-        Hologram hologram = DHAPI.createHologram(ID, hologramLocation);
+        Hologram hologram;
+        try {
+            hologram = DHAPI.createHologram(ID, hologramLocation);
+        }catch (Exception ex){
+            hologram = DHAPI.getHologram(ID);
+        }
+        if (hologram == null)return;
         for (String line : ConfigLoader.getConfig().getHologram().getHologramSettings().getHologramLines()){
             DHAPI.addHologramLine(hologram, ColorBuilder.convertColors(line
                     .replaceAll("<id>", claim.getID())
@@ -29,13 +36,16 @@ public class HDecentHologram implements IClaimHologram {
     @Override
     public void updateHologram(String ID) {
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(ID);
-        if (claim != null){
-            Hologram hologram = DHAPI.getHologram(ID);
-            for (Player player : Bukkit.getOnlinePlayers()){
-                if (!player.getUniqueId().equals(claim.getOwner())){
-                    if (!hologram.isHideState(player)){
-                        hologram.setHidePlayer(player);
-                    }
+        if (claim == null)return;
+        Hologram hologram = DHAPI.getHologram(ID);
+        if (hologram == null){
+            createHologram(ID);
+        }
+        if (hologram == null)return;
+        for (Player player : Bukkit.getOnlinePlayers()){
+            if (!player.getUniqueId().equals(claim.getOwner())){
+                if (!hologram.isHideState(player)){
+                    hologram.setHidePlayer(player);
                 }
             }
         }

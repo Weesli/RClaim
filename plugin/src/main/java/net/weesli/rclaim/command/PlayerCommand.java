@@ -151,4 +151,19 @@ public class PlayerCommand extends BaseCommand {
         claim.setDisplayName(name);
         player.sendMessage(RClaim.getInstance().getMessage("RENAME_SUCCESS"));
     }
+
+    @SubCommand("toggleblock")
+    public void toggle(Player player){
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
+        if (claim == null){
+            player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIM"));
+            return;
+        }
+        claim.toggleBlockStatus();
+        if (claim.isEnableBlock()){
+            player.sendMessage(RClaim.getInstance().getMessage("BLOCK_ENABLED"));
+        } else {
+            player.sendMessage(RClaim.getInstance().getMessage("BLOCK_DISABLED"));
+        }
+    }
 }
