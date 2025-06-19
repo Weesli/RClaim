@@ -1,5 +1,8 @@
 jdk:
   - openjdk17
 
+build:
+  modules:
+    - api
 install:
   - mvn install -Dmaven.javadoc.skip=true -DskipTests
