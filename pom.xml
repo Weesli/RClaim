@@ -8,6 +8,7 @@
     <artifactId>RClaim</artifactId>
     <version>2.3.0</version>
     <packaging>pom</packaging>
+    <name>RClaim</name>
 
     <modules>
         <module>plugin</module>

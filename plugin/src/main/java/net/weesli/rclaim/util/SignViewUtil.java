@@ -136,7 +136,6 @@ public class SignViewUtil {
                 Claim claim = (Claim) object;
                 if (name.isEmpty()) {
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 5, 1);
-                    return Collections.singletonList(SignGUIAction.runSync(RClaim.getInstance(),()->RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimTagMainMenu.class)));
                 } else {
                     RClaim.getInstance().getTagManager().addTag(claim,new ClaimTagImpl(
                             claim.getID(),
@@ -146,8 +145,8 @@ public class SignViewUtil {
                             new ArrayList<>()
                     ));
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 5, 1);
-                    return Collections.singletonList(SignGUIAction.runSync(RClaim.getInstance(),()->RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimTagMainMenu.class)));
                 }
+                return Collections.singletonList(SignGUIAction.runSync(RClaim.getInstance(),()->RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimTagMainMenu.class)));
             }
         }
         return Collections.emptyList();
