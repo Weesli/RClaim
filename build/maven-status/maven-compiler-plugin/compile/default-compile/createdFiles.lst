@@ -1,4 +1,3 @@
-net\weesli\rclaim\command\PlayerCommand$1.class
 net\weesli\rclaim\config\adapter\ClaimAdapter.class
 net\weesli\rclaim\ui\inventories\ClaimUsersMenu.class
 net\weesli\rclaim\hook\other\HPlaceholderAPI.class
@@ -19,6 +18,7 @@ net\weesli\rclaim\hook\combat\CombatLogX.class
 net\weesli\rclaim\ui\inventories\ClaimBlockMenu.class
 net\weesli\rclaim\config\Config$ClaimSettingsConfig.class
 net\weesli\rclaim\util\FormatUtil.class
+net\weesli\rclaim\input\TextInputManager$2.class
 net\weesli\rclaim\config\Config$ClaimTimeoutMessageConfig.class
 net\weesli\rclaim\config\lang\MenuConfig.class
 net\weesli\rclaim\model\SubClaimImpl.class
@@ -41,7 +41,6 @@ net\weesli\rclaim\config\Config$EffectsConfig.class
 net\weesli\rclaim\hook\spawner\SilkSpawner.class
 net\weesli\rclaim\ModuleLoader.class
 net\weesli\rclaim\config\Config$EffectsConfig$EffectConfig.class
-net\weesli\rclaim\util\SignViewUtil$1.class
 net\weesli\rclaim\config\Config$ClaimSettingsConfig$ClaimStatusConfig.class
 net\weesli\rclaim\ui\TagInventory.class
 net\weesli\rclaim\hook\manager\EconomyManager.class
@@ -52,7 +51,6 @@ net\weesli\rclaim\util\PreviewUtil$1.class
 net\weesli\rclaim\config\Config$ClaimBlockConfig$ClaimBlockItemConfig.class
 net\weesli\rclaim\command\AdminCommand.class
 net\weesli\rclaim\util\PreviewUtil.class
-net\weesli\rclaim\util\SignViewUtil.class
 net\weesli\rclaim\ui\inventories\ClaimUpgradeMenu.class
 net\weesli\rclaim\database\interfaces\IDatabase.class
 net\weesli\rclaim\util\PreviewUtil$2.class
@@ -61,6 +59,7 @@ net\weesli\rclaim\hook\hologram\IClaimHologram.class
 net\weesli\rclaim\config\adapter\ClaimAdapter$MenuRegistry.class
 net\weesli\rclaim\hook\manager\SpawnerManager.class
 net\weesli\rclaim\database\adapter\MaterialTypeAdapter.class
+net\weesli\rclaim\input\TextInputListener.class
 net\weesli\rclaim\config\Config$HologramConfig.class
 net\weesli\rclaim\database\adapter\ClaimPermissionMapAdapter.class
 net\weesli\rclaim\ui\inventories\VerifyMenu$1.class
@@ -73,12 +72,15 @@ net\weesli\rclaim\command\UnClaimCommand.class
 net\weesli\rclaim\util\BaseUtil.class
 net\weesli\rclaim\ui\ClaimInventory.class
 net\weesli\rclaim\hook\map\MapLoader.class
+net\weesli\rclaim\input\TextInputManager$TextInputAction.class
 net\weesli\rclaim\ui\inventories\VerifyMenu.class
+net\weesli\rclaim\input\TextInputManager.class
 net\weesli\rclaim\ui\inventories\ClaimSettingsMenu.class
 net\weesli\rclaim\hook\combat\PvPManager.class
 net\weesli\rclaim\ui\inventories\tag\ClaimTagUsersMenu.class
 net\weesli\rclaim\util\NameSpaceUtil.class
 net\weesli\rclaim\manager\TagManagerImpl.class
+net\weesli\rclaim\input\TextInputManager$1.class
 net\weesli\rclaim\task\HologramUpdater.class
 net\weesli\rclaim\model\ClaimTagImpl.class
 net\weesli\rclaim\command\CommandManager.class
@@ -106,6 +108,7 @@ net\weesli\rclaim\hook\spawner\SilkSpawner$1.class
 net\weesli\rclaim\util\PlayerUtil.class
 net\weesli\rclaim\manager\ClaimManagerImpl.class
 net\weesli\rclaim\event\PlayerListener.class
+net\weesli\rclaim\input\TextPlayer.class
 net\weesli\rclaim\database\adapter\LocationTypeAdapter.class
 net\weesli\rclaim\hook\other\HBetterRTP.class
 net\weesli\rclaim\hook\other\HWorldGuard.class
@@ -116,5 +119,4 @@ net\weesli\rclaim\config\Config$EnterMessageConfig.class
 net\weesli\rclaim\ui\inventories\tag\ClaimTagMainMenu.class
 net\weesli\rclaim\hook\minion\JetMinions.class
 net\weesli\rclaim\database\Loader.class
-net\weesli\rclaim\util\SignViewUtil$SignType.class
 net\weesli\rclaim\hook\spawner\IClaimSpawner.class

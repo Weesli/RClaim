@@ -1,26 +1,20 @@
 package net.weesli.rclaim.ui.inventories.tag;
 
-import de.rapha149.signgui.SignGUI;
-import de.rapha149.signgui.SignGUIAction;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimTag;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.config.adapter.model.Menu;
-import net.weesli.rclaim.model.ClaimTagImpl;
+import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.ui.ClaimInventory;
-import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rozslib.inventory.ClickableItemStack;
 import net.weesli.rozslib.inventory.types.PageableInventory;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ClaimTagMainMenu extends ClaimInventory {
@@ -54,33 +48,12 @@ public class ClaimTagMainMenu extends ClaimInventory {
                 }
             });
         }
-        builder.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-tag")),menu.getItems().get("add-tag").getIndex()), event -> callSign(player, claim));
+        builder.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-tag")),menu.getItems().get("add-tag").getIndex()), event ->
+                RClaim.getInstance().getTextInputManager().runAction(
+                        player,
+                        TextInputManager.TextInputAction.ADD_TAG_TO_CLAIM,
+                        claim
+                ));
         builder.openDefaultInventory(player);
-    }
-
-    private void callSign(Player player, Claim claim){
-        SignGUI gui = SignGUI.builder()
-                .setLines("", "----------","^^^^^^^^", "----------")
-                .setType(Material.DARK_OAK_SIGN)
-
-                .setColor(DyeColor.WHITE)
-
-                .setHandler((p, result) -> {
-                    String name = result.getLine(0);
-                    if (name.isEmpty()) {
-                        return Collections.emptyList();
-                    }else {
-                        RClaim.getInstance().getTagManager().addTag(claim,new ClaimTagImpl(
-                                claim.getID(),
-                                BaseUtil.generateId(),
-                                name,
-                                new ArrayList<>(),
-                                new ArrayList<>()
-                        ));
-                        return Collections.singletonList(SignGUIAction.runSync(RClaim.getInstance(),() -> RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimTagMainMenu.class)));
-                    }
-                })
-                .build();
-        gui.open(player);
     }
 }

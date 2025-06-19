@@ -1,14 +1,11 @@
 package net.weesli.rclaim.ui.inventories.tag;
 
-import de.rapha149.signgui.SignGUI;
-import de.rapha149.signgui.SignGUIAction;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.ClaimTag;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.config.adapter.model.Menu;
+import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.ui.TagInventory;
-import net.weesli.rclaim.util.PlayerUtil;
-import net.weesli.rclaim.util.SignViewUtil;
 import net.weesli.rozslib.inventory.ClickableItemStack;
 import net.weesli.rozslib.inventory.types.PageableInventory;
 import org.bukkit.*;
@@ -16,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
 import java.util.UUID;
 
 public class ClaimTagUsersMenu extends TagInventory {
@@ -31,7 +27,11 @@ public class ClaimTagUsersMenu extends TagInventory {
                 menu.getItems().get("add-user").getIndex(), 21,23
         );
         builder.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-user")),menu.getItems().get("add-user").getIndex()),
-                event -> SignViewUtil.viewSign(player, SignViewUtil.SignType.ADD_TAG_USER, tag));
+                event -> RClaim.getInstance().getTextInputManager().runAction(
+                        player,
+                        TextInputManager.TextInputAction.ADD_PLAYER_TO_TAG,
+                        tag
+                ));
         builder.setLayout("""
                 *********
                 *       *

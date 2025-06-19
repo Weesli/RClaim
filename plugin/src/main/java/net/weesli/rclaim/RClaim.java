@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.weesli.rclaim.api.RClaimProvider;
+import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.manager.CacheManagerImpl;
 import net.weesli.rclaim.command.CommandManager;
 import net.weesli.rclaim.config.ConfigLoader;
@@ -41,6 +42,7 @@ public final class RClaim extends JavaPlugin {
 
     private AbstractDatabase storage;
     private UIManager uiManager;
+    private TextInputManager textInputManager;
     private ClaimManagerImpl claimManager;
     private TagManagerImpl tagManager;
     private CacheManagerImpl cacheManager;
@@ -73,6 +75,7 @@ public final class RClaim extends JavaPlugin {
         claimManager = new ClaimManagerImpl();
         tagManager = new TagManagerImpl();
         cacheManager = new CacheManagerImpl();
+        textInputManager = new TextInputManager(this);
         new CommandManager();
         new Metrics(this, 	23385);
         ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");

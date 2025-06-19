@@ -30,6 +30,12 @@ DISABLE_CLAIM_BLOCK_EDIT_MODE: "&aClaim bloğu düzenleme modu kapatıldı!"
 CLAIM_LIMIT: "&cMaksimum claim sayısına ulaşıldı!"
 HASNT_TP_PERMISSION: "&cHey! TP izininiz yok!"
 IS_NOT_ADJACENT: "&cHey! Bu alan sizin claim bölgenize bitişik değil!"
+
+# claim etiketleri mesajları
+ENTER_A_TAG_NAME: "&cLütfen bir etiket ismi girin!"
+ALREADY_CREATED_TAG: "&cBu etiket zaten eklenmiş!"
+TAG_CREATED: "&aEtiket oluşturuldu!"
+ADDED_USER_TO_TAG: "&aOyuncu etiketine eklendi!"
 # Hook mesajları
 
 COMBAT_SYSTEM_MESSAGE: "&cSavaş halindeyken claim'e giremezsiniz!"
@@ -54,14 +60,3 @@ STATUS_PVP: "&cBu alanda herhangi bir oyuncuya vuramazsınız!"
 # Yönetici mesajları
 
 DELETED_CLAIMS: "&c%player%'ın claim'leri başarıyla silindi!"
-
-# Table komutları
-ENTER_PLAYER_NAME_SIGN:
-  - "--------------"
-  - "Oyuncu ismi giriniz."
-  - "--------------"
-
-ENTER_CLAIM_TAG_NAME:
-  - ""
-  - "Etiket ismi giriniz."
-  - "--------------"

@@ -107,6 +107,15 @@ public class LangConfig extends OkaeriConfig {
         private String blockEnabled = "&aClaim block is now enabled!";
         @CustomKey("BLOCK_DISABLED")
         private String blockDisabled = "&aClaim block is now disabled!";
+        // claim tags messages
+        @CustomKey("ENTER_A_TAG_NAME")
+        private String enterATagName = "&cYou must enter a tag name!";
+        @CustomKey("TAG_CREATED")
+        private String tagCreated = "&aTag created successfully!";
+        @CustomKey("ALREADY_CREATED_TAG")
+        private String alreadyCreatedTag = "&cThis tag has already been created!";
+        @CustomKey("ADDED_USER_TO_TAG")
+        private String addedUserToTag = "&aPlayer added to tag successfully!";
         // Hook messages
 
         @CustomKey("COMBAT_SYSTEM_MESSAGE")
@@ -159,17 +168,4 @@ public class LangConfig extends OkaeriConfig {
 
         @CustomKey("DELETED_CLAIMS")
         private String deletedClaims = "&cThe claims of %player% have been successfully deleted!";
-
-        @CustomKey("ENTER_PLAYER_NAME_SIGN")
-        private List<String> enterPlayerNameSign = Arrays.asList(
-                "-------------",
-                "Enter a player name",
-                "-------------"
-        );
-        @CustomKey("ENTER_CLAIM_TAG_NAME")
-        private List<String> enterClaimTagName = Arrays.asList(
-                "-------------",
-                "Enter a claim tag name",
-                "-------------"
-        );
 }
