@@ -55,6 +55,7 @@ public class ClaimsMenu extends ClaimInventory {
                         return;
                     }
                     player.teleport(target.getCenter());
+                    return;
                 }
                 RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimUpgradeMenu.class);
             });

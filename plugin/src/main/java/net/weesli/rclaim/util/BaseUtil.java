@@ -81,30 +81,28 @@ public class BaseUtil {
     }
 
     public static boolean checkPlayerClaimLimit(Player player){
-        if (!player.hasPermission("rclaim.claim.limit.*")) {
-            Optional<PermissionAttachmentInfo> limitPermission = player.getEffectivePermissions().stream()
-                    .filter(p -> p.getPermission().startsWith("rclaim.claim.limit."))
-                    .findFirst();
+        if (player.hasPermission("rclaim.claim.limit.*")) return true;
+        Optional<PermissionAttachmentInfo> limitPermission = player.getEffectivePermissions().stream()
+                .filter(p -> p.getPermission().startsWith("rclaim.claim.limit."))
+                .findFirst();
+        if (limitPermission.isPresent()) {
+            try {
+                String permission = limitPermission.get().getPermission();
+                String[] parts = permission.split("\\.");
+                int limitValue = Integer.parseInt(parts[parts.length - 1]);
 
-            if (limitPermission.isPresent()) {
-                try {
-                    String permission = limitPermission.get().getPermission();
-                    String[] parts = permission.split("\\.");
-                    int limitValue = Integer.parseInt(parts[parts.length - 1]);
+                int currentClaims = RClaim.getInstance()
+                        .getCacheManager()
+                        .getClaims()
+                        .getAllClaims(player.getUniqueId())
+                        .size();
 
-                    int currentClaims = RClaim.getInstance()
-                            .getCacheManager()
-                            .getClaims()
-                            .getAllClaims(player.getUniqueId())
-                            .size();
-
-                    if (currentClaims >= limitValue) {
-                        player.sendMessage(RClaim.getInstance().getMessage("CLAIM_LIMIT"));
-                        return false;
-                    }
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                if (currentClaims >= limitValue) {
+                    player.sendMessage(RClaim.getInstance().getMessage("CLAIM_LIMIT"));
+                    return false;
                 }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
             }
         }
         return true;
