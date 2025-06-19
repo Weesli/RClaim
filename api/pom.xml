@@ -11,9 +11,9 @@
   </parent>
 
   <groupId>net.weesli</groupId>
-  <artifactId>api</artifactId>
+  <artifactId>RClaim-api</artifactId>
   <packaging>jar</packaging>
-  <name>api</name>
+  <name>RClaim-api</name>
 
   <properties>
     <java.version>17</java.version>
