@@ -3,6 +3,6 @@ jdk:
 
 build:
   modules:
-    - api
+    - RClaim-api
 install:
   - mvn install -Dmaven.javadoc.skip=true -DskipTests
