@@ -1,8 +1,5 @@
 jdk:
   - openjdk17
 
-build:
-  modules:
-    - RClaim-api
 install:
-  - mvn install -Dmaven.javadoc.skip=true -DskipTests
+  - mvn install -pl RClaim-api -am -DskipTests -Dmaven.javadoc.skip=true
