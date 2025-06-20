@@ -1,15 +1,19 @@
 package net.weesli.rclaim.manager;
 
 import net.weesli.rclaim.RClaim;
+import net.weesli.rclaim.api.enums.ClaimPermission;
 import net.weesli.rclaim.api.events.ClaimCreateEvent;
 import net.weesli.rclaim.api.events.ClaimDeleteEvent;
 import net.weesli.rclaim.api.events.ClaimSubClaimCreateEvent;
 import net.weesli.rclaim.api.manager.ClaimManager;
 import net.weesli.rclaim.api.model.Claim;
+import net.weesli.rclaim.api.model.ClaimEffect;
+import net.weesli.rclaim.api.model.ClaimTag;
 import net.weesli.rclaim.api.model.SubClaim;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.api.enums.ClaimStatus;
 import net.weesli.rclaim.api.enums.ExplodeCause;
+import net.weesli.rclaim.model.ClaimEffectImpl;
 import net.weesli.rclaim.model.ClaimImpl;
 import net.weesli.rclaim.model.SubClaimImpl;
 import net.weesli.rclaim.util.BaseUtil;
@@ -24,6 +28,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static net.weesli.rclaim.util.BaseUtil.generateId;
 
@@ -39,6 +46,38 @@ public class ClaimManagerImpl implements ClaimManager {
 
     public Claim getClaim(String id){
         return RClaim.getInstance().getCacheManager().getClaims().get(id);
+    }
+
+    public void createClaim(
+            String id,
+            String displayName,
+            UUID owner,
+            List<UUID> members,
+            List<ClaimStatus> claimStatuses,
+            int x,
+            int z,
+            String worldName,
+            Map<UUID, List<ClaimPermission>> claimPermissions,
+            List<ClaimEffect> effects,
+            Material block,
+            boolean enableBlock,
+            Location blockLocation,
+            List<ClaimTag> claimTags,
+            List<SubClaim> subClaims,
+            int timestamp
+    ){
+        Claim claim = new ClaimImpl(id, owner, members, claimStatuses, x, z, worldName);
+        claim.setDisplayName(displayName);
+        for (Map.Entry<UUID, List<ClaimPermission>> entry : claimPermissions.entrySet()) {
+            claim.addPermission(entry.getKey(), entry.getValue().get(0));
+        }
+        claim.setBlock(block);
+        claim.setEnableBlock(enableBlock);
+        claim.setBlockLocation(blockLocation);
+        claim.getClaimTags().addAll(claimTags);
+        claim.getSubClaims().addAll(subClaims);
+        claim.setTimestamp(timestamp);
+        RClaim.getInstance().getCacheManager().getClaims().addClaim(claim);
     }
 
     public boolean createSubClaim(Player player, Claim claim, Location location){

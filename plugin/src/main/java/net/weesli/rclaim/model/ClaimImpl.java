@@ -45,6 +45,7 @@ public class ClaimImpl implements Claim {
     public ClaimImpl(){
 
     }
+
     public ClaimImpl(String ID, UUID owner, List<UUID> members, List<ClaimStatus> claimStatuses, int x, int z, String worldName) {
         this.ID = ID;
         this.owner = owner;

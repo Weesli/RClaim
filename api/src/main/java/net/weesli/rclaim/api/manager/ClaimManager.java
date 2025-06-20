@@ -1,9 +1,19 @@
 package net.weesli.rclaim.api.manager;
 
+import net.weesli.rclaim.api.enums.ClaimPermission;
+import net.weesli.rclaim.api.enums.ClaimStatus;
 import net.weesli.rclaim.api.model.Claim;
+import net.weesli.rclaim.api.model.ClaimEffect;
+import net.weesli.rclaim.api.model.ClaimTag;
+import net.weesli.rclaim.api.model.SubClaim;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Provides an API for managing land claims and sub-claims.
@@ -54,6 +64,25 @@ public interface ClaimManager {
      * @param owner The player who will own the claim.
      */
     void createClaim(Chunk chunk, Player owner);
+
+    void createClaim(
+            String id,
+            String displayName,
+            UUID owner,
+            List<UUID> members,
+            List<ClaimStatus> claimStatuses,
+            int x,
+            int z,
+            String worldName,
+            Map<UUID, List<ClaimPermission>> claimPermissions,
+            List<ClaimEffect> effects,
+            Material block,
+            boolean enableBlock,
+            Location blockLocation,
+            List<ClaimTag> claimTags,
+            List<SubClaim> subClaims,
+            int timestamp
+    );
 
     /**
      * Checks if a chunk is suitable for creating a new claim.
