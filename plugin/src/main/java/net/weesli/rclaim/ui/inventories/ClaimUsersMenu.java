@@ -50,9 +50,12 @@ public class ClaimUsersMenu extends ClaimInventory {
                 permissionMenu.openInventory(player, claim);
             });
         }
-        inventory.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-member")),menu.getItems().get("add-member").getIndex()),event ->
-                        RClaim.getInstance().getTextInputManager().runAction(player,
-                                TextInputManager.TextInputAction.ADD_PLAYER_TO_CLAIM, claim));
+        inventory.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-member")),menu.getItems().get("add-member").getIndex()),event ->{
+            player.closeInventory();
+            player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
+            RClaim.getInstance().getTextInputManager().runAction(player,
+                    TextInputManager.TextInputAction.ADD_PLAYER_TO_CLAIM, claim);
+        });
         inventory.openDefaultInventory(player);
     }
 }

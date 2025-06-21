@@ -1,10 +1,12 @@
 package net.weesli.rclaim.input;
 
 import net.weesli.rclaim.RClaim;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 
 public class TextInputListener implements Listener {
 
@@ -18,8 +20,10 @@ public class TextInputListener implements Listener {
                 return;
             }
             event.setCancelled(true);
-            RClaim.getInstance().getTextInputManager().processInput(player, msg);
-            textPlayer.cancel();
+            Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> {
+                RClaim.getInstance().getTextInputManager().processInput(player, msg);
+                textPlayer.cancel();
+            });
         }
     }
 }

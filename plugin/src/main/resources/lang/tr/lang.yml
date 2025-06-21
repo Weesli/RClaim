@@ -36,6 +36,7 @@ ENTER_A_TAG_NAME: "&cLütfen bir etiket ismi girin!"
 ALREADY_CREATED_TAG: "&cBu etiket zaten eklenmiş!"
 TAG_CREATED: "&aEtiket oluşturuldu!"
 ADDED_USER_TO_TAG: "&aOyuncu etiketine eklendi!"
+ENTER_TAG_NAME: "&aLütfen bir etiket ismi girin!"
 # Hook mesajları
 
 COMBAT_SYSTEM_MESSAGE: "&cSavaş halindeyken claim'e giremezsiniz!"

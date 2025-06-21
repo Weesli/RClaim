@@ -108,6 +108,8 @@ public class LangConfig extends OkaeriConfig {
         @CustomKey("BLOCK_DISABLED")
         private String blockDisabled = "&aClaim block is now disabled!";
         // claim tags messages
+        @CustomKey("ENTER_TAG_NAME")
+        private String enterTagName = "&cEnter tag name!";
         @CustomKey("ENTER_A_TAG_NAME")
         private String enterATagName = "&cYou must enter a tag name!";
         @CustomKey("TAG_CREATED")

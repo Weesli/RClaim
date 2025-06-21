@@ -27,11 +27,16 @@ public class ClaimTagUsersMenu extends TagInventory {
                 menu.getItems().get("add-user").getIndex(), 21,23
         );
         builder.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-user")),menu.getItems().get("add-user").getIndex()),
-                event -> RClaim.getInstance().getTextInputManager().runAction(
-                        player,
-                        TextInputManager.TextInputAction.ADD_PLAYER_TO_TAG,
-                        tag
-                ));
+                event -> {
+            player.closeInventory();
+            player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
+                    RClaim.getInstance().getTextInputManager().runAction(
+                            player,
+                            TextInputManager.TextInputAction.ADD_PLAYER_TO_TAG,
+                            tag
+                    );
+
+                });
         builder.setLayout("""
                 *********
                 *       *

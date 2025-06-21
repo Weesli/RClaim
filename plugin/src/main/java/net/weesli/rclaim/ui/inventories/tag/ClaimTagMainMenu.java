@@ -48,12 +48,16 @@ public class ClaimTagMainMenu extends ClaimInventory {
                 }
             });
         }
-        builder.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-tag")),menu.getItems().get("add-tag").getIndex()), event ->
-                RClaim.getInstance().getTextInputManager().runAction(
-                        player,
-                        TextInputManager.TextInputAction.ADD_TAG_TO_CLAIM,
-                        claim
-                ));
+        builder.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-tag")),menu.getItems().get("add-tag").getIndex()), event ->{
+            player.closeInventory();
+            player.sendMessage(RClaim.getInstance().getMessage("ENTER_TAG_NAME"));
+            RClaim.getInstance().getTextInputManager().runAction(
+                    player,
+                    TextInputManager.TextInputAction.ADD_TAG_TO_CLAIM,
+                    claim
+            );
+
+                });
         builder.openDefaultInventory(player);
     }
 }

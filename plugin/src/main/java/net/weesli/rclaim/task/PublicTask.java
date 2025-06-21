@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class PublicTask extends BukkitRunnable {
 
     public PublicTask() {
-        this.runTaskTimerAsynchronously(RClaim.getInstance(),0,20);
+        this.runTaskTimer(RClaim.getInstance(),0,20);
     }
 
     @Override
