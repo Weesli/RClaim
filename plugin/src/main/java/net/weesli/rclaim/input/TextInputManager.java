@@ -79,12 +79,10 @@ public class TextInputManager {
             player.sendMessage(RClaim.getInstance().getMessage("ALREADY_TRUSTED_PLAYER"));
             return;
         }
-        ClaimTrustEvent event = new ClaimTrustEvent(player.getUniqueId(), PlayerUtil.getPlayer(msg).getUniqueId());
-        RClaim.getInstance().getServer().getPluginManager().callEvent(event);
-        if (event.isCancelled()) {
+        claim.addMember(PlayerUtil.getPlayer(msg).getUniqueId());
+        if (!claim.isMember(player.getUniqueId())) {
             return;
         }
-        claim.addMember(PlayerUtil.getPlayer(msg).getUniqueId());
         player.sendMessage(RClaim.getInstance().getMessage("TRUSTED_PLAYER"));
         RClaim.getInstance().getUiManager().openInventory(
                 player,

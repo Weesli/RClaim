@@ -2,6 +2,7 @@ package net.weesli.rclaim.api.events;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.weesli.rclaim.api.model.Claim;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
@@ -14,10 +15,12 @@ public class ClaimUnTrustEvent extends ClaimEvent implements Cancellable {
 
     private UUID player;
     private UUID target;
+    private Claim claim;
 
-    public ClaimUnTrustEvent(UUID player, UUID target) {
+    public ClaimUnTrustEvent(Claim claim,UUID player, UUID target) {
         this.player = player;
         this.target = target;
+        this.claim = claim;
     }
 
     @Override

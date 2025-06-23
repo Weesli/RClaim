@@ -134,7 +134,7 @@ public class ClaimImpl implements Claim {
     }
 
     public void addMember(UUID uuid) {
-        ClaimTrustEvent event = new ClaimTrustEvent(owner, uuid);
+        ClaimTrustEvent event = new ClaimTrustEvent(this,owner, uuid);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()){
             members.add(uuid);
@@ -142,7 +142,7 @@ public class ClaimImpl implements Claim {
     }
 
     public void removeMember(UUID uuid) {
-        ClaimUnTrustEvent event = new ClaimUnTrustEvent(owner, uuid);
+        ClaimUnTrustEvent event = new ClaimUnTrustEvent(this,owner, uuid);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()){
             members.removeIf(u -> u.equals(uuid));
