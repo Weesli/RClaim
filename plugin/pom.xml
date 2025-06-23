@@ -137,11 +137,6 @@
       <url>https://repo.codemc.org/repository/maven-public/</url>
     </repository>
     <repository>
-      <id>ronanplugins-releases</id>
-      <name>Ronan Plugins</name>
-      <url>https://repo.ronanplugins.com/releases</url>
-    </repository>
-    <repository>
       <id>okaeri-repo</id>
       <url>https://storehouse.okaeri.eu/repository/maven-public/</url>
     </repository>
