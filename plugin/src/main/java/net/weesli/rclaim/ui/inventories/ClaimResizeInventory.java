@@ -175,15 +175,18 @@ public class ClaimResizeInventory extends ClaimInventory {
     }
 
     private boolean isAdjacent(Claim claim, Location targetLocation) {
-        int targetChunkX = targetLocation.getBlockX() >> 4;
-        int targetChunkZ = targetLocation.getBlockZ() >> 4;
-
-        if (isChunkAdjacent(claim.getX(), claim.getZ(), targetChunkX, targetChunkZ)) {
+        int targetChunkX = targetLocation.getChunk().getX();
+        int targetChunkZ = targetLocation.getChunk().getZ();
+        int claimChunkX = claim.getX() / 16;
+        int claimChunkZ = claim.getZ() / 16;
+        if (isChunkAdjacent(claimChunkX, claimChunkZ, targetChunkX, targetChunkZ)) {
             return true;
         }
 
         for (SubClaim subClaim : claim.getSubClaims()) {
-            if (isChunkAdjacent(subClaim.getX(), subClaim.getZ(), targetChunkX, targetChunkZ)) {
+            int subClaimChunkX = subClaim.getX();
+            int subClaimChunkZ = subClaim.getZ();
+            if (isChunkAdjacent(subClaimChunkX, subClaimChunkZ, targetChunkX, targetChunkZ)) {
                 return true;
             }
         }
