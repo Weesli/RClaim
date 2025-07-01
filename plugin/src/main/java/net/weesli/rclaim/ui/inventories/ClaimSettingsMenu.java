@@ -3,6 +3,7 @@ package net.weesli.rclaim.ui.inventories;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.events.ClaimStatusChangeEvent;
 import net.weesli.rclaim.api.model.Claim;
+import net.weesli.rclaim.api.model.SubClaim;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.config.adapter.model.Menu;
 import net.weesli.rclaim.config.adapter.model.MenuItem;
@@ -11,10 +12,16 @@ import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rozslib.inventory.ClickableItemStack;
 import net.weesli.rozslib.inventory.types.SimpleInventory;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.LinkedList;
 
 public class ClaimSettingsMenu extends ClaimInventory {
 
@@ -47,6 +54,13 @@ public class ClaimSettingsMenu extends ClaimInventory {
         }
         clickableItem.getItemStack().setItemMeta(meta);
         builder.setItem(clickableItem,event -> {
+            if (status.equals(ClaimStatus.PVP)){
+                boolean changeablePvP = isChangeablePvP(claim);
+                if (!changeablePvP){
+                    player.sendMessage(RClaim.getInstance().getMessage("PVP_STATUS_NOT_CHANGEABLE"));
+                    return;
+                }
+            }
             if (claim.checkStatus(status)) {
                 claim.removeClaimStatus(status);
                 ClaimStatusChangeEvent changeEvent = new ClaimStatusChangeEvent(player, claim,status,false);
@@ -59,5 +73,29 @@ public class ClaimSettingsMenu extends ClaimInventory {
             }
             openInventory(player, claim);
         });
+    }
+
+    private boolean isChangeablePvP(Claim claim) {
+        LinkedList<Location> locations = new LinkedList<>();
+        for (SubClaim subClaim : claim.getSubClaims()) {
+            locations.add(new Location(
+                    Bukkit.getWorld(claim.getWorldName()),
+                    (subClaim.getX() * 16) + 8,
+                    0,
+                    (subClaim.getZ() * 16) + 8
+            ));
+        }
+        locations.add(claim.getCenter().clone());
+        for (Location location : locations) {
+            Chunk chunk = location.getChunk();
+            for (Entity entity : chunk.getEntities()){
+                if (entity instanceof Player player) {
+                    if (!claim.isOwner(player.getUniqueId()) && !claim.isMember(player.getUniqueId())){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }

@@ -14,25 +14,19 @@ import net.weesli.rclaim.util.FormatUtil;
 import net.weesli.rozslib.events.BlockLeftClickEvent;
 import net.weesli.rozslib.events.BlockRightClickEvent;
 import net.weesli.rozslib.events.PlayerDamageByPlayerEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.WeatherType;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockSpreadEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ClaimListener implements Listener {
 
@@ -225,7 +219,6 @@ public class ClaimListener implements Listener {
             return;
         }
         if (!claim.isOwner(player.getUniqueId())) {
-            e.setCancelled(true);
             return;
         }
         if (claimBlockEditors.contains(player)) {
@@ -258,4 +251,23 @@ public class ClaimListener implements Listener {
 
     }
 
+    @EventHandler
+    public void onFluidEvent(BlockFromToEvent e) {
+        // placed location
+        Location placedLocation = e.getBlock().getLocation();
+        // target location
+        Location targetLocation = e.getToBlock().getLocation();
+        Claim placedArea = RClaim.getInstance().getClaimManager().getClaim(placedLocation);
+        Claim targetArea = RClaim.getInstance().getClaimManager().getClaim(targetLocation);
+        if (placedArea == null && targetArea != null){
+            e.setCancelled(true);
+        }
+        if (placedArea != null && targetArea != null){
+            UUID placedAreaOwner = placedArea.getOwner();
+            UUID targetAreaOwner = targetArea.getOwner();
+            if (!placedAreaOwner.equals(targetAreaOwner)){
+                e.setCancelled(true);
+            }
+        }
+    }
 }

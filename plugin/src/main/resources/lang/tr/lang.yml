@@ -30,7 +30,10 @@ DISABLE_CLAIM_BLOCK_EDIT_MODE: "&aClaim bloğu düzenleme modu kapatıldı!"
 CLAIM_LIMIT: "&cMaksimum claim sayısına ulaşıldı!"
 HASNT_TP_PERMISSION: "&cHey! TP izininiz yok!"
 IS_NOT_ADJACENT: "&cHey! Bu alan sizin claim bölgenize bitişik değil!"
-
+VERY_CLOSE_TO_ANOTHER_CLAIM: "&cAlmaya çalıştığınız bölge bir claim'in bölgesine yakın!"
+ALREADY_MAX_DAY: "&cClaim süresi maximum seviyeye ulaştı!"
+RENAME_SUCCESS: "&aClaim ismi değiştirildi!"
+PVP_STATUS_NOT_CHANGEABLE: "&cHey! Bu claim'in pvp durumu degistirilemez çünkü bir düşman şuan senin bölgende!"
 # claim etiketleri mesajları
 ENTER_A_TAG_NAME: "&cLütfen bir etiket ismi girin!"
 ALREADY_CREATED_TAG: "&cBu etiket zaten eklenmiş!"

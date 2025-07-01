@@ -23,15 +23,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.LingeringPotionSplashEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class PlayerListener implements Listener {
 
@@ -42,6 +44,7 @@ public class PlayerListener implements Listener {
         if (claim == null){
             return;
         }
+        if (claim.isOwner(e.getPlayer().getUniqueId())){return;}
         ClaimTag tag = RClaim.getInstance().getTagManager().isPlayerInTag(e.getPlayer(), claim.getID());
         if (tag != null){
             if (tag.getPermissions().contains(ClaimPermission.BLOCK_PLACE)){
@@ -58,9 +61,7 @@ public class PlayerListener implements Listener {
     public void onBreakBlock(BlockBreakEvent e){
         if (e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(e.getBlock().getLocation().getChunk());
-        if (claim == null){
-            return;
-        }
+        if (claim == null){return;}
         if (claim.isOwner(e.getPlayer().getUniqueId())){return;}
         ClaimTag tag = RClaim.getInstance().getTagManager().isPlayerInTag(e.getPlayer(), claim.getID());
         if (e.getBlock().getState() instanceof InventoryHolder){
@@ -107,7 +108,8 @@ public class PlayerListener implements Listener {
                 player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_CONTAINER_OPEN"));
             }
         }
-        if (e.getClickedBlock().getType().name().contains("DOOR")){
+        if (e.getClickedBlock().getType().name().contains("DOOR") ||
+        e.getClickedBlock().getType().name().contains("GATE")){
             Claim claim = RClaim.getInstance().getClaimManager().getClaim(e.getPlayer().getLocation().getChunk());
             if (claim == null){
                 return;
@@ -204,16 +206,31 @@ public class PlayerListener implements Listener {
         }
     }
 
+    private final Map<UUID, Long> pickupCooldowns = new HashMap<>();
+    private final long COOLDOWN_MS = 5000;
+
     @EventHandler
-    public void onPickup(PlayerPickupItemEvent e){
-        if (e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
-        Player player = e.getPlayer();
-        Claim claim = RClaim.getInstance().getClaimManager().getClaim(e.getPlayer().getLocation().getChunk());
+    public void onPickup(EntityPickupItemEvent e){
+        if (!(e.getEntity() instanceof Player player)){
+            return;
+        }
+        if (player.hasPermission("rclaim.admin.bypass")){return;}
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation().getChunk());
         if (claim == null){
             return;
         }
         if (claim.isOwner(player.getUniqueId())){return;}
-        if (!claim.isMember(player.getUniqueId())){return;}
+        if (!claim.isMember(player.getUniqueId())){
+            e.setCancelled(true);
+            UUID uuid = player.getUniqueId();
+            long now = System.currentTimeMillis();
+            if (pickupCooldowns.containsKey(uuid)) {
+                long last = pickupCooldowns.getOrDefault(uuid, 0L);
+                if ((now - last) < COOLDOWN_MS) return;
+            }
+            pickupCooldowns.put(uuid, now);
+            player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_PICKUP_ITEM"));
+        }
         ClaimTag tag = RClaim.getInstance().getTagManager().isPlayerInTag(player, claim.getID());
         if (tag != null){
             if (tag.getPermissions().contains(ClaimPermission.PICKUP_ITEM)){
@@ -222,10 +239,16 @@ public class PlayerListener implements Listener {
         }
         if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.PICKUP_ITEM)){
             e.setCancelled(true);
+            UUID uuid = player.getUniqueId();
+            long now = System.currentTimeMillis();
+            if (pickupCooldowns.containsKey(uuid)) {
+                long last = pickupCooldowns.getOrDefault(uuid, 0L);
+                if ((now - last) < COOLDOWN_MS) return;
+            }
             player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_PICKUP_ITEM"));
+            pickupCooldowns.put(uuid, now);
         }
     }
-
     @EventHandler
     public void onPortal(PlayerTeleportEvent e){
         if (e.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) || e.getCause().equals(PlayerTeleportEvent.TeleportCause.END_PORTAL)){
@@ -325,6 +348,36 @@ public class PlayerListener implements Listener {
         }
         if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.USE_POTION)){
             e.setCancelled(true);
+            // give again potion to player
+            ItemStack itemStack = e.getEntity().getItem();
+            player.getInventory().addItem(itemStack);
+            player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_USE_POTION"));
+        }
+    }
+
+    @EventHandler
+    public void onLingerEvent(LingeringPotionSplashEvent e){
+        ProjectileSource source = e.getEntity().getShooter();
+        if (!(source instanceof Player player)) {
+            return;
+        }
+        if (player.hasPermission("rclaim.admin.bypass")){return;}
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation().getChunk());
+        if (claim == null){
+            return;
+        }
+        if (claim.isOwner(player.getUniqueId())){return;}
+        ClaimTag tag = RClaim.getInstance().getTagManager().isPlayerInTag(player, claim.getID());
+        if (tag != null){
+            if (tag.getPermissions().contains(ClaimPermission.USE_POTION)){
+                return;
+            }
+        }
+        if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.USE_POTION)){
+            e.setCancelled(true);
+            // give again potion to player
+            ItemStack itemStack = e.getEntity().getItem();
+            player.getInventory().addItem(itemStack);
             player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_USE_POTION"));
         }
     }
@@ -469,5 +522,54 @@ public class PlayerListener implements Listener {
         itemStack.setAmount(itemStack.getAmount()-1);
         e.getPlayer().getInventory().setItemInMainHand(itemStack);
         player.sendMessage(RClaim.getInstance().getMessage("SUCCESS_CLAIM_CREATED"));
+    }
+
+    // this area for liquid blocks place and fill event
+    // if player is claim not owner or member, player don't fill or place any liquid
+    @EventHandler
+    public void onFluidPlaceEvent(PlayerBucketEmptyEvent e) {
+        if(e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
+        Location loc = e.getBlockClicked().getLocation();
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(loc);
+        if (claim == null) {
+            return;
+        }
+        if (!claim.isOwner(e.getPlayer().getUniqueId())) {
+            e.setCancelled(true);
+        }
+        if (claim.isOwner(e.getPlayer().getUniqueId())){return;}
+        ClaimTag tag = RClaim.getInstance().getTagManager().isPlayerInTag(e.getPlayer(), claim.getID());
+        if (tag != null){
+            if (tag.getPermissions().contains(ClaimPermission.BLOCK_PLACE)){
+                return;
+            }
+        }
+        if (!claim.checkPermission(e.getPlayer().getUniqueId(), ClaimPermission.BLOCK_PLACE)){
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(RClaim.getInstance().getMessage("PERMISSION_BLOCK_PLACE"));
+        }
+    }
+    @EventHandler
+    public void onFluidPlaceEvent(PlayerBucketFillEvent e) {
+        if(e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
+        Location loc = e.getBlockClicked().getLocation();
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(loc);
+        if (claim == null) {
+            return;
+        }
+        if (!claim.isOwner(e.getPlayer().getUniqueId())) {
+            e.setCancelled(true);
+        }
+        if (claim.isOwner(e.getPlayer().getUniqueId())){return;}
+        ClaimTag tag = RClaim.getInstance().getTagManager().isPlayerInTag(e.getPlayer(), claim.getID());
+        if (tag != null){
+            if (tag.getPermissions().contains(ClaimPermission.BLOCK_BREAK)){
+                return;
+            }
+        }
+        if (!claim.checkPermission(e.getPlayer().getUniqueId(), ClaimPermission.BLOCK_BREAK)){
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(RClaim.getInstance().getMessage("PERMISSION_BLOCK_BREAK"));
+        }
     }
 }

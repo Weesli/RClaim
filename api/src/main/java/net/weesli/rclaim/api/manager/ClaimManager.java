@@ -65,25 +65,6 @@ public interface ClaimManager {
      */
     void createClaim(Chunk chunk, Player owner);
 
-    void createClaim(
-            String id,
-            String displayName,
-            UUID owner,
-            List<UUID> members,
-            List<ClaimStatus> claimStatuses,
-            int x,
-            int z,
-            String worldName,
-            Map<UUID, List<ClaimPermission>> claimPermissions,
-            List<ClaimEffect> effects,
-            Material block,
-            boolean enableBlock,
-            Location blockLocation,
-            List<ClaimTag> claimTags,
-            List<SubClaim> subClaims,
-            int timestamp
-    );
-
     /**
      * Checks if a chunk is suitable for creating a new claim.
      * Suitability may depend on whether the chunk is already claimed, restricted, or protected.

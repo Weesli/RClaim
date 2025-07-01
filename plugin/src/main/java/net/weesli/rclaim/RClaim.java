@@ -57,6 +57,7 @@ public final class RClaim extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        
         instance = this;
         if (this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
             new HPlaceholderAPI().register();

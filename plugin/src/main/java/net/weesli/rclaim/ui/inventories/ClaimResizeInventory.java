@@ -111,6 +111,9 @@ public class ClaimResizeInventory extends ClaimInventory {
             return menu.getItems().get("starter-claim");
         }
         Claim targetClaim = RClaim.getInstance().getCacheManager().getClaims().getCache().values().stream().filter(c -> {
+            if (c.contains(location)) {
+                return true;
+            }
             for (SubClaim subClaim : c.getSubClaims()){
                 if (subClaim.contains(location)) {
                     return true;
@@ -137,7 +140,7 @@ public class ClaimResizeInventory extends ClaimInventory {
             return;
         }
         if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive() &&
-                !RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, ConfigLoader.getConfig().getClaimSettings().getClaimCost())) {
+                !RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay() * 30)) {
             player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));
             return;
         }
@@ -170,7 +173,7 @@ public class ClaimResizeInventory extends ClaimInventory {
 
     private int calculateSubClaimCost(Claim claim) {
         int totalSubClaimCount = claim.getSubClaims().size();
-        int defaultClaimCost = ConfigLoader.getConfig().getClaimSettings().getClaimCost();
+        int defaultClaimCost = ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay() * 30;
         return (int) (defaultClaimCost + (totalSubClaimCount * (defaultClaimCost * 0.1)));
     }
 

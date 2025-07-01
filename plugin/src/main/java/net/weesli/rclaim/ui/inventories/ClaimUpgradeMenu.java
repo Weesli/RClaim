@@ -26,18 +26,28 @@ public class ClaimUpgradeMenu extends ClaimInventory {
         inventory.setLayout("").fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), true);
         ItemStack itemStack = getItemStack(menu.getItems().get("item-settings"));
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<cost>", String.valueOf(ConfigLoader.getConfig().getClaimSettings().getClaimCost()))).collect(Collectors.toList()));
+        // calculate cost for claim
+        int claimCostPerDay = ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay();
+        int currentDayCount = claim.getTimestamp() / (60 * 60 * 24);
+        if (currentDayCount >= 29){
+            player.sendMessage(RClaim.getInstance().getMessage("ALREADY_MAX_DAY"));
+            return;
+        }
+        int suitableDayCount = (30 - currentDayCount);
+        System.out.println(suitableDayCount);
+        int totalClaimCost = claimCostPerDay * suitableDayCount;
+        meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<cost>", String.valueOf(totalClaimCost))).collect(Collectors.toList()));
         itemStack.setItemMeta(meta);
         inventory.setItem(new ClickableItemStack(itemStack, menu.getItems().get("item-settings").getIndex()), event -> {
             if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive()){
-                if (!RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, ConfigLoader.getConfig().getClaimSettings().getClaimCost())){
+                if (!RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, totalClaimCost)){
                     player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));
                     return;
                 }
-                RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, ConfigLoader.getConfig().getClaimSettings().getClaimCost());
+                RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, totalClaimCost);
                 player.sendMessage(RClaim.getInstance().getMessage("TIME_UPGRADE"));
             }
-            int duration = BaseUtil.getSec(ConfigLoader.getConfig().getClaimSettings().getClaimDuration());
+            int duration = BaseUtil.getSec(suitableDayCount * 24 * 60 * 60);
             claim.addTimestamp(duration);
         });
         inventory.openInventory(player);

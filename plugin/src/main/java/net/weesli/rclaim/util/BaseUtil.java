@@ -107,4 +107,18 @@ public class BaseUtil {
         }
         return true;
     }
+
+    public static boolean isBetweenAnyClaim(Chunk chunk) {
+        int minSize = ConfigLoader.getConfig().getMinBetweenClaim();
+        int currentX = chunk.getX() * 16;
+        int currentZ = chunk.getZ() * 16;
+        Location location = new Location(chunk.getWorld(), currentX, 0, currentZ);
+        for (Claim claim : RClaim.getInstance().getCacheManager().getClaims().getCache().values()) {
+            if (!claim.getCenter().getWorld().getName().contains(chunk.getWorld().getName())){continue;}
+            System.out.println(location.distance(claim.getCenter()));
+            System.out.println(minSize);
+            if (location.distance(claim.getCenter()) < minSize) return false;
+        }
+        return true;
+    }
 }

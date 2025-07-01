@@ -15,7 +15,6 @@ public class ClaimDeleteEvent extends ClaimEvent implements Cancellable {
     private ExplodeCause cause;
 
     public ClaimDeleteEvent(Claim claim, ExplodeCause cause) {
-        super(true); //this is an async event
         this.claim = claim;
         this.cause = cause;
     }

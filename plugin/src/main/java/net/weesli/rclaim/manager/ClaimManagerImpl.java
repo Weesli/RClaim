@@ -48,38 +48,6 @@ public class ClaimManagerImpl implements ClaimManager {
         return RClaim.getInstance().getCacheManager().getClaims().get(id);
     }
 
-    public void createClaim(
-            String id,
-            String displayName,
-            UUID owner,
-            List<UUID> members,
-            List<ClaimStatus> claimStatuses,
-            int x,
-            int z,
-            String worldName,
-            Map<UUID, List<ClaimPermission>> claimPermissions,
-            List<ClaimEffect> effects,
-            Material block,
-            boolean enableBlock,
-            Location blockLocation,
-            List<ClaimTag> claimTags,
-            List<SubClaim> subClaims,
-            int timestamp
-    ){
-        Claim claim = new ClaimImpl(id, owner, members, claimStatuses, x, z, worldName);
-        claim.setDisplayName(displayName);
-        for (Map.Entry<UUID, List<ClaimPermission>> entry : claimPermissions.entrySet()) {
-            claim.addPermission(entry.getKey(), entry.getValue().get(0));
-        }
-        claim.setBlock(block);
-        claim.setEnableBlock(enableBlock);
-        claim.setBlockLocation(blockLocation);
-        claim.getClaimTags().addAll(claimTags);
-        claim.getSubClaims().addAll(subClaims);
-        claim.setTimestamp(timestamp);
-        RClaim.getInstance().getCacheManager().getClaims().addClaim(claim);
-    }
-
     public boolean createSubClaim(Player player, Claim claim, Location location){
         Chunk chunk = location.getChunk();
         SubClaim subClaim = new SubClaimImpl(claim.getID(), chunk.getX(), chunk.getZ());
@@ -100,6 +68,11 @@ public class ClaimManagerImpl implements ClaimManager {
     public void createClaim(Chunk chunk, Player owner) {
         boolean hasLimit = BaseUtil.checkPlayerClaimLimit(owner); // if player has limit for create claim
         if(!hasLimit) return;
+        boolean isBetweenAnyClaim = BaseUtil.isBetweenAnyClaim(chunk); // if chunk is between any claim
+        if (!isBetweenAnyClaim) {
+            owner.sendMessage(RClaim.getInstance().getMessage("VERY_CLOSE_TO_ANOTHER_CLAIM"));
+            return;
+        }
         String id = generateId();
         Claim claim = new ClaimImpl(id, owner.getUniqueId(), new ArrayList<>() , new ArrayList<>(), chunk.getX() * 16,chunk.getZ() * 16, chunk.getWorld().getName());
         ClaimCreateEvent event = new ClaimCreateEvent(owner, claim);
@@ -111,7 +84,7 @@ public class ClaimManagerImpl implements ClaimManager {
                     PersistentDataType.STRING,
                     claim.getID()
             );
-            Block block = owner.getWorld().getBlockAt(claim.getCenter());
+            Block block = owner.getWorld().getBlockAt(claim.getCenter().add(0,1,0));
 
             block.setType(Material.BEDROCK);
 
@@ -122,7 +95,9 @@ public class ClaimManagerImpl implements ClaimManager {
                             claim.addClaimStatus(status);
                         }
                     });
+            owner.sendMessage(RClaim.getInstance().getMessage("SUCCESS_CLAIM_CREATED"));
         }
+
     }
 
     public void removeClaim(Claim claim) {
@@ -140,23 +115,21 @@ public class ClaimManagerImpl implements ClaimManager {
         if (claim == null){
             return;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(RClaim.getInstance(), () -> {
-            ClaimDeleteEvent event = new ClaimDeleteEvent(claim,cause);
-            Bukkit.getPluginManager().callEvent(event);
-            if (!event.isCancelled()){
-                removeClaim(claim);
-                RClaim.getInstance().getStorage().deleteClaim(ID);
-                if (ConfigLoader.getConfig().getClaimTimeoutMessage().isEnabled()){
-                    ConfigLoader.getConfig().getClaimTimeoutMessage().getText()
-                            .stream().map(line-> ColorBuilder.convertColors(line)
-                                    .replaceAll("%player%", Bukkit.getPlayer(claim.getOwner()).getName())
-                                    .replaceAll("%x%", String.valueOf(claim.getX()))
-                                    .replaceAll("%z%", String.valueOf(claim.getZ()))
-                                    .replaceAll("%world%", claim.getWorldName())
-                            ).forEach(Bukkit::broadcastMessage);
-                }
+        ClaimDeleteEvent event = new ClaimDeleteEvent(claim,cause);
+        Bukkit.getPluginManager().callEvent(event);
+        if (!event.isCancelled()){
+            removeClaim(claim);
+            RClaim.getInstance().getStorage().deleteClaim(ID);
+            if (ConfigLoader.getConfig().getClaimTimeoutMessage().isEnabled()){
+                ConfigLoader.getConfig().getClaimTimeoutMessage().getText()
+                        .stream().map(line-> ColorBuilder.convertColors(line)
+                                .replaceAll("%player%", Bukkit.getPlayer(claim.getOwner()).getName())
+                                .replaceAll("%x%", String.valueOf(claim.getX()))
+                                .replaceAll("%z%", String.valueOf(claim.getZ()))
+                                .replaceAll("%world%", claim.getWorldName())
+                        ).forEach(Bukkit::broadcastMessage);
             }
-        });
+        }
     }
 
     public boolean isSuitable(Chunk chunk){

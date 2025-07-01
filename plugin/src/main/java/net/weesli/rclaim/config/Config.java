@@ -39,6 +39,10 @@ public class Config extends OkaeriConfig {
     @Comment("The maximum number of people a beneficiary can trust.")
     private int maxTrustedPlayer = 10;
 
+    @CustomKey("minBetweenClaim")
+    @Comment({"Minimum distance from a claim that does not have its own ownership to a claim to be taken", "type of Block size"})
+    private int minBetweenClaim = 250;
+
     @CustomKey("worldGuard")
     private WorldGuardConfig worldGuard = new WorldGuardConfig();
 
@@ -240,8 +244,9 @@ public class Config extends OkaeriConfig {
 
     @Getter@Setter
     public static class ClaimSettingsConfig extends OkaeriConfig {
-        @CustomKey("claimCost")
-        private int claimCost = 10000;
+        @CustomKey("claim-cost-per-day")
+        @Comment({"Required money for buy claim, 0 for free, -1 for disabled", "day * claimCost"})
+        private int claimCostPerDay = 250;
 
         @CustomKey("claimDuration")
         private int claimDuration = 30;

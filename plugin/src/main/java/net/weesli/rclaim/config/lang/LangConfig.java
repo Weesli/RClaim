@@ -118,6 +118,14 @@ public class LangConfig extends OkaeriConfig {
         private String alreadyCreatedTag = "&cThis tag has already been created!";
         @CustomKey("ADDED_USER_TO_TAG")
         private String addedUserToTag = "&aPlayer added to tag successfully!";
+        @CustomKey("VERY_CLOSE_TO_ANOTHER_CLAIM")
+        private String veryCloseToAnotherClaim = "&cYou are very close to another claim!";
+        @CustomKey("ALREADY_MAX_DAY")
+        private String alreadyMaxDay = "&cYou have reached the maximum day limit!";
+        @CustomKey("RENAME_SUCCESS")
+        private String renameSuccess = "&aClaim renamed successfully!";
+        @CustomKey("PVP_STATUS_NOT_CHANGEABLE")
+        private String pvpStatusNotChangeable = "&cYou can't change pvp status in this area because a enemy is in your claim!";
         // Hook messages
 
         @CustomKey("COMBAT_SYSTEM_MESSAGE")

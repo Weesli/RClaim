@@ -59,19 +59,22 @@ public class PlayerCommand extends BaseCommand {
             player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
             return;
         }
+        int claimCostPerDay = ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay();
+        int currentDayCount = 0; // this claim current day count 0 for this claim beacuse created new
+        int suitableDayCount = 30 - currentDayCount;
+        int totalClaimCost = claimCostPerDay * suitableDayCount; // for 30 days claim
         if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive()){
-            if (!RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, ConfigLoader.getConfig().getClaimSettings().getClaimCost())){
+            if (!RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, totalClaimCost)){
                 player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));
                 return;
             }
-            RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, ConfigLoader.getConfig().getClaimSettings().getClaimCost());
+            RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, totalClaimCost);
         }
         if (RClaim.getInstance().getClaimManager().isSuitable(player.getLocation().getChunk())){
             player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
             return;
         }
         RClaim.getInstance().getClaimManager().createClaim(player.getLocation().getChunk(), player);
-        player.sendMessage(RClaim.getInstance().getMessage("SUCCESS_CLAIM_CREATED"));
     }
 
     @SubCommand("trust")

@@ -273,7 +273,8 @@ public class ClaimImpl implements Claim {
 
     public Location getBlockLocation(){
         if (blockLocation == null){
-            return getCenter();
+            blockLocation = getCenter();
+            return blockLocation;
         }
         return blockLocation;
     }
