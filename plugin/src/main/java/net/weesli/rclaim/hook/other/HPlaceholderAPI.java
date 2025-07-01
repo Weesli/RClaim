@@ -58,6 +58,9 @@ public class HPlaceholderAPI extends PlaceholderExpansion {
             if (matcher.find()){
                 String claimId = matcher.group();
                 Claim claim = RClaim.getInstance().getClaimManager().getClaim(claimId);
+                if(claim.getDisplayName() == null){
+                    return "";
+                }
                 return claim.getDisplayName();
             }
         }
@@ -79,6 +82,9 @@ public class HPlaceholderAPI extends PlaceholderExpansion {
             }
             Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
             if (claim != null){
+                if(claim.getDisplayName() == null){
+                    return "";
+                }
                 return claim.getDisplayName();
             }
         }
