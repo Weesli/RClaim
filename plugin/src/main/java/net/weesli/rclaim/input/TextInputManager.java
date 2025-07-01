@@ -80,7 +80,7 @@ public class TextInputManager {
             return;
         }
         claim.addMember(PlayerUtil.getPlayer(msg).getUniqueId());
-        if (!claim.isMember(player.getUniqueId())) {
+        if (!claim.isMember(PlayerUtil.getPlayer(msg).getUniqueId())) {
             return;
         }
         player.sendMessage(RClaim.getInstance().getMessage("TRUSTED_PLAYER"));
