@@ -62,7 +62,7 @@ public class TextInputManager {
 
     private void addPlayerToClaim(Player player, String msg) {
         TextPlayer textPlayer = actions.get(player);
-        if (msg.isEmpty()) {
+        if (msg.isEmpty() || player.getName().equals(msg)) {
             player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
             return;
         }
@@ -125,7 +125,7 @@ public class TextInputManager {
 
     private void addPlayerToTag(Player player, String msg) {
         TextPlayer textPlayer = actions.get(player);
-        if (msg.isEmpty()) {
+        if (msg.isEmpty() && player.getName().equals(msg)) {
             player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
             return;
         }
