@@ -18,6 +18,7 @@ net\weesli\rclaim\hook\combat\CombatLogX.class
 net\weesli\rclaim\ui\inventories\ClaimBlockMenu.class
 net\weesli\rclaim\config\Config$ClaimSettingsConfig.class
 net\weesli\rclaim\util\FormatUtil.class
+net\weesli\rclaim\input\TextInputManager$2.class
 net\weesli\rclaim\config\Config$ClaimTimeoutMessageConfig.class
 net\weesli\rclaim\config\lang\MenuConfig.class
 net\weesli\rclaim\model\SubClaimImpl.class

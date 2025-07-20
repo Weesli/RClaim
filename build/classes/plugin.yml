@@ -1,5 +1,5 @@
 name: RClaim
-version: '2.3.2'
+version: '2.3.3'
 main: net.weesli.rclaim.RClaim
 api-version: '1.13'
 load: POSTWORLD
