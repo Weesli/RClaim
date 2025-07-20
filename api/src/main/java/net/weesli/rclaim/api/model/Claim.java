@@ -6,6 +6,7 @@ import net.weesli.rclaim.api.enums.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Map;
@@ -106,6 +107,8 @@ public interface Claim {
 
     /** Removes a member from the claim. @param uuid The UUID of the player. */
     void removeMember(UUID uuid);
+
+    void trustPlayer(Player owner, UUID target);
 
     /** Adds a status to the claim (e.g., locked, under siege). @param claimStatus The status to add. */
     void addClaimStatus(ClaimStatus claimStatus);

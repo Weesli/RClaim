@@ -10,6 +10,7 @@ import net.weesli.rclaim.ui.inventories.tag.ClaimTagMainMenu;
 import net.weesli.rclaim.ui.inventories.tag.ClaimTagUsersMenu;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rclaim.util.PlayerUtil;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -71,19 +72,12 @@ public class TextInputManager {
             player.sendMessage(RClaim.getInstance().getMessage("YOU_DONT_IN_CLAIM"));
             return;
         }
-        if (PlayerUtil.getPlayer(msg) == null) {
+        OfflinePlayer targetPlayer = PlayerUtil.getPlayer(msg);
+        if (targetPlayer == null) {
             player.sendMessage(RClaim.getInstance().getMessage("TARGET_NOT_FOUND"));
             return;
         }
-        if (claim.getMembers().contains(PlayerUtil.getPlayer(msg).getUniqueId())) {
-            player.sendMessage(RClaim.getInstance().getMessage("ALREADY_TRUSTED_PLAYER"));
-            return;
-        }
-        claim.addMember(PlayerUtil.getPlayer(msg).getUniqueId());
-        if (!claim.isMember(PlayerUtil.getPlayer(msg).getUniqueId())) {
-            return;
-        }
-        player.sendMessage(RClaim.getInstance().getMessage("TRUSTED_PLAYER"));
+        claim.trustPlayer(player, targetPlayer.getUniqueId());
         RClaim.getInstance().getUiManager().openInventory(
                 player,
                 claim,

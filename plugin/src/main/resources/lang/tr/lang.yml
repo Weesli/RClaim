@@ -34,6 +34,7 @@ VERY_CLOSE_TO_ANOTHER_CLAIM: "&cAlmaya çalıştığınız bölge bir claim'in b
 ALREADY_MAX_DAY: "&cClaim süresi maximum seviyeye ulaştı!"
 RENAME_SUCCESS: "&aClaim ismi değiştirildi!"
 PVP_STATUS_NOT_CHANGEABLE: "&cHey! Bu claim'in pvp durumu degistirilemez çünkü bir düşman şuan senin bölgende!"
+HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK: "&cBu claim bloğunu seçmek için gerekli yetkiye sahip değilsiniz!"
 # claim etiketleri mesajları
 ENTER_A_TAG_NAME: "&cLütfen bir etiket ismi girin!"
 ALREADY_CREATED_TAG: "&cBu etiket zaten eklenmiş!"

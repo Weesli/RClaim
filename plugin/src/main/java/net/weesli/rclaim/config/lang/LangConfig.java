@@ -126,6 +126,8 @@ public class LangConfig extends OkaeriConfig {
         private String renameSuccess = "&aClaim renamed successfully!";
         @CustomKey("PVP_STATUS_NOT_CHANGEABLE")
         private String pvpStatusNotChangeable = "&cYou can't change pvp status in this area because a enemy is in your claim!";
+        @CustomKey("HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK")
+        private String hasntPermissionToChangeClaimBlock = "&cYou don't have permission for active this block!";
         // Hook messages
 
         @CustomKey("COMBAT_SYSTEM_MESSAGE")

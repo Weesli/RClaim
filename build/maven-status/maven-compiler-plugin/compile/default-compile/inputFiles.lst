@@ -73,6 +73,7 @@ C:\Java\RClaim\plugin\src\main\java\net\weesli\rclaim\RClaim.java
 C:\Java\RClaim\plugin\src\main\java\net\weesli\rclaim\ui\inventories\tag\ClaimTagUsersMenu.java
 C:\Java\RClaim\plugin\src\main\java\net\weesli\rclaim\hook\other\HWorldGuard.java
 C:\Java\RClaim\plugin\src\main\java\net\weesli\rclaim\task\PublicTask.java
+C:\Java\RClaim\plugin\src\main\java\net\weesli\rclaim\util\PermissionUtil.java
 C:\Java\RClaim\plugin\src\main\java\net\weesli\rclaim\config\adapter\model\Menu.java
 C:\Java\RClaim\plugin\src\main\java\net\weesli\rclaim\event\ClaimListener.java
 C:\Java\RClaim\plugin\src\main\java\net\weesli\rclaim\manager\CacheManagerImpl.java

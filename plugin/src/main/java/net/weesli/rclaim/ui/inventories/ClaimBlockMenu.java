@@ -1,5 +1,6 @@
 package net.weesli.rclaim.ui.inventories;
 
+import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.config.adapter.model.Menu;
@@ -34,7 +35,11 @@ public class ClaimBlockMenu extends ClaimInventory {
             ClickableItemStack itemStack = new ClickableItemStack(new ItemStack(Material.getMaterial(blockType)), 0);
             itemStack.setSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
             builder.setItem(itemStack , event -> {
-                BaseUtil.changeBlockMaterial(player, claim, Material.getMaterial(blockType));
+                boolean success = BaseUtil.changeBlockMaterial(player, claim, Material.getMaterial(blockType));
+                if (!success){
+                    player.sendMessage(RClaim.getInstance().getMessage("HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK"));
+                    player.closeInventory();
+                }
                 player.closeInventory();
             });
         }

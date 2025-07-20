@@ -16,9 +16,11 @@ import net.weesli.rclaim.api.enums.ClaimStatus;
 import net.weesli.rclaim.api.enums.Effect;
 import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.util.BaseUtil;
+import net.weesli.rclaim.util.PermissionUtil;
 import net.weesli.rozslib.database.annotation.PrimaryKey;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -139,6 +141,23 @@ public class ClaimImpl implements Claim {
         if (!event.isCancelled()){
             members.add(uuid);
         }
+    }
+
+    @Override
+    public void trustPlayer(Player owner, UUID target) {
+        if (members.contains(target)) {
+            owner.sendMessage(RClaim.getInstance().getMessage("ALREADY_TRUSTED_PLAYER"));
+            return;
+        }
+        if (owner.getUniqueId().equals(target)) {
+            int maxTrustablePlayer = PermissionUtil.getMemberLimit(owner);
+            if (members.size() >= maxTrustablePlayer) {
+                owner.sendMessage(RClaim.getInstance().getMessage("MAX_TRUSTED_PLAYERS"));
+                return;
+            }
+        }
+        addMember(target);
+        owner.sendMessage(RClaim.getInstance().getMessage("TRUSTED_PLAYER"));
     }
 
     public void removeMember(UUID uuid) {

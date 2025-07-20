@@ -40,10 +40,11 @@ public class ClaimResizeInventory extends ClaimInventory {
     }
 
     private void setupUpgradeInventory(Player player, SimpleInventory builder, Location centerLocation, Claim claim) {
-        int left = -4 + (pageX * 9);
-        int right = 4 + (pageX * 9);
-        int top = -2 + (pageY * 5);
-        int bottom = 2 + (pageY * 5);
+        int left = -4 + (pageX * 7);
+        int right = 4 + (pageX * 7);
+        int top = -2 + (pageY * 3);
+        int bottom = 2 + (pageY * 3);
+
 
         Set<Integer> skipSlots = new HashSet<>(Arrays.asList(
                 0, 1, 2, 3, 4, 5, 6, 7, 8,
@@ -56,6 +57,7 @@ public class ClaimResizeInventory extends ClaimInventory {
         World world = centerLocation.getWorld();
         int centerChunkX = centerLocation.getBlockX() >> 4;
         int centerChunkZ = centerLocation.getBlockZ() >> 4;
+
         for (int z = top; z <= bottom; z++) {
             for (int x = left; x <= right; x++) {
                 int chunkX = centerChunkX + x;
@@ -87,8 +89,8 @@ public class ClaimResizeInventory extends ClaimInventory {
 
     private void handleNavigation(SimpleInventory builder, String value) {
         switch (value) {
-            case "up" -> pageY++;
-            case "down" -> pageY--;
+            case "up" -> pageY--;
+            case "down" -> pageY++;
             case "left" -> pageX--;
             case "right" -> pageX++;
         }
@@ -154,7 +156,11 @@ public class ClaimResizeInventory extends ClaimInventory {
         }
         boolean success = RClaim.getInstance().getClaimManager().createSubClaim(player, claim, location);
         if (success) {
-            RClaim.getInstance().getUiManager().openResizeMenu(player, claim, 0);
+            SimpleInventory builder = new SimpleInventory(menu.getTitle(), 45);
+            builder.setLayout("").fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), true);
+            setupUpgradeInventory(player, builder, claim.getCenter(), claim);
+            builder.openInventory(player);
+
             RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player,
                     calculateSubClaimCost(claim));
         }
@@ -198,8 +204,7 @@ public class ClaimResizeInventory extends ClaimInventory {
     }
 
     private boolean isChunkAdjacent(int chunkX, int chunkZ, int targetX, int targetZ) {
-        return
-                (targetX == chunkX && Math.abs(targetZ - chunkZ) == 1) ||
-                        (targetZ == chunkZ && Math.abs(targetX - chunkX) == 1);
+        return Math.abs(targetX - chunkX) <= 1 && Math.abs(targetZ - chunkZ) <= 1
+                && !(targetX == chunkX && targetZ == chunkZ);
     }
 }

@@ -29,11 +29,11 @@ public class ClaimUpgradeMenu extends ClaimInventory {
         // calculate cost for claim
         int claimCostPerDay = ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay();
         int currentDayCount = claim.getTimestamp() / (60 * 60 * 24);
-        if (currentDayCount >= 29){
+        if (currentDayCount >= (ConfigLoader.getConfig().getClaimSettings().getClaimDuration() - 1)){
             player.sendMessage(RClaim.getInstance().getMessage("ALREADY_MAX_DAY"));
             return;
         }
-        int suitableDayCount = (30 - currentDayCount);
+        int suitableDayCount = (ConfigLoader.getConfig().getClaimSettings().getClaimDuration() - currentDayCount);
         System.out.println(suitableDayCount);
         int totalClaimCost = claimCostPerDay * suitableDayCount;
         meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<cost>", String.valueOf(totalClaimCost))).collect(Collectors.toList()));

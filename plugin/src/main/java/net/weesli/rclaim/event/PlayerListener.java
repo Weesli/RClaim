@@ -11,10 +11,12 @@ import net.weesli.rclaim.hook.other.HWorldGuard;
 import net.weesli.rclaim.util.ClaimBlockUtil;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rclaim.api.enums.ClaimPermission;
+import net.weesli.rozslib.events.PlayerDamageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.WeatherType;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -22,10 +24,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.LingeringPotionSplashEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -64,7 +63,7 @@ public class PlayerListener implements Listener {
         if (claim == null){return;}
         if (claim.isOwner(e.getPlayer().getUniqueId())){return;}
         ClaimTag tag = RClaim.getInstance().getTagManager().isPlayerInTag(e.getPlayer(), claim.getID());
-        if (e.getBlock().getState() instanceof InventoryHolder){
+        if (e.getBlock().getState() instanceof InventoryHolder || e.getBlock().getType().name().contains("ENDER_CHEST")){
             if (tag != null){
                 if (tag.getPermissions().contains(ClaimPermission.BREAK_CONTAINER)){
                     return;
@@ -91,7 +90,7 @@ public class PlayerListener implements Listener {
         if (e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
         Player player = e.getPlayer();
         if (e.getClickedBlock() == null){return;}
-        if (e.getClickedBlock().getState() instanceof InventoryHolder){
+        if (e.getClickedBlock().getState() instanceof InventoryHolder || e.getClickedBlock().getType().name().contains("ENDER_CHEST")){
             Claim claim = RClaim.getInstance().getClaimManager().getClaim(e.getPlayer().getLocation().getChunk());
             if (claim == null){
                 return;
@@ -204,6 +203,11 @@ public class PlayerListener implements Listener {
             e.setCancelled(true);
             player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_DROP_ITEM"));
         }
+    }
+
+    @EventHandler
+    public void onBreak(PlayerInteractEntityEvent e){
+
     }
 
     private final Map<UUID, Long> pickupCooldowns = new HashMap<>();
@@ -552,6 +556,10 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onFluidPlaceEvent(PlayerBucketFillEvent e) {
         if(e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
+        if (!e.getBlockClicked().getType().equals(Material.LAVA) || e.getBlockClicked().getType().equals(Material.WATER)){ {
+            return;
+        }
+        }
         Location loc = e.getBlockClicked().getLocation();
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(loc);
         if (claim == null) {
@@ -570,6 +578,28 @@ public class PlayerListener implements Listener {
         if (!claim.checkPermission(e.getPlayer().getUniqueId(), ClaimPermission.BLOCK_BREAK)){
             e.setCancelled(true);
             e.getPlayer().sendMessage(RClaim.getInstance().getMessage("PERMISSION_BLOCK_BREAK"));
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDamageByEntity(EntityDamageEvent e){
+        if (!(e.getEntity() instanceof Player player)){
+            return;
+        }
+        if (player.hasPermission("rclaim.admin.bypass")){return;}
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation().getChunk());
+        if (claim == null){
+            return;
+        }
+        if (claim.isOwner(player.getUniqueId())){return;}
+        ClaimTag tag = RClaim.getInstance().getTagManager().isPlayerInTag(player, claim.getID());
+        if (tag != null){
+            if (tag.getPermissions().contains(ClaimPermission.ATTACK_MONSTER)){
+                return;
+            }
+        }
+        if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.ATTACK_MONSTER)){
+            e.setCancelled(true);
         }
     }
 }

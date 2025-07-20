@@ -61,7 +61,7 @@ public class PlayerCommand extends BaseCommand {
         }
         int claimCostPerDay = ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay();
         int currentDayCount = 0; // this claim current day count 0 for this claim beacuse created new
-        int suitableDayCount = 30 - currentDayCount;
+        int suitableDayCount = ConfigLoader.getConfig().getClaimSettings().getClaimDuration() - currentDayCount;
         int totalClaimCost = claimCostPerDay * suitableDayCount; // for 30 days claim
         if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive()){
             if (!RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, totalClaimCost)){
@@ -84,28 +84,19 @@ public class PlayerCommand extends BaseCommand {
             player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIM"));
             return;
         }
-        if (targetPlayer == null || targetPlayer.isEmpty()){
+        if (targetPlayer == null || targetPlayer.isEmpty() ){
             player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
             return;
         }
         if (player.getName().equalsIgnoreCase(targetPlayer)){
             return;
         }
-        if(PlayerUtil.getPlayer(targetPlayer) != null){
-            OfflinePlayer target = PlayerUtil.getPlayer(targetPlayer);
-            if (claim.getMembers().size() >= ConfigLoader.getConfig().getMaxTrustedPlayer()){
-                player.sendMessage(RClaim.getInstance().getMessage("MAX_TRUSTED_PLAYERS"));
-                return;
-            }
-            if (claim.getMembers().contains(target.getUniqueId())){
-                player.sendMessage(RClaim.getInstance().getMessage("ALREADY_TRUSTED_PLAYER"));
-                return;
-            }
-            claim.addMember(target.getUniqueId());
-            player.sendMessage(RClaim.getInstance().getMessage("TRUSTED_PLAYER"));
-        } else {
+        OfflinePlayer offlinePlayer = PlayerUtil.getPlayer(targetPlayer);
+        if (offlinePlayer == null) {
             player.sendMessage(RClaim.getInstance().getMessage("TARGET_NOT_FOUND"));
+            return;
         }
+        claim.trustPlayer(player, offlinePlayer.getUniqueId());
     }
 
     @SubCommand("untrust")

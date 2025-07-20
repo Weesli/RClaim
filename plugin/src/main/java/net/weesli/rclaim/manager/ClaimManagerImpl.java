@@ -18,6 +18,7 @@ import net.weesli.rclaim.model.ClaimImpl;
 import net.weesli.rclaim.model.SubClaimImpl;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rclaim.util.NameSpaceUtil;
+import net.weesli.rclaim.util.PermissionUtil;
 import net.weesli.rozslib.color.ColorBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -66,7 +67,7 @@ public class ClaimManagerImpl implements ClaimManager {
     }
 
     public void createClaim(Chunk chunk, Player owner) {
-        boolean hasLimit = BaseUtil.checkPlayerClaimLimit(owner); // if player has limit for create claim
+        boolean hasLimit = PermissionUtil.checkPlayerClaimLimit(owner); // if player has limit for create claim
         if(!hasLimit) return;
         boolean isBetweenAnyClaim = BaseUtil.isBetweenAnyClaim(chunk); // if chunk is between any claim
         if (!isBetweenAnyClaim) {

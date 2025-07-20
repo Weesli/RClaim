@@ -68,9 +68,14 @@ public class BaseUtil {
         return cost;
     }
 
-    public static void changeBlockMaterial(Player player, Claim claim, Material material){
-        claim.setBlock(material);
-        player.playEffect(claim.getBlockLocation(), org.bukkit.Effect.SMOKE, 25);
+    public static boolean changeBlockMaterial(Player player, Claim claim, Material material){
+        boolean hasPermission = PermissionUtil.hasPermissionClaimBlock(player, material);
+        if (hasPermission){
+            claim.setBlock(material);
+            player.playEffect(claim.getBlockLocation(), org.bukkit.Effect.SMOKE, 25);
+            return true;
+        }
+        return false;
     }
 
     public static String createProgressBar(int progress, int maxProgress, int barLength) {
@@ -80,34 +85,6 @@ public class BaseUtil {
                 " ".repeat(Math.max(0, emptyLength));
     }
 
-    public static boolean checkPlayerClaimLimit(Player player){
-        if (player.hasPermission("rclaim.claim.limit.*")) return true;
-        Optional<PermissionAttachmentInfo> limitPermission = player.getEffectivePermissions().stream()
-                .filter(p -> p.getPermission().startsWith("rclaim.claim.limit."))
-                .findFirst();
-        if (limitPermission.isPresent()) {
-            try {
-                String permission = limitPermission.get().getPermission();
-                String[] parts = permission.split("\\.");
-                int limitValue = Integer.parseInt(parts[parts.length - 1]);
-
-                int currentClaims = RClaim.getInstance()
-                        .getCacheManager()
-                        .getClaims()
-                        .getAllClaims(player.getUniqueId())
-                        .size();
-
-                if (currentClaims >= limitValue) {
-                    player.sendMessage(RClaim.getInstance().getMessage("CLAIM_LIMIT"));
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-        }
-        return true;
-    }
-
     public static boolean isBetweenAnyClaim(Chunk chunk) {
         int minSize = ConfigLoader.getConfig().getMinBetweenClaim();
         int currentX = chunk.getX() * 16;
@@ -115,8 +92,6 @@ public class BaseUtil {
         Location location = new Location(chunk.getWorld(), currentX, 0, currentZ);
         for (Claim claim : RClaim.getInstance().getCacheManager().getClaims().getCache().values()) {
             if (!claim.getCenter().getWorld().getName().contains(chunk.getWorld().getName())){continue;}
-            System.out.println(location.distance(claim.getCenter()));
-            System.out.println(minSize);
             if (location.distance(claim.getCenter()) < minSize) return false;
         }
         return true;

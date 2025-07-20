@@ -36,7 +36,7 @@ public class Config extends OkaeriConfig {
     private String storageType = "SQLite";
 
     @CustomKey("maxTrustedPlayer")
-    @Comment("The maximum number of people a beneficiary can trust.")
+    @Comment({"The maximum number of people a beneficiary can trust.", "Deprecated!!!"})
     private int maxTrustedPlayer = 10;
 
     @CustomKey("minBetweenClaim")

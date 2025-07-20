@@ -18,7 +18,6 @@ net\weesli\rclaim\hook\combat\CombatLogX.class
 net\weesli\rclaim\ui\inventories\ClaimBlockMenu.class
 net\weesli\rclaim\config\Config$ClaimSettingsConfig.class
 net\weesli\rclaim\util\FormatUtil.class
-net\weesli\rclaim\input\TextInputManager$2.class
 net\weesli\rclaim\config\Config$ClaimTimeoutMessageConfig.class
 net\weesli\rclaim\config\lang\MenuConfig.class
 net\weesli\rclaim\model\SubClaimImpl.class
@@ -45,6 +44,7 @@ net\weesli\rclaim\config\Config$ClaimSettingsConfig$ClaimStatusConfig.class
 net\weesli\rclaim\ui\TagInventory.class
 net\weesli\rclaim\hook\manager\EconomyManager.class
 net\weesli\rclaim\hook\spawner\SpawnerMeta$1.class
+net\weesli\rclaim\util\PermissionUtil.class
 net\weesli\rclaim\hook\hologram\HDecentHologram.class
 net\weesli\rclaim\util\ClaimBlockUtil.class
 net\weesli\rclaim\util\PreviewUtil$1.class
