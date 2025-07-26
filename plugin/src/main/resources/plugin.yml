@@ -20,6 +20,7 @@ softdepend:
   - PvPManager
   - BetterRTP
   - Multiverse-Core
+  - SmartSpawner
 permissions:
   rclaim.admin.clearclaim:
     description: Permission to clear all claims of player

@@ -1,9 +1,6 @@
 package net.weesli.rclaim.hook.manager;
 
-import net.weesli.rclaim.hook.spawner.IClaimSpawner;
-import net.weesli.rclaim.hook.spawner.SilkSpawner;
-import net.weesli.rclaim.hook.spawner.SpawnerMeta;
-import net.weesli.rclaim.hook.spawner.UpgradeableSpawners;
+import net.weesli.rclaim.hook.spawner.*;
 import org.bukkit.Bukkit;
 
 public class SpawnerManager {
@@ -17,6 +14,8 @@ public class SpawnerManager {
             spawnerIntegration = new SpawnerMeta();
         } else if (Bukkit.getPluginManager().isPluginEnabled("UpgradeableSpawners")) {
             spawnerIntegration = new UpgradeableSpawners();
+        } else if (Bukkit.getPluginManager().isPluginEnabled("SmartSpawner")) {
+            spawnerIntegration = new SmartSpawner();
         }
     }
 
