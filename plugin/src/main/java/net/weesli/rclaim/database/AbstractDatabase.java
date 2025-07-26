@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.SneakyThrows;
+import net.weesli.rclaim.GsonProvider;
 import net.weesli.rclaim.api.enums.ClaimPermission;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimEffect;
@@ -28,10 +29,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
 
-public abstract class AbstractDatabase extends Database implements IDatabase, ClaimDatabase {
+public abstract class AbstractDatabase extends Database implements ClaimDatabase {
 
     private final ConnectionInfo info;
-    private Gson gson;
+    private final Gson gson = GsonProvider.getGson();
     private Connection connection;
 
     @SneakyThrows
@@ -39,15 +40,6 @@ public abstract class AbstractDatabase extends Database implements IDatabase, Cl
         super(info);
         this.info = info;
         connect();
-        gson = new GsonBuilder()
-                .registerTypeHierarchyAdapter(Material.class, new MaterialTypeAdapter())
-                .registerTypeAdapter(ClaimTagImpl.class, new ClaimTagTypeAdapter())
-                .registerTypeAdapter(SubClaimImpl.class, new SubClaimTypeAdapter())
-                .registerTypeAdapter(ClaimEffectImpl.class, new ClaimEffectTypeAdapter())
-                .registerTypeAdapter(Location.class, new LocationTypeAdapter())
-                .registerTypeAdapter(new TypeToken<Map<UUID, List<ClaimPermission>>>() {}.getType(), new ClaimPermissionMapAdapter())
-
-                .create();
     }
     public void connect() {
         connection = DatabaseFactory.createConnection(info);
@@ -125,5 +117,19 @@ public abstract class AbstractDatabase extends Database implements IDatabase, Cl
             e.printStackTrace();
         }
         return claims;
+    }
+
+    @Override
+    public void shutdown() {
+        try {
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void forceSave() {
+        // ignored for mysql and sqlite
     }
 }

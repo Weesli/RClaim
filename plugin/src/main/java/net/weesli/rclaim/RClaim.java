@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.weesli.rclaim.api.RClaimProvider;
+import net.weesli.rclaim.database.interfaces.ClaimDatabase;
 import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.manager.CacheManagerImpl;
 import net.weesli.rclaim.command.CommandManager;
@@ -35,12 +36,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 
 @Getter@Setter
 public final class RClaim extends JavaPlugin {
 
-    private AbstractDatabase storage;
+    private ClaimDatabase storage;
     private UIManager uiManager;
     private TextInputManager textInputManager;
     private ClaimManagerImpl claimManager;
@@ -66,7 +66,7 @@ public final class RClaim extends JavaPlugin {
         loadListeners();
         loadStorage();
         Bukkit.getScheduler().runTaskAsynchronously(this, (this::checkVersion));
-
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this,Loader::save, 12000L, 12000L);
         spawnerManager = new SpawnerManager();
         minionsManager = new MinionsManager();
         economyManager = new EconomyManager();
@@ -101,11 +101,7 @@ public final class RClaim extends JavaPlugin {
     @Override
     public void onDisable() {
         Loader.save();
-        try {
-            storage.getConnection().close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        storage.shutdown();
     }
 
     @SneakyThrows
@@ -143,6 +139,7 @@ public final class RClaim extends JavaPlugin {
         switch (type){
             case MySQL -> storage = new MySQLStorage();
             case SQLite -> storage =  new SQLiteStorage();
+            case RozsDBLite -> storage = new RozsDBLite();
         }
         Bukkit.getConsoleSender().sendMessage("[RClaim] register storage type is " + storage.getStorageType().name());
     }

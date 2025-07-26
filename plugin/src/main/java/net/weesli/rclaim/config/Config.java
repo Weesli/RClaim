@@ -32,8 +32,8 @@ public class Config extends OkaeriConfig {
     private String viewerMode = "particle";
 
     @CustomKey("storageType")
-    @Comment("Storage type can be 'MySQL' or 'SQLite'")
-    private String storageType = "SQLite";
+    @Comment({"Storage type can be 'MySQL' or 'SQLite' or 'RozsDBLite", "Default: 'RozsDBLite'"})
+    private String storageType = "RozsDBLite";
 
     @CustomKey("maxTrustedPlayer")
     @Comment({"The maximum number of people a beneficiary can trust.", "Deprecated!!!"})

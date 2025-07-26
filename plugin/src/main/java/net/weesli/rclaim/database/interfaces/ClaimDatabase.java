@@ -5,10 +5,14 @@ import net.weesli.rclaim.model.ClaimImpl;
 
 import java.util.List;
 
-public interface ClaimDatabase {
+public interface ClaimDatabase extends IDatabase{
     void insertClaim(Claim claim);
     void updateClaim(Claim claim);
     void deleteClaim(String id);
     List<Claim> getAllClaims();
     boolean hasClaim(String id);
+
+    void shutdown();
+
+    void forceSave();
 }

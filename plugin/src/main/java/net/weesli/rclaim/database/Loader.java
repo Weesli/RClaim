@@ -15,11 +15,12 @@ public class Loader {
     public static void save() {
         for (Claim claimImpl : RClaim.getInstance().getCacheManager().getClaims().getCache().values()) {
             if (RClaim.getInstance().getStorage().hasClaim(claimImpl.getID())) {
-                RClaim.getInstance().getStorage().updateClaim((ClaimImpl) claimImpl);
+                RClaim.getInstance().getStorage().updateClaim(claimImpl);
             } else {
-                RClaim.getInstance().getStorage().insertClaim((ClaimImpl) claimImpl);
+                RClaim.getInstance().getStorage().insertClaim(claimImpl);
             }
         }
+        RClaim.getInstance().getStorage().forceSave(); // force the saved data to disk with RozsDBLite
     }
 
 }
