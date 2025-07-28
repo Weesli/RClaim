@@ -1,1 +1,0 @@
-import{_ as e,c as l,o as i,ae as r}from"./chunks/framework.Cd-3tpCq.js";const u=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"commands.md","filePath":"commands.md"}'),m={name:"commands.md"};function o(t,a,s,n,c,d){return i(),l("div",null,a[0]||(a[0]=[r("",7)]))}const p=e(m,[["render",o]]);export{u as __pageData,p as default};
