@@ -7,6 +7,8 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.util.Optional;
 
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
+
 public class PermissionUtil {
 
     public static int getMemberLimit(Player player){
@@ -48,7 +50,7 @@ public class PermissionUtil {
                         .size();
 
                 if (currentClaims >= limitValue) {
-                    player.sendMessage(RClaim.getInstance().getMessage("CLAIM_LIMIT"));
+                    sendMessageToPlayer("CLAIM_LIMIT", player);
                     return false;
                 }
             } catch (NumberFormatException e) {

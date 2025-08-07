@@ -4,9 +4,12 @@ package net.weesli.rclaim.hook.spawner;
 import mc.rellox.spawnermeta.api.APIInstance;
 import mc.rellox.spawnermeta.api.events.SpawnerPlaceEvent;
 import net.weesli.rclaim.RClaim;
+import net.weesli.rclaim.api.hook.ClaimSpawner;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class SpawnerMeta implements IClaimSpawner {
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
+
+public class SpawnerMeta implements ClaimSpawner {
 
     APIInstance api = mc.rellox.spawnermeta.SpawnerMeta.instance().getAPI();
 
@@ -20,7 +23,7 @@ public class SpawnerMeta implements IClaimSpawner {
                         this.cancel();
                     }
                 }.runTaskTimer(RClaim.getInstance(), 3,0);
-                event.getPlayer().sendMessage(RClaim.getInstance().getMessage("YOU_CANT_PLACE_SPAWNER"));
+                sendMessageToPlayer("YOU_CANT_PLACE_SPAWNER", event.getPlayer());
             }
         });
     }

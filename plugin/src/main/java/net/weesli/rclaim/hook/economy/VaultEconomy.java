@@ -2,12 +2,13 @@ package net.weesli.rclaim.hook.economy;
 
 import net.milkbowl.vault.economy.Economy;
 import net.weesli.rclaim.api.enums.EconomyType;
+import net.weesli.rclaim.api.hook.ClaimEconomy;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import static org.bukkit.Bukkit.getServer;
 
-public class VaultEconomy implements IClaimEconomy {
+public class VaultEconomy implements ClaimEconomy {
 
     private boolean active = false;
     private Economy econ;

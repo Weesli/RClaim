@@ -2,6 +2,7 @@ package net.weesli.rclaim.api.manager;
 
 import net.weesli.rclaim.api.enums.ClaimPermission;
 import net.weesli.rclaim.api.enums.ClaimStatus;
+import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimEffect;
 import net.weesli.rclaim.api.model.ClaimTag;
@@ -81,4 +82,6 @@ public interface ClaimManager {
      * @return True if the location is suitable for a claim.
      */
     boolean isSuitable(Location location);
+
+    void explodeClaim(String id, ExplodeCause explodeCause);
 }

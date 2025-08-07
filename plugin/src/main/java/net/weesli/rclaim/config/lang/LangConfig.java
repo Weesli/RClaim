@@ -1,13 +1,17 @@
 package net.weesli.rclaim.config.lang;
 
-import eu.decentsoftware.holograms.api.utils.scheduler.S;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.CustomKey;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Arrays;
-import java.util.List;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.weesli.rclaim.RClaim;
+import net.weesli.rclaim.config.ConfigLoader;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 @Getter
 @Setter
@@ -180,4 +184,22 @@ public class LangConfig extends OkaeriConfig {
 
         @CustomKey("DELETED_CLAIMS")
         private String deletedClaims = "&cThe claims of %player% have been successfully deleted!";
+
+        public static void sendMessageToPlayer(String path, Player player, TagResolver... tagResolvers) {
+                String rawMessage =  ConfigLoader.getConfig().getPrefix() +  ConfigLoader.getLangConfig().get(path, String.class);
+                MiniMessage mm = MiniMessage.miniMessage();
+                Component legacy = LegacyComponentSerializer.legacyAmpersand().deserialize(rawMessage);
+                String minimessage = mm.serialize(legacy).replace("\\", "");
+                player.sendMessage(mm.deserialize(minimessage,tagResolvers));
+        }
+
+        public static void sendMessageToConsole(String path, TagResolver... tagResolvers) {
+                String rawMessage =  ConfigLoader.getConfig().getPrefix() +  ConfigLoader.getLangConfig().get(path, String.class);
+                MiniMessage mm = MiniMessage.miniMessage();
+                Component legacy = LegacyComponentSerializer.legacyAmpersand().deserialize(rawMessage);
+                String minimessage = mm.serialize(legacy).replace("\\", "");
+                Bukkit.getConsoleSender().sendMessage(mm.deserialize(minimessage,tagResolvers));
+        }
+
+
 }

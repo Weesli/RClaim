@@ -19,6 +19,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 import java.util.Map;
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
+import static net.weesli.rclaim.util.ChatUtil.createTagResolver;
 
 // pageable
 public class ClaimEffectMenu extends ClaimInventory {
@@ -79,27 +81,27 @@ public class ClaimEffectMenu extends ClaimInventory {
                 if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, cost)){
                     RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, cost);
                 }else {
-                    player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));
+                    sendMessageToPlayer("HASNT_MONEY", player);
                     return;
                 }
                 claim.addEffect(effect);
-                player.sendMessage(RClaim.getInstance().getMessage("EFFECT_BOUGHT"));
+                sendMessageToPlayer("EFFECT_BOUGHT", player);
             }
         }else {
             int currentLevel = claim.getEffect(effect).getLevel();
             if (currentLevel == claim.getEffect(effect).getMaxLevel()){
-                player.sendMessage(RClaim.getInstance().getMessage("EFFECT_MAX_LEVEL"));
+                sendMessageToPlayer("EFFECT_MAX_LEVEL", player);
                 return;
             }
             if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive()){
                 if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, cost)){
                     RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, cost);
                 }else {
-                    player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));
+                    sendMessageToPlayer("HASNT_MONEY", player);
                     return;
                 }
                 claim.getEffect(effect).setLevel(currentLevel + 1);
-                player.sendMessage(RClaim.getInstance().getMessage("EFFECT_LEVEL_UP").replaceAll("%level%", String.valueOf(currentLevel+1)));
+                sendMessageToPlayer("EFFECT_LEVEL_UP", player, createTagResolver("%level%", String.valueOf(currentLevel+1)));
             }
         }
         RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimEffectMenu.class);

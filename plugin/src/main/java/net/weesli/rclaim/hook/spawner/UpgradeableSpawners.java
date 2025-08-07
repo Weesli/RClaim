@@ -2,11 +2,14 @@ package net.weesli.rclaim.hook.spawner;
 
 import me.angeschossen.upgradeablespawners.api.events.spawner.SpawnerCreateEvent;
 import net.weesli.rclaim.RClaim;
+import net.weesli.rclaim.api.hook.ClaimSpawner;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class UpgradeableSpawners implements IClaimSpawner {
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
+
+public class UpgradeableSpawners implements ClaimSpawner {
 
     public UpgradeableSpawners(){
         Bukkit.getPluginManager().registerEvents(new Listener() {
@@ -14,7 +17,7 @@ public class UpgradeableSpawners implements IClaimSpawner {
             public void onSpawnerPlace(SpawnerCreateEvent e){
                 if (!availableArea(e.getSpawnerPlayer().getPlayer(), e.getSpawner().getCoordinate().toLocation())){
                     e.setCancelled(true);
-                    e.getSpawnerPlayer().getPlayer().sendMessage(RClaim.getInstance().getMessage("YOU_CANT_PLACE_SPAWNER"));
+                    sendMessageToPlayer("YOU_CANT_PLACE_SPAWNER", e.getSpawnerPlayer().getPlayer());
                 }
             }
         }, RClaim.getInstance());

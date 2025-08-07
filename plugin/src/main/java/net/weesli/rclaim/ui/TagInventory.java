@@ -17,8 +17,8 @@ public abstract class TagInventory {
     public ItemStack getItemStack(MenuItem menuItem){
         ItemStack itemStack = new ItemStack(Material.getMaterial(menuItem.getMaterial()));
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName(ColorBuilder.convertColors(menuItem.getTitle()));
-        meta.setLore(menuItem.getLore().stream().map(ColorBuilder::convertColors).toList());
+        meta.displayName(ColorBuilder.convertColors(menuItem.getTitle()));
+        meta.lore(menuItem.getLore().stream().map(ColorBuilder::convertColors).toList());
         if (menuItem.getCustomModelData() != 0){
             meta.setCustomModelData(menuItem.getCustomModelData());
         }

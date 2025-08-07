@@ -1,11 +1,11 @@
-package net.weesli.rclaim.database.interfaces;
+package net.weesli.rclaim.api.database;
 
+import net.weesli.rclaim.api.enums.StorageType;
 import net.weesli.rclaim.api.model.Claim;
-import net.weesli.rclaim.model.ClaimImpl;
 
 import java.util.List;
 
-public interface ClaimDatabase extends IDatabase{
+public interface ClaimDatabase{
     void insertClaim(Claim claim);
     void updateClaim(Claim claim);
     void deleteClaim(String id);
@@ -13,6 +13,7 @@ public interface ClaimDatabase extends IDatabase{
     boolean hasClaim(String id);
 
     void shutdown();
-
+    StorageType getStorageType();
+    String tableSQL();
     void forceSave();
 }

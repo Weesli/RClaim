@@ -3,11 +3,12 @@ package net.weesli.rclaim.hook.combat;
 import com.github.sirblobman.combatlogx.api.ICombatLogX;
 import com.github.sirblobman.combatlogx.api.manager.ICombatManager;
 import lombok.Getter;
+import net.weesli.rclaim.api.hook.ClaimCombat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @Getter
-public class CombatLogX implements IClaimCombat {
+public class CombatLogX implements ClaimCombat {
 
     ICombatLogX api;
 

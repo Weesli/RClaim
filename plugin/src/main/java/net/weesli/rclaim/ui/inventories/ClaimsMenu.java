@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 public class ClaimsMenu extends ClaimInventory {
 
     private static final Menu menu = ConfigLoader.getMenuConfig().getClaimsMenu();
@@ -51,7 +51,8 @@ public class ClaimsMenu extends ClaimInventory {
                 }
                 if (e.isShiftClick() && e.isLeftClick()){ // teleport the claim
                     if (!player.hasPermission("rclaim.claim.tp")) {
-                        player.sendMessage(RClaim.getInstance().getMessage("NO_PERMISSION"));
+
+                        sendMessageToPlayer("NO_PERMISSION", player);
                         return;
                     }
                     player.teleport(target.getCenter());

@@ -1,13 +1,15 @@
 package net.weesli.rclaim.hook.manager;
 
+import net.weesli.rclaim.api.hook.ClaimSpawner;
+import net.weesli.rclaim.api.hook.manager.SpawnerManager;
 import net.weesli.rclaim.hook.spawner.*;
 import org.bukkit.Bukkit;
 
-public class SpawnerManager {
+public class SpawnerManagerImpl  implements SpawnerManager {
 
-    private IClaimSpawner spawnerIntegration;
+    private ClaimSpawner spawnerIntegration;
 
-    public SpawnerManager(){
+    public SpawnerManagerImpl(){
         if (Bukkit.getPluginManager().isPluginEnabled("SilkSpawners_v2")){
             spawnerIntegration = new SilkSpawner();
         } else if (Bukkit.getPluginManager().isPluginEnabled("SpawnerMeta")) {
@@ -19,7 +21,7 @@ public class SpawnerManager {
         }
     }
 
-    public IClaimSpawner getIntegration() {
+    public ClaimSpawner getIntegration() {
         return spawnerIntegration;
     }
 }

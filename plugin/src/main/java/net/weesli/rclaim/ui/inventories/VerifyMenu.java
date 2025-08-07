@@ -7,7 +7,6 @@ import net.weesli.rclaim.config.adapter.model.Menu;
 import net.weesli.rclaim.config.adapter.model.MenuItem;
 import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.api.enums.VerifyAction;
-import net.weesli.rclaim.model.ClaimImpl;
 import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rozslib.inventory.ClickableItemStack;
 import net.weesli.rozslib.inventory.types.SimpleInventory;
@@ -17,6 +16,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
+
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 
 public class VerifyMenu extends ClaimInventory {
 
@@ -45,7 +46,7 @@ public class VerifyMenu extends ClaimInventory {
                     break;
                 case UNCLAIM:
                     RClaim.getInstance().getClaimManager().explodeClaim(String.valueOf(varible), ExplodeCause.UNCLAIM);
-                    player.sendMessage(RClaim.getInstance().getMessage("UNCLAIMED_CLAIM"));
+                    sendMessageToPlayer("UNCLAIM_SUCCESS", player);
                     player.closeInventory();
                     break;
             }

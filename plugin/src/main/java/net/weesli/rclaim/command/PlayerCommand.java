@@ -13,9 +13,9 @@ import net.weesli.rclaim.util.PlayerUtil;
 
 import net.weesli.rclaim.util.PreviewUtil;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 
 @Command(value = "claim",alias = "rclaim")
 public class PlayerCommand extends BaseCommand {
@@ -23,12 +23,12 @@ public class PlayerCommand extends BaseCommand {
     @Default
     public void execute(Player player){
         if (!HWorldGuard.isAreaEnabled(player)){
-            player.sendMessage(RClaim.getInstance().getMessage("AREA_DISABLED"));
+            sendMessageToPlayer("AREA_DISABLED", player);
             return;
         }
 
         if(!BaseUtil.isActiveWorld(player.getWorld().getName())){
-            player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
+            sendMessageToPlayer("NOT_IN_CLAIMABLE_WORLD", player);
             return;
         }
         // If the player is in their own request when the 'claim' command is used, the administration menu opens. (since 2.2.0)
@@ -41,22 +41,22 @@ public class PlayerCommand extends BaseCommand {
         }
 
         if (RClaim.getInstance().getClaimManager().isSuitable(player.getLocation().getChunk())){
-            player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
+            sendMessageToPlayer("IS_NOT_SUITABLE", player);
             return;
         }
 
         PreviewUtil.viewClaimRadius(player);
-        player.sendMessage(RClaim.getInstance().getMessage("PREVIEW_OPENED"));
+        sendMessageToPlayer("PREVIEW_OPENED", player);
     }
 
     @SubCommand("confirm")
     public void confirm(Player player){
         if (!HWorldGuard.isAreaEnabled(player)){
-            player.sendMessage(RClaim.getInstance().getMessage("AREA_DISABLED"));
+            sendMessageToPlayer("AREA_DISABLED", player);
             return;
         }
         if(!BaseUtil.isActiveWorld(player.getWorld().getName())){
-            player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
+            sendMessageToPlayer("NOT_IN_CLAIMABLE_WORLD", player);
             return;
         }
         int claimCostPerDay = ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay();
@@ -65,13 +65,13 @@ public class PlayerCommand extends BaseCommand {
         int totalClaimCost = claimCostPerDay * suitableDayCount; // for 30 days claim
         if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive()){
             if (!RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, totalClaimCost)){
-                player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));
+                sendMessageToPlayer("HASNT_MONEY", player);
                 return;
             }
             RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, totalClaimCost);
         }
         if (RClaim.getInstance().getClaimManager().isSuitable(player.getLocation().getChunk())){
-            player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
+            sendMessageToPlayer("IS_NOT_SUITABLE", player);
             return;
         }
         RClaim.getInstance().getClaimManager().createClaim(player.getLocation().getChunk(), player);
@@ -81,11 +81,11 @@ public class PlayerCommand extends BaseCommand {
     public void trustPlayer(Player player, @Suggestion("name") String targetPlayer){
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
         if (claim == null){
-            player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIM"));
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
             return;
         }
         if (targetPlayer == null || targetPlayer.isEmpty() ){
-            player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
+            sendMessageToPlayer("ENTER_A_PLAYER_NAME", player);
             return;
         }
         if (player.getName().equalsIgnoreCase(targetPlayer)){
@@ -93,7 +93,7 @@ public class PlayerCommand extends BaseCommand {
         }
         OfflinePlayer offlinePlayer = PlayerUtil.getPlayer(targetPlayer);
         if (offlinePlayer == null) {
-            player.sendMessage(RClaim.getInstance().getMessage("TARGET_NOT_FOUND"));
+            sendMessageToPlayer("TARGET_NOT_FOUND", player);
             return;
         }
         claim.trustPlayer(player, offlinePlayer.getUniqueId());
@@ -103,11 +103,11 @@ public class PlayerCommand extends BaseCommand {
     public void unTrustPlayer(Player player, @Suggestion("name") String targetPlayer){
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
         if (claim == null){
-            player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIM"));
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
             return;
         }
         if (targetPlayer == null || targetPlayer.isEmpty()){
-            player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
+            sendMessageToPlayer("ENTER_A_PLAYER_NAME", player);
             return;
         }
         if (player.getName().equalsIgnoreCase(targetPlayer)){
@@ -116,14 +116,14 @@ public class PlayerCommand extends BaseCommand {
         if(PlayerUtil.getPlayer(targetPlayer) != null){
             OfflinePlayer target = PlayerUtil.getPlayer(targetPlayer);
             if (!claim.getMembers().contains(target.getUniqueId())){
-                player.sendMessage(RClaim.getInstance().getMessage("NOT_TRUSTED_PLAYER"));
+                sendMessageToPlayer("NOT_TRUSTED_PLAYER", player);
                 return;
             }
             claim.removeMember(target.getUniqueId());
             claim.getClaimPermissions().remove(target.getUniqueId());
-            player.sendMessage(RClaim.getInstance().getMessage("UNTRUSTED_PLAYER"));
+            sendMessageToPlayer("UNTRUST_SUCCESS", player);
         } else {
-            player.sendMessage(RClaim.getInstance().getMessage("TARGET_NOT_FOUND"));
+            sendMessageToPlayer("TARGET_NOT_FOUND", player);
         }
     }
     @SubCommand("list")
@@ -135,29 +135,29 @@ public class PlayerCommand extends BaseCommand {
     public void rename(Player player, @Join(" ") String name){
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
         if (claim == null){
-            player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIM"));
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
             return;
         }
         if (name == null || name.isEmpty()){
-            player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_CLAIM_NAME"));
+            sendMessageToPlayer("ENTER_A_CLAIM_NAME", player);
             return;
         }
         claim.setDisplayName(name);
-        player.sendMessage(RClaim.getInstance().getMessage("RENAME_SUCCESS"));
+        sendMessageToPlayer("RENAME_SUCCESS", player);
     }
 
     @SubCommand("toggleblock")
     public void toggle(Player player){
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
         if (claim == null){
-            player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIM"));
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
             return;
         }
         claim.toggleBlockStatus();
         if (claim.isEnableBlock()){
-            player.sendMessage(RClaim.getInstance().getMessage("BLOCK_ENABLED"));
+            sendMessageToPlayer("BLOCK_ENABLED", player);
         } else {
-            player.sendMessage(RClaim.getInstance().getMessage("BLOCK_DISABLED"));
+            sendMessageToPlayer("BLOCK_DISABLED", player);
         }
     }
 }

@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 // pageable
 public class ClaimBlockMenu extends ClaimInventory {
 
@@ -37,7 +38,7 @@ public class ClaimBlockMenu extends ClaimInventory {
             builder.setItem(itemStack , event -> {
                 boolean success = BaseUtil.changeBlockMaterial(player, claim, Material.getMaterial(blockType));
                 if (!success){
-                    player.sendMessage(RClaim.getInstance().getMessage("HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK"));
+                    sendMessageToPlayer("HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK", player);
                     player.closeInventory();
                 }
                 player.closeInventory();

@@ -1,7 +1,6 @@
 package net.weesli.rclaim.input;
 
 import net.weesli.rclaim.RClaim;
-import net.weesli.rclaim.api.events.ClaimTrustEvent;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimTag;
 import net.weesli.rclaim.model.ClaimTagImpl;
@@ -20,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
+
 public class TextInputManager {
     public enum TextInputAction {
         ADD_PLAYER_TO_CLAIM,
@@ -35,6 +36,7 @@ public class TextInputManager {
     }
 
     public void runAction(Player player, TextInputAction action, Object o) {
+
         BukkitTask task = new BukkitRunnable() {
             @Override
             public void run() {
@@ -42,7 +44,7 @@ public class TextInputManager {
                 cancel();
             }
         }.runTaskLater(RClaim.getInstance(), 120L);
-        TextPlayer textPlayer = new TextPlayer(task, action, o);
+        TextPlayer textPlayer = new TextPlayer(task,action, o);
         actions.put(player, textPlayer);
     }
 
@@ -64,17 +66,17 @@ public class TextInputManager {
     private void addPlayerToClaim(Player player, String msg) {
         TextPlayer textPlayer = actions.get(player);
         if (msg.isEmpty() || player.getName().equals(msg)) {
-            player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
+            sendMessageToPlayer("ENTER_A_PLAYER_NAME", player);
             return;
         }
         Claim claim = (Claim) textPlayer.o();
         if (claim == null || !claim.getOwner().equals(player.getUniqueId())) {
-            player.sendMessage(RClaim.getInstance().getMessage("YOU_DONT_IN_CLAIM"));
+            sendMessageToPlayer("YOU_DONT_IN_CLAIM", player);
             return;
         }
         OfflinePlayer targetPlayer = PlayerUtil.getPlayer(msg);
         if (targetPlayer == null) {
-            player.sendMessage(RClaim.getInstance().getMessage("TARGET_NOT_FOUND"));
+            sendMessageToPlayer("TARGET_NOT_FOUND", player);
             return;
         }
         claim.trustPlayer(player, targetPlayer.getUniqueId());
@@ -88,17 +90,17 @@ public class TextInputManager {
     private void addTagToClaim(Player player, String msg) {
         TextPlayer textPlayer = actions.get(player);
         if (msg.isEmpty()) {
-            player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_TAG_NAME"));
+            sendMessageToPlayer("ENTER_A_TAG_NAME", player);
             return;
         }
         Claim claim = (Claim) textPlayer.o();
         if (claim == null || !claim.getOwner().equals(player.getUniqueId())) {
-            player.sendMessage(RClaim.getInstance().getMessage("YOU_DONT_IN_CLAIM"));
+            sendMessageToPlayer("YOU_DONT_IN_CLAIM", player);
             return;
         }
         ClaimTag claimTag = claim.getClaimTags().stream().filter(t -> t.getDisplayName().equalsIgnoreCase(msg)).findFirst().orElse(null);
         if (claimTag != null){
-            player.sendMessage(RClaim.getInstance().getMessage("ALREADY_CREATED_TAG"));
+            sendMessageToPlayer("ALREADY_CREATED_TAG", player);
             return;
         }
         claimTag = new ClaimTagImpl(
@@ -109,7 +111,7 @@ public class TextInputManager {
                 new ArrayList<>()
         );
         RClaim.getInstance().getTagManager().addTag(claim, claimTag);
-        player.sendMessage(RClaim.getInstance().getMessage("TAG_CREATED"));
+        sendMessageToPlayer("TAG_CREATED", player);
         RClaim.getInstance().getUiManager().openInventory(
                 player,
                 claim,
@@ -120,7 +122,7 @@ public class TextInputManager {
     private void addPlayerToTag(Player player, String msg) {
         TextPlayer textPlayer = actions.get(player);
         if (msg.isEmpty() && player.getName().equals(msg)) {
-            player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
+            sendMessageToPlayer("ENTER_A_PLAYER_NAME", player);
             return;
         }
         ClaimTag claimTag = (ClaimTag) textPlayer.o();
@@ -128,15 +130,15 @@ public class TextInputManager {
             return;
         }
         if (PlayerUtil.getPlayer(msg) == null) {
-            player.sendMessage(RClaim.getInstance().getMessage("TARGET_NOT_FOUND"));
+            sendMessageToPlayer("TARGET_NOT_FOUND", player);
             return;
         }
         if (claimTag.getUsers().contains(PlayerUtil.getPlayer(msg).getUniqueId())) {
-            player.sendMessage(RClaim.getInstance().getMessage("ALREADY_TRUSTED_PLAYER"));
+            sendMessageToPlayer("ALREADY_TRUSTED_PLAYER", player);
             return;
         }
         claimTag.getUsers().add(PlayerUtil.getPlayer(msg).getUniqueId());
-        player.sendMessage(RClaim.getInstance().getMessage("ADDED_USER_TO_TAG"));
+        sendMessageToPlayer("ADDED_USER_TO_TAG", player);
         RClaim.getInstance().getUiManager().openTagInventory(
                 player,
                 claimTag,
@@ -150,5 +152,9 @@ public class TextInputManager {
 
     public TextPlayer getTextPlayer(Player player) {
         return actions.get(player);
+    }
+
+    public void remove(Player player) {
+        actions.remove(player);
     }
 }

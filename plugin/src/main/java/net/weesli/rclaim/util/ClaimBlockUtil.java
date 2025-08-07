@@ -22,8 +22,8 @@ public class ClaimBlockUtil {
     private static ItemStack getItem(){
         ItemStack itemStack = new ItemStack(Material.getMaterial(ConfigLoader.getConfig().getClaimBlock().getItem().getMaterial()));
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName(ColorBuilder.convertColors(ConfigLoader.getConfig().getClaimBlock().getItem().getTitle()));
-        meta.setLore(ConfigLoader.getConfig().getClaimBlock().getItem().getLore().stream().map(ColorBuilder::convertColors).toList());
+        meta.displayName(ColorBuilder.convertColors(ConfigLoader.getConfig().getClaimBlock().getItem().getTitle()));
+        meta.lore(ConfigLoader.getConfig().getClaimBlock().getItem().getLore().stream().map(ColorBuilder::convertColors).toList());
         int modelData = ConfigLoader.getConfig().getClaimBlock().getItem().getCustomModelData();
         if (modelData != 0){
             meta.setCustomModelData(modelData);

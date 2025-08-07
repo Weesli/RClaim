@@ -21,7 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 public class ClaimResizeInventory extends ClaimInventory {
     private static final Menu menu = ConfigLoader.getMenuConfig().getResizeMenu();
 
@@ -134,24 +134,24 @@ public class ClaimResizeInventory extends ClaimInventory {
 
     private void handleItemClick(Player player, Location location, Claim claim) {
         if (!HWorldGuard.isAreaEnabled(player)) {
-            player.sendMessage(RClaim.getInstance().getMessage("AREA_DISABLED"));
+            sendMessageToPlayer("AREA_DISABLED", player);
             return;
         }
         if (!BaseUtil.isActiveWorld(player.getWorld().getName())) {
-            player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
+            sendMessageToPlayer("NOT_IN_CLAIMABLE_WORLD", player);
             return;
         }
         if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive() &&
                 !RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay() * 30)) {
-            player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));
+            sendMessageToPlayer("HASNT_MONEY", player);
             return;
         }
         if (RClaim.getInstance().getClaimManager().isSuitable(location)) {
-            player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
+            sendMessageToPlayer("IS_NOT_SUITABLE", player);
             return;
         }
         if (!isAdjacent(claim, location)) {
-            player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_ADJACENT"));
+            sendMessageToPlayer("IS_NOT_ADJACENT", player);
             return;
         }
         boolean success = RClaim.getInstance().getClaimManager().createSubClaim(player, claim, location);

@@ -1,8 +1,8 @@
-package net.weesli.rclaim.hook.hologram;
+package net.weesli.rclaim.api.hook;
 
 import net.weesli.rclaim.api.enums.HologramModule;
 
-public interface IClaimHologram {
+public interface ClaimHologram {
     void createHologram(String ID);
     void updateHologram(String ID);
     void deleteHologram(String ID);

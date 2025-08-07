@@ -22,7 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.LinkedList;
-
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 public class ClaimSettingsMenu extends ClaimInventory {
 
     private static final Menu menu = ConfigLoader.getMenuConfig().getOptionsMenu();
@@ -57,7 +57,7 @@ public class ClaimSettingsMenu extends ClaimInventory {
             if (status.equals(ClaimStatus.PVP)){
                 boolean changeablePvP = isChangeablePvP(claim);
                 if (!changeablePvP){
-                    player.sendMessage(RClaim.getInstance().getMessage("PVP_STATUS_NOT_CHANGEABLE"));
+                    sendMessageToPlayer("PVP_STATUS_NOT_CHANGEABLE", player);
                     return;
                 }
             }

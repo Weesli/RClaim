@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.weesli.rclaim.api.RClaimProvider;
-import net.weesli.rclaim.database.interfaces.ClaimDatabase;
+import net.weesli.rclaim.api.database.ClaimDatabase;
+import net.weesli.rclaim.api.database.Loader;
 import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.manager.CacheManagerImpl;
 import net.weesli.rclaim.command.CommandManager;
@@ -47,11 +48,11 @@ public final class RClaim extends JavaPlugin {
     private TagManagerImpl tagManager;
     private CacheManagerImpl cacheManager;
 
-    private HologramManager hologramManager;
-    private EconomyManager economyManager;
-    private SpawnerManager spawnerManager;
-    private MinionsManager minionsManager;
-    private CombatManager combatManager;
+    private HologramManagerImpl hologramManager;
+    private EconomyManagerImpl economyManager;
+    private SpawnerManagerImpl spawnerManager;
+    private MinionsManagerImpl minionsManager;
+    private CombatManagerImpl combatManager;
 
    @Getter private static RClaim instance;
 
@@ -65,14 +66,12 @@ public final class RClaim extends JavaPlugin {
         if (!loadFile()) return;
         loadListeners();
         loadStorage();
-        Bukkit.getScheduler().runTaskAsynchronously(this, (this::checkVersion));
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this,Loader::save, 12000L, 12000L);
-        spawnerManager = new SpawnerManager();
-        minionsManager = new MinionsManager();
-        economyManager = new EconomyManager();
-        hologramManager = new HologramManager();
+        spawnerManager = new SpawnerManagerImpl();
+        minionsManager = new MinionsManagerImpl();
+        economyManager = new EconomyManagerImpl();
+        hologramManager = new HologramManagerImpl();
         uiManager = new UIManager();
-        combatManager = new CombatManager();
+        combatManager = new CombatManagerImpl();
         claimManager = new ClaimManagerImpl();
         tagManager = new TagManagerImpl();
         cacheManager = new CacheManagerImpl();
@@ -80,7 +79,6 @@ public final class RClaim extends JavaPlugin {
         new CommandManager();
         new Metrics(this, 	23385);
         ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");
-        Loader.load();
         new MapLoader();
         // initialize betterRTP hook if plugin is enabled
         if (getServer().getPluginManager().isPluginEnabled("BetterRTP")) new HBetterRTP(this);
@@ -89,13 +87,22 @@ public final class RClaim extends JavaPlugin {
         RozsLibService.start(this);
 
         // start the public task
+        Bukkit.getScheduler().runTaskAsynchronously(this, (this::checkVersion));
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, Loader::save, 12000L, 12000L);
         new PublicTask();
+
         // publish RClaimAPI for other plugins
         RClaimProvider.setPlugin(this);
         RClaimProvider.setClaimManager(claimManager);
         RClaimProvider.setCacheManager(cacheManager);
         RClaimProvider.setTagManager(tagManager);
-
+        RClaimProvider.setHologramManager(hologramManager);
+        RClaimProvider.setSpawnerManager(spawnerManager);
+        RClaimProvider.setEconomyManager(economyManager);
+        RClaimProvider.setCombatManager(combatManager);
+        RClaimProvider.setMinionsManager(minionsManager);
+        RClaimProvider.setStorage(storage);
+        Loader.load();
     }
 
     @Override
@@ -166,11 +173,7 @@ public final class RClaim extends JavaPlugin {
         return true;
     }
 
-    public String getMessage(String path){
-        return ColorBuilder.convertColors(ConfigLoader.getConfig().getPrefix() + ConfigLoader.getLangConfig().get(path));
-    }
-
-    public CombatManager getCombatManager() {
+    public CombatManagerImpl getCombatManager() {
         if (combatManager.getCombatIntegration() == null || !combatManager.getCombatIntegration().isEnabled()){
             return null;
         }

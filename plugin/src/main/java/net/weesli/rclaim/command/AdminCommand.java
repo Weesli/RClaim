@@ -5,6 +5,9 @@ import dev.triumphteam.cmd.core.annotation.Command;
 import dev.triumphteam.cmd.core.annotation.Default;
 import dev.triumphteam.cmd.core.annotation.SubCommand;
 import dev.triumphteam.cmd.core.annotation.Suggestion;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
@@ -16,6 +19,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToConsole;
+import static net.weesli.rclaim.util.ChatUtil.createTagResolver;
 
 @Command("adminclaim")
 public class AdminCommand extends BaseCommand {
@@ -30,19 +36,19 @@ public class AdminCommand extends BaseCommand {
     public void clearclaim(CommandSender commandSender, @Suggestion("name") String target){
         if (!commandSender.isOp())return;
         if (target == null || target.isEmpty()){
-            commandSender.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
+            sendMessageToConsole("ENTER_A_PLAYER_NAME");
             return;
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(target);
         if (player == null){
-            commandSender.sendMessage(RClaim.getInstance().getMessage("TARGET_NOT_FOUND"));
+            sendMessageToConsole("TARGET_NOT_FOUND");
             return;
         }
         List<Claim> Claims = RClaim.getInstance().getCacheManager().getClaims().getAllClaims(player.getUniqueId());
         Claims.forEach(claim -> {
             RClaim.getInstance().getClaimManager().removeClaim(claim);
         });
-        commandSender.sendMessage(RClaim.getInstance().getMessage("DELETED_CLAIMS").replaceAll("%player%", player.getName()));
+        sendMessageToConsole("DELETED_CLAIMS", createTagResolver("player", player.getName()));
     }
 
     @SubCommand("reload")

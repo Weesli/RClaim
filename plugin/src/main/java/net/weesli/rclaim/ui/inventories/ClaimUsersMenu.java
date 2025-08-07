@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.UUID;
-
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 public class ClaimUsersMenu extends ClaimInventory {
 
     private final Menu menu = ConfigLoader.getMenuConfig().getMembersMenu();
@@ -52,7 +52,7 @@ public class ClaimUsersMenu extends ClaimInventory {
         }
         inventory.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-member")),menu.getItems().get("add-member").getIndex()),event ->{
             player.closeInventory();
-            player.sendMessage(RClaim.getInstance().getMessage("ENTER_A_PLAYER_NAME"));
+            sendMessageToPlayer("ENTER_A_PLAYER_NAME", player);
             RClaim.getInstance().getTextInputManager().runAction(player,
                     TextInputManager.TextInputAction.ADD_PLAYER_TO_CLAIM, claim);
         });

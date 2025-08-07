@@ -11,6 +11,8 @@ import net.weesli.rclaim.api.model.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
+
 @Command("unclaim")
 public class UnClaimCommand extends BaseCommand {
 
@@ -19,25 +21,25 @@ public class UnClaimCommand extends BaseCommand {
     public void execute(Player player){
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation().getChunk());
         if (claim == null){
-            player.sendMessage(RClaim.getInstance().getMessage("YOU_DONT_IN_CLAIM"));
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
             return;
         }
         if (!claim.isOwner(player.getUniqueId())){
-            player.sendMessage(RClaim.getInstance().getMessage("NOT_YOUR_CLAIM"));
+            sendMessageToPlayer("NOT_YOUR_CLAIM", player);
             return;
         }
-        player.sendMessage(RClaim.getInstance().getMessage("CONFIRM_UNCLAIMED"));
+        sendMessageToPlayer("CONFIRM_UNCLAIMED", player);
     }
 
     @SubCommand("confirm")
     public void confirm(Player player){
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation().getChunk());
         if (claim == null){
-            player.sendMessage(RClaim.getInstance().getMessage("YOU_DONT_IN_CLAIM"));
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
             return;
         }
         if (!claim.isOwner(player.getUniqueId())){
-            player.sendMessage(RClaim.getInstance().getMessage("NOT_YOUR_CLAIM"));
+            sendMessageToPlayer("NOT_YOUR_CLAIM", player);
             return;
         }
         ClaimDeleteEvent event = new ClaimDeleteEvent(claim, ExplodeCause.UNCLAIM);
@@ -46,6 +48,6 @@ public class UnClaimCommand extends BaseCommand {
             RClaim.getInstance().getClaimManager().removeClaim(claim);
             RClaim.getInstance().getStorage().deleteClaim(claim.getID());
         }
-        player.sendMessage(RClaim.getInstance().getMessage("UNCLAIMED_CLAIM"));
+        sendMessageToPlayer("UNCLAIM_SUCCESS", player);
     }
 }

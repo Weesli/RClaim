@@ -1,6 +1,5 @@
 package net.weesli.rclaim.model;
 
-import lombok.Getter;
 import lombok.Setter;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.events.ClaimDeleteEvent;
@@ -23,6 +22,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 
 @Setter
 public class ClaimImpl implements Claim {
@@ -146,18 +147,18 @@ public class ClaimImpl implements Claim {
     @Override
     public void trustPlayer(Player owner, UUID target) {
         if (members.contains(target)) {
-            owner.sendMessage(RClaim.getInstance().getMessage("ALREADY_TRUSTED_PLAYER"));
+            sendMessageToPlayer("ALREADY_TRUSTED_PLAYER", owner);
             return;
         }
         if (owner.getUniqueId().equals(target)) {
             int maxTrustablePlayer = PermissionUtil.getMemberLimit(owner);
             if (members.size() >= maxTrustablePlayer) {
-                owner.sendMessage(RClaim.getInstance().getMessage("MAX_TRUSTED_PLAYERS"));
+                sendMessageToPlayer("MAX_TRUSTED_PLAYERS", owner);
                 return;
             }
         }
         addMember(target);
-        owner.sendMessage(RClaim.getInstance().getMessage("TRUSTED_PLAYER"));
+        sendMessageToPlayer("TRUSTED_PLAYER", owner);
     }
 
     public void removeMember(UUID uuid) {

@@ -1,10 +1,11 @@
 package net.weesli.rclaim.hook.combat;
 
 
+import net.weesli.rclaim.api.hook.ClaimCombat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class PvPManager implements IClaimCombat {
+public class PvPManager implements ClaimCombat {
 
     me.NoChance.PvPManager.PvPManager pvpmanager;
     private boolean enabled;

@@ -1,18 +1,19 @@
 package net.weesli.rclaim.hook.manager;
 
 import lombok.Getter;
+import net.weesli.rclaim.api.hook.manager.CombatManager;
 import net.weesli.rclaim.config.ConfigLoader;
-import net.weesli.rclaim.hook.combat.IClaimCombat;
+import net.weesli.rclaim.api.hook.ClaimCombat;
 import net.weesli.rclaim.hook.combat.CombatLogX;
 import net.weesli.rclaim.hook.combat.PvPManager;
 import org.bukkit.Bukkit;
 
 @Getter
-public class CombatManager {
+public class CombatManagerImpl implements CombatManager {
 
-    private IClaimCombat combatIntegration;
+    private ClaimCombat combatIntegration;
 
-    public CombatManager(){
+    public CombatManagerImpl(){
         if (!ConfigLoader.getConfig().isCombatSystem()){
             combatIntegration = null;
             return;

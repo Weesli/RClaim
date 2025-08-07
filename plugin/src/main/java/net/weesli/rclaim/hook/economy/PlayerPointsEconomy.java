@@ -1,11 +1,12 @@
 package net.weesli.rclaim.hook.economy;
 
 import net.weesli.rclaim.api.enums.EconomyType;
+import net.weesli.rclaim.api.hook.ClaimEconomy;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class PlayerPointsEconomy implements IClaimEconomy {
+public class PlayerPointsEconomy implements ClaimEconomy {
 
     @Override
     public boolean hasEnough(Player player, double amount) {

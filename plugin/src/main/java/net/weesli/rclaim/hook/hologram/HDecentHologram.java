@@ -2,7 +2,10 @@ package net.weesli.rclaim.hook.hologram;
 
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.weesli.rclaim.RClaim;
+import net.weesli.rclaim.api.hook.ClaimHologram;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.api.enums.HologramModule;
@@ -12,7 +15,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class HDecentHologram implements IClaimHologram {
+import static net.weesli.rclaim.util.ChatUtil.createTagResolver;
+
+public class HDecentHologram implements ClaimHologram {
 
     @Override
     public void createHologram(String ID) {
@@ -27,9 +32,9 @@ public class HDecentHologram implements IClaimHologram {
         }
         if (hologram == null)return;
         for (String line : ConfigLoader.getConfig().getHologram().getHologramSettings().getHologramLines()){
-            DHAPI.addHologramLine(hologram, ColorBuilder.convertColors(line
-                    .replaceAll("<id>", claim.getID())
-                    .replaceAll("%player%", PlayerUtil.getPlayer(claim.getOwner()).getName())));
+            if (line == null)continue;
+            Component message = ColorBuilder.convertColors(line, createTagResolver("player", PlayerUtil.getPlayer(claim.getOwner()).getName()), createTagResolver("id", claim.getID()));
+            DHAPI.addHologramLine(hologram, LegacyComponentSerializer.legacySection().serialize(message));
         }
     }
 

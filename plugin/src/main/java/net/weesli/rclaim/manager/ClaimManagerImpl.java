@@ -1,19 +1,16 @@
 package net.weesli.rclaim.manager;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.weesli.rclaim.RClaim;
-import net.weesli.rclaim.api.enums.ClaimPermission;
 import net.weesli.rclaim.api.events.ClaimCreateEvent;
 import net.weesli.rclaim.api.events.ClaimDeleteEvent;
 import net.weesli.rclaim.api.events.ClaimSubClaimCreateEvent;
 import net.weesli.rclaim.api.manager.ClaimManager;
 import net.weesli.rclaim.api.model.Claim;
-import net.weesli.rclaim.api.model.ClaimEffect;
-import net.weesli.rclaim.api.model.ClaimTag;
 import net.weesli.rclaim.api.model.SubClaim;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.api.enums.ClaimStatus;
 import net.weesli.rclaim.api.enums.ExplodeCause;
-import net.weesli.rclaim.model.ClaimEffectImpl;
 import net.weesli.rclaim.model.ClaimImpl;
 import net.weesli.rclaim.model.SubClaimImpl;
 import net.weesli.rclaim.util.BaseUtil;
@@ -29,10 +26,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 import static net.weesli.rclaim.util.BaseUtil.generateId;
 
 public class ClaimManagerImpl implements ClaimManager {
@@ -71,7 +66,7 @@ public class ClaimManagerImpl implements ClaimManager {
         if(!hasLimit) return;
         boolean isBetweenAnyClaim = BaseUtil.isBetweenAnyClaim(chunk); // if chunk is between any claim
         if (!isBetweenAnyClaim) {
-            owner.sendMessage(RClaim.getInstance().getMessage("VERY_CLOSE_TO_ANOTHER_CLAIM"));
+            sendMessageToPlayer("VERY_CLOSE_TO_ANOTHER_CLAIM", owner);
             return;
         }
         String id = generateId();
@@ -96,7 +91,7 @@ public class ClaimManagerImpl implements ClaimManager {
                             claim.addClaimStatus(status);
                         }
                     });
-            owner.sendMessage(RClaim.getInstance().getMessage("SUCCESS_CLAIM_CREATED"));
+            sendMessageToPlayer("SUCCESS_CLAIM_CREATED", owner);
         }
 
     }
@@ -123,7 +118,7 @@ public class ClaimManagerImpl implements ClaimManager {
             RClaim.getInstance().getStorage().deleteClaim(ID);
             if (ConfigLoader.getConfig().getClaimTimeoutMessage().isEnabled()){
                 ConfigLoader.getConfig().getClaimTimeoutMessage().getText()
-                        .stream().map(line-> ColorBuilder.convertColors(line)
+                        .stream().map(line-> LegacyComponentSerializer.legacySection().serialize(ColorBuilder.convertColors(line))
                                 .replaceAll("%player%", Bukkit.getPlayer(claim.getOwner()).getName())
                                 .replaceAll("%x%", String.valueOf(claim.getX()))
                                 .replaceAll("%z%", String.valueOf(claim.getZ()))

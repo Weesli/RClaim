@@ -24,9 +24,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
 
 import java.util.*;
+
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 
 public class ClaimListener implements Listener {
 
@@ -78,12 +79,13 @@ public class ClaimListener implements Listener {
         // Cancel the event and notify the player if PvP is not allowed
         if (!attacker_claim.checkStatus(ClaimStatus.PVP)) {
             e.setCancelled(true);
-            e.getDamager().sendMessage(RClaim.getInstance().getMessage("STATUS_PVP"));
+            sendMessageToPlayer("STATUS_PVP", e.getPlayer());
             return;
         }
         if (!victim_claim.checkStatus(ClaimStatus.PVP)) {
             e.setCancelled(true);
-            e.getDamager().sendMessage(RClaim.getInstance().getMessage("STATUS_PVP"));
+            sendMessageToPlayer("STATUS_PVP", e.getPlayer());
+            return;
         }
     }
 
@@ -223,7 +225,7 @@ public class ClaimListener implements Listener {
         }
         if (claimBlockEditors.contains(player)) {
             claimBlockEditors.remove(player);
-            RClaim.getInstance().getMessage("DISABLE_CLAIM_BLOCK_EDIT_MODE");
+            sendMessageToPlayer("DISABLE_CLAIM_BLOCK_EDIT_MODE", player);
             claim.moveBlock(block.getLocation().add(0,1,0));
             RClaim.getInstance().getHologramManager().getHologramIntegration().deleteHologram(claim.getID()); // delete old hologram
             RClaim.getInstance().getHologramManager().getHologramIntegration().createHologram(claim.getID()); // create new hologram in new location
@@ -238,7 +240,7 @@ public class ClaimListener implements Listener {
             return;
         }
         claimBlockEditors.add(player);
-        RClaim.getInstance().getMessage("ENABLE_CLAIM_BLOCK_EDIT_MODE");
+        sendMessageToPlayer("ENABLE_CLAIM_BLOCK_EDIT_MODE", player);
     }
 
     @EventHandler
@@ -246,7 +248,7 @@ public class ClaimListener implements Listener {
         Player player = e.getPlayer();
         if (claimBlockEditors.contains(player)) { // if player leaved claim disable edit mode
             claimBlockEditors.remove(player);
-            RClaim.getInstance().getMessage("DISABLE_CLAIM_BLOCK_EDIT_MODE");
+            sendMessageToPlayer("DISABLE_CLAIM_BLOCK_EDIT_MODE", player);
         }
 
     }

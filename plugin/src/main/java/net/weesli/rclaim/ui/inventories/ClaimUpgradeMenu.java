@@ -4,7 +4,6 @@ import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.config.adapter.model.Menu;
-import net.weesli.rclaim.model.ClaimImpl;
 import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rozslib.inventory.ClickableItemStack;
@@ -15,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.stream.Collectors;
-
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 public class ClaimUpgradeMenu extends ClaimInventory {
 
     private final Menu menu = ConfigLoader.getMenuConfig().getUpgradeMenu();
@@ -30,7 +29,7 @@ public class ClaimUpgradeMenu extends ClaimInventory {
         int claimCostPerDay = ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay();
         int currentDayCount = claim.getTimestamp() / (60 * 60 * 24);
         if (currentDayCount >= (ConfigLoader.getConfig().getClaimSettings().getClaimDuration() - 1)){
-            player.sendMessage(RClaim.getInstance().getMessage("ALREADY_MAX_DAY"));
+            sendMessageToPlayer("ALREADY_MAX_DAY", player);
             return;
         }
         int suitableDayCount = (ConfigLoader.getConfig().getClaimSettings().getClaimDuration() - currentDayCount);
@@ -41,11 +40,11 @@ public class ClaimUpgradeMenu extends ClaimInventory {
         inventory.setItem(new ClickableItemStack(itemStack, menu.getItems().get("item-settings").getIndex()), event -> {
             if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive()){
                 if (!RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, totalClaimCost)){
-                    player.sendMessage(RClaim.getInstance().getMessage("HASNT_MONEY"));
+                    sendMessageToPlayer("HASNT_MONEY", player);
                     return;
                 }
                 RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, totalClaimCost);
-                player.sendMessage(RClaim.getInstance().getMessage("TIME_UPGRADE"));
+                sendMessageToPlayer("TIME_UPGRADE", player);
             }
             int duration = BaseUtil.getSec(suitableDayCount * 24 * 60 * 60);
             claim.addTimestamp(duration);

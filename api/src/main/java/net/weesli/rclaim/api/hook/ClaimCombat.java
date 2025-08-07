@@ -1,8 +1,8 @@
-package net.weesli.rclaim.hook.combat;
+package net.weesli.rclaim.api.hook;
 
 import org.bukkit.entity.Player;
 
-public interface IClaimCombat {
+public interface ClaimCombat {
 
     boolean isPvP(Player player);
 

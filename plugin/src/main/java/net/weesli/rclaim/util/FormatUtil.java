@@ -1,5 +1,7 @@
 package net.weesli.rclaim.util;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.title.TitlePart;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.weesli.rclaim.config.ConfigLoader;
@@ -42,7 +44,7 @@ public class FormatUtil {
      * @param message The message to send.
      */
     public static void sendActionBar(Player player, Map<String, String> values, String message) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ColorBuilder.convertColors(message.replace("%player%", values.get("player")))));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LegacyComponentSerializer.legacySection().serialize(ColorBuilder.convertColors(message.replace("%player%", values.get("player"))))));
     }
 
     /**
@@ -56,6 +58,7 @@ public class FormatUtil {
         String[] split = message.split("<>");
         String title = split[0].replace("%player%", values.get("player"));
         String subtitle = split.length > 1 ? split[1].replace("%player%", values.get("player")) : "";
-        player.sendTitle(ColorBuilder.convertColors(title), ColorBuilder.convertColors(subtitle), 20, 40, 20);
+        player.sendTitlePart(TitlePart.TITLE, ColorBuilder.convertColors(title));
+        player.sendTitlePart(TitlePart.SUBTITLE, ColorBuilder.convertColors(subtitle));
     }
 }

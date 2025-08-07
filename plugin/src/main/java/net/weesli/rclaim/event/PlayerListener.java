@@ -11,12 +11,10 @@ import net.weesli.rclaim.hook.other.HWorldGuard;
 import net.weesli.rclaim.util.ClaimBlockUtil;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rclaim.api.enums.ClaimPermission;
-import net.weesli.rozslib.events.PlayerDamageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.WeatherType;
-import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -30,9 +28,10 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 
 public class PlayerListener implements Listener {
 
@@ -52,7 +51,7 @@ public class PlayerListener implements Listener {
         }
         if (!claim.checkPermission(e.getPlayer().getUniqueId(), ClaimPermission.BLOCK_PLACE)){
             e.setCancelled(true);
-            e.getPlayer().sendMessage(RClaim.getInstance().getMessage("PERMISSION_BLOCK_PLACE"));
+            sendMessageToPlayer("PERMISSION_BLOCK_PLACE", e.getPlayer());
         }
     }
 
@@ -71,7 +70,7 @@ public class PlayerListener implements Listener {
             }
             if (!claim.checkPermission(e.getPlayer().getUniqueId(),ClaimPermission.BREAK_CONTAINER)){
                 e.setCancelled(true);
-                e.getPlayer().sendMessage(RClaim.getInstance().getMessage("PERMISSION_BREAK_CONTAINER"));
+                sendMessageToPlayer("PERMISSION_BREAK_CONTAINER", e.getPlayer());
             }
         }
         if (tag != null){
@@ -81,7 +80,7 @@ public class PlayerListener implements Listener {
         }
         if (!claim.checkPermission(e.getPlayer().getUniqueId(), ClaimPermission.BLOCK_BREAK)){
             e.setCancelled(true);
-            e.getPlayer().sendMessage(RClaim.getInstance().getMessage("PERMISSION_BLOCK_BREAK"));
+            sendMessageToPlayer("PERMISSION_BLOCK_BREAK", e.getPlayer());
         }
     }
 
@@ -104,7 +103,7 @@ public class PlayerListener implements Listener {
             }
             if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.CONTAINER_OPEN)){
                 e.setCancelled(true);
-                player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_CONTAINER_OPEN"));
+                sendMessageToPlayer("PERMISSION_CONTAINER_OPEN", player);
             }
         }
         if (e.getClickedBlock().getType().name().contains("DOOR") ||
@@ -122,7 +121,7 @@ public class PlayerListener implements Listener {
             }
             if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.USE_DOOR)){
                 e.setCancelled(true);
-                player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_DOOR_OPEN"));
+                sendMessageToPlayer("PERMISSION_DOOR_OPEN", player);
             }
         }
     }
@@ -144,7 +143,7 @@ public class PlayerListener implements Listener {
         }
         if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.INTERACT_ENTITY)){
             e.setCancelled(true);
-            player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_ENTITY_INTERACT"));
+            sendMessageToPlayer("PERMISSION_ENTITY_INTERACT", player);
         }
     }
 
@@ -168,7 +167,7 @@ public class PlayerListener implements Listener {
                 }
                 if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.ATTACK_MONSTER)){
                     e.setCancelled(true);
-                    player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_ATTACK_MONSTER"));
+                    sendMessageToPlayer("PERMISSION_ATTACK_MONSTER", player);
                 }
             }else {
                 if (tag != null){
@@ -178,7 +177,7 @@ public class PlayerListener implements Listener {
                 }
                 if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.ATTACK_ANIMAL)){
                     e.setCancelled(true);
-                    player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_ATTACK_ANIMAL"));
+                    sendMessageToPlayer("PERMISSION_ATTACK_ANIMAL", player);
                 }
             }
         }
@@ -201,7 +200,7 @@ public class PlayerListener implements Listener {
         }
         if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.DROP_ITEM)){
             e.setCancelled(true);
-            player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_DROP_ITEM"));
+            sendMessageToPlayer("PERMISSION_DROP_ITEM", player);
         }
     }
 
@@ -233,7 +232,7 @@ public class PlayerListener implements Listener {
                 if ((now - last) < COOLDOWN_MS) return;
             }
             pickupCooldowns.put(uuid, now);
-            player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_PICKUP_ITEM"));
+            sendMessageToPlayer("PERMISSION_PICKUP_ITEM", player);
         }
         ClaimTag tag = RClaim.getInstance().getTagManager().isPlayerInTag(player, claim.getID());
         if (tag != null){
@@ -249,7 +248,7 @@ public class PlayerListener implements Listener {
                 long last = pickupCooldowns.getOrDefault(uuid, 0L);
                 if ((now - last) < COOLDOWN_MS) return;
             }
-            player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_PICKUP_ITEM"));
+            sendMessageToPlayer("PERMISSION_PICKUP_ITEM", player);
             pickupCooldowns.put(uuid, now);
         }
     }
@@ -271,7 +270,7 @@ public class PlayerListener implements Listener {
             }
             if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.USE_PORTAL)){
                 e.setCancelled(true);
-                player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_ENTER_PORTAL"));
+                sendMessageToPlayer("PERMISSION_ENTER_PORTAL", player);
             }
         }
     }
@@ -355,7 +354,7 @@ public class PlayerListener implements Listener {
             // give again potion to player
             ItemStack itemStack = e.getEntity().getItem();
             player.getInventory().addItem(itemStack);
-            player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_USE_POTION"));
+            sendMessageToPlayer("PERMISSION_USE_POTION", player);
         }
     }
 
@@ -382,7 +381,7 @@ public class PlayerListener implements Listener {
             // give again potion to player
             ItemStack itemStack = e.getEntity().getItem();
             player.getInventory().addItem(itemStack);
-            player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_USE_POTION"));
+            sendMessageToPlayer("PERMISSION_USE_POTION", player);
         }
     }
 
@@ -404,7 +403,7 @@ public class PlayerListener implements Listener {
             }
             if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.USE_POTION)){
                 e.setCancelled(true);
-                player.sendMessage(RClaim.getInstance().getMessage("PERMISSION_USE_POTION"));
+                sendMessageToPlayer("PERMISSION_USE_POTION", player);
             }
         }
     }
@@ -470,7 +469,7 @@ public class PlayerListener implements Listener {
         if (RClaim.getInstance().getCombatManager() != null){
             if (RClaim.getInstance().getCombatManager().getCombatIntegration().isPvP(player)){
                 player.setVelocity(player.getLocation().getDirection().normalize().multiply(-2).setY(0.5));
-                player.sendMessage(RClaim.getInstance().getMessage("COMBAT_SYSTEM_MESSAGE"));
+                sendMessageToPlayer("COMBAT_SYSTEM_MESSAGE", player);
             }
         }
     }
@@ -510,22 +509,22 @@ public class PlayerListener implements Listener {
         e.setCancelled(true);
         // check area status
         if (!HWorldGuard.isAreaEnabled(player)){
-            player.sendMessage(RClaim.getInstance().getMessage("AREA_DISABLED"));
+            sendMessageToPlayer("AREA_DISABLED", player);
             return;
         }
         if(!BaseUtil.isActiveWorld(player.getWorld().getName())){
-            player.sendMessage(RClaim.getInstance().getMessage("NOT_IN_CLAIMABLE_WORLD"));
+            sendMessageToPlayer("NOT_IN_CLAIMABLE_WORLD", player);
             return;
         }
         if (RClaim.getInstance().getClaimManager().isSuitable(player.getLocation().getChunk())){
-            player.sendMessage(RClaim.getInstance().getMessage("IS_NOT_SUITABLE"));
+            sendMessageToPlayer("IS_NOT_SUITABLE", player);
             return;
         }
         // register a new claim in placed location
         RClaim.getInstance().getClaimManager().createClaim(e.getBlockPlaced().getChunk(), player);
         itemStack.setAmount(itemStack.getAmount()-1);
         e.getPlayer().getInventory().setItemInMainHand(itemStack);
-        player.sendMessage(RClaim.getInstance().getMessage("SUCCESS_CLAIM_CREATED"));
+        sendMessageToPlayer("SUCCESS_CLAIM_CREATED", player);
     }
 
     // this area for liquid blocks place and fill event
@@ -550,7 +549,7 @@ public class PlayerListener implements Listener {
         }
         if (!claim.checkPermission(e.getPlayer().getUniqueId(), ClaimPermission.BLOCK_PLACE)){
             e.setCancelled(true);
-            e.getPlayer().sendMessage(RClaim.getInstance().getMessage("PERMISSION_BLOCK_PLACE"));
+            sendMessageToPlayer("PERMISSION_BLOCK_PLACE", e.getPlayer());
         }
     }
     @EventHandler
@@ -577,7 +576,7 @@ public class PlayerListener implements Listener {
         }
         if (!claim.checkPermission(e.getPlayer().getUniqueId(), ClaimPermission.BLOCK_BREAK)){
             e.setCancelled(true);
-            e.getPlayer().sendMessage(RClaim.getInstance().getMessage("PERMISSION_BLOCK_BREAK"));
+            sendMessageToPlayer("PERMISSION_BLOCK_BREAK", e.getPlayer());
         }
     }
 

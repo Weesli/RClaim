@@ -4,7 +4,7 @@ import net.weesli.rclaim.GsonProvider;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.enums.StorageType;
 import net.weesli.rclaim.api.model.Claim;
-import net.weesli.rclaim.database.interfaces.ClaimDatabase;
+import net.weesli.rclaim.api.database.ClaimDatabase;
 
 import net.weesli.rozsdblite.interfaces.Database;
 import net.weesli.rozsdblite.interfaces.Table;
