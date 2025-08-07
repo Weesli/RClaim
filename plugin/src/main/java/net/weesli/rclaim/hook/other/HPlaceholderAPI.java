@@ -45,6 +45,13 @@ public class HPlaceholderAPI extends PlaceholderExpansion {
                 return BaseUtil.getTimeFormat(claimId);
             }
         }
+        if (params.contains("time_raw")){
+            Matcher matcher = globalMatcher.matcher(params);
+            if (matcher.find()){
+                String claimId = matcher.group();
+                return String.valueOf(RClaim.getInstance().getClaimManager().getClaim(claimId).getTimestamp());
+            }
+        }
         if (params.contains("progressbar")){
             Matcher matcher = globalMatcher.matcher(params);
             if (matcher.find()){
