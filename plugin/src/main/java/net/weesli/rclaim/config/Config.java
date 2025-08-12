@@ -203,7 +203,7 @@ public class Config extends OkaeriConfig {
             @CustomKey("hologramLines")
             private List<String> hologramLines = Arrays.asList(
                     "&e&lClaim | &f%rclaim_<id>_name%",
-                    "&eOwner: &f%player%",
+                    "&eOwner: &f<player>",
                     "&e",
                     "&eRemaining time: &f%rclaim_<id>_time%",
                     "&eProgressBar: &f%rclaim_<id>_progressbar%",
