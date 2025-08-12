@@ -6,6 +6,7 @@ import net.weesli.rclaim.api.enums.StorageType;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.database.ClaimDatabase;
 
+import net.weesli.rclaim.model.ClaimImpl;
 import net.weesli.rozsdblite.interfaces.Database;
 import net.weesli.rozsdblite.interfaces.Table;
 
@@ -43,7 +44,7 @@ public class RozsDBLite implements ClaimDatabase {
     public List<Claim> getAllClaims() {
         List<Claim> claims = new ArrayList<>();
         for (String value : claimsTable.getAll()) {
-            claims.add(GsonProvider.getGson().fromJson(value, Claim.class));
+            claims.add(GsonProvider.getGson().fromJson(value, ClaimImpl.class));
         }
         return claims;
     }
