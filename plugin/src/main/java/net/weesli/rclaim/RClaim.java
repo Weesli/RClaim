@@ -54,6 +54,7 @@ public final class RClaim extends JavaPlugin {
     private MinionsManagerImpl minionsManager;
     private CombatManagerImpl combatManager;
 
+
    @Getter private static RClaim instance;
 
     @Override

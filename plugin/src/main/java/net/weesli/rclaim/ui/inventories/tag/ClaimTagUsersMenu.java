@@ -28,7 +28,7 @@ public class ClaimTagUsersMenu extends TagInventory {
         );
         builder.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-user")),menu.getItems().get("add-user").getIndex()),
                 event -> {
-            player.closeInventory();
+            Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
             sendMessageToPlayer("ENTER_A_PLAYER_NAME", player);
                     RClaim.getInstance().getTextInputManager().runAction(
                             player,

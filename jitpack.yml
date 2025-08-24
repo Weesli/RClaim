@@ -1,5 +1,5 @@
 jdk:
-  - openjdk17
+  - openjdk21
 
 install:
-  - mvn install -pl api -am -DskipTests -Dmaven.javadoc.skip=true
+  - ./gradlew :RClaim-api:publishToMavenLocal -x test --no-daemon

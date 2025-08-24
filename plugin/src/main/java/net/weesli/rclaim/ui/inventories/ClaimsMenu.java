@@ -9,6 +9,7 @@ import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rozslib.inventory.ClickableItemStack;
 import net.weesli.rozslib.inventory.types.PageableInventory;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -51,11 +52,14 @@ public class ClaimsMenu extends ClaimInventory {
                 }
                 if (e.isShiftClick() && e.isLeftClick()){ // teleport the claim
                     if (!player.hasPermission("rclaim.claim.tp")) {
-
                         sendMessageToPlayer("NO_PERMISSION", player);
                         return;
                     }
-                    player.teleport(target.getCenter());
+
+                    Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> {
+                        player.closeInventory();
+                        player.teleport(target.getBlockLocation().clone().add(0,2,0));
+                    });
                     return;
                 }
                 RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimUpgradeMenu.class);

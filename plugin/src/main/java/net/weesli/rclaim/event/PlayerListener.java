@@ -276,6 +276,16 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
+    public void onDeathPlayer(PlayerDeathEvent event) {
+        Player player = event.getPlayer();
+        Location to = player.getLocation();
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(to);
+        if (claim == null) return; // if player is not in claim skip this event
+        ClaimLeaveEvent leaveEvent = new ClaimLeaveEvent(claim, player);
+        RClaim.getInstance().getServer().getPluginManager().callEvent(leaveEvent);
+    }
+
+    @EventHandler
     public void onTeleport(PlayerTeleportEvent e){ // this event for if player teleport from claim, called ClaimLeaveEvent or ClaimEnterEvent
         // for claim leave
         Player player = e.getPlayer();
@@ -309,12 +319,16 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e){
-        Player player = e.getPlayer();
-        Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation().getChunk());
-        if (claim == null){
-            return;
-        }
         Bukkit.getScheduler().runTaskLater(RClaim.getInstance(), () -> {
+            Player player = e.getPlayer();
+            Location location = player.getRespawnLocation();
+            if (location == null){
+                return;
+            }
+            Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getRespawnLocation());
+            if (claim == null){
+                return;
+            }
             ClaimEnterEvent event = new ClaimEnterEvent(claim, player);
             RClaim.getInstance().getServer().getPluginManager().callEvent(event);
             },20L);
@@ -480,12 +494,13 @@ public class PlayerListener implements Listener {
         Claim claim = e.getClaim();
         // for claim effects
         if (claim.isOwner(player.getUniqueId()) || claim.isMember(player.getUniqueId())){
-            List<ClaimEffect> effects = claim.getEffects();
+            /*List<ClaimEffect> effects = claim.getEffects();
             for (ClaimEffect effect : effects){
                 if (player.hasPotionEffect(effect.getEffect().getType())){
                     player.removePotionEffect(effect.getEffect().getType());
                 }
-            }
+            }*/
+            claim.clearEffects(player);
         }
         // for weather types
         if (claim.getClaimStatuses().contains(ClaimStatus.WEATHER)){

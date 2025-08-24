@@ -9,6 +9,7 @@ import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rozslib.inventory.ClickableItemStack;
 import net.weesli.rozslib.inventory.types.PageableInventory;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -49,7 +50,7 @@ public class ClaimTagMainMenu extends ClaimInventory {
             });
         }
         builder.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-tag")),menu.getItems().get("add-tag").getIndex()), event ->{
-            player.closeInventory();
+            Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
             sendMessageToPlayer("ENTER_TAG_NAME", player);
             RClaim.getInstance().getTextInputManager().runAction(
                     player,

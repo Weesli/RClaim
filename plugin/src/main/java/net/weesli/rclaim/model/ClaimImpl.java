@@ -19,6 +19,7 @@ import net.weesli.rclaim.util.PermissionUtil;
 import net.weesli.rozslib.database.annotation.PrimaryKey;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -188,6 +189,23 @@ public class ClaimImpl implements Claim {
         return effects.stream().anyMatch(e -> e.getEffect().equals(effect));
     }
 
+    @Override
+    public void clearEffect(Effect effect, Player player) {
+        if (player.hasPotionEffect(effect.getType())) {
+            player.removePotionEffect(effect.getType());
+        }
+    }
+
+    @Override
+    public void clearEffects(Player player) {
+        for (ClaimEffect effect : effects) {
+            if (player.hasPotionEffect(effect.getEffect().getType())) {
+                player.removePotionEffect(effect.getEffect().getType());
+            }
+        }
+    }
+
+
     @SuppressWarnings("unchecked")
     @Override
     public List<ClaimTag> getClaimTags() {
@@ -238,7 +256,7 @@ public class ClaimImpl implements Claim {
     }
 
     public boolean isExpired() {
-        return BaseUtil.getSec(timestamp) <= 0;
+        return timestamp <= 0;
     }
 
     @Override
@@ -345,4 +363,37 @@ public class ClaimImpl implements Claim {
     public int getSize() {
         return (getSubClaims().size() + 1) * 256;
     }
+
+    @Override
+    public Collection<Player> getAllPlayers() {
+        Set<Player> players = new HashSet<>();
+        World world = getBlockLocation().getWorld();
+        Set<Chunk> chunks = new HashSet<>();
+
+        for (SubClaim subClaim : getSubClaims()) {
+            int chunkX = subClaim.getX();
+            int chunkZ = subClaim.getZ();
+            Chunk chunk = world.getChunkAt(chunkX, chunkZ);
+            if (chunk.isLoaded()) {
+                chunks.add(chunk);
+            }
+        }
+
+        int blockX = getX();
+        int blockZ = getZ();
+        Chunk mainChunk = world.getChunkAt(blockX >> 4, blockZ >> 4);
+        if (mainChunk.isLoaded()) {
+            chunks.add(mainChunk);
+        }
+
+        for (Chunk chunk : chunks) {
+            for (Entity entity : chunk.getEntities()) {
+                if (entity instanceof Player) {
+                    players.add((Player) entity);
+                }
+            }
+        }
+        return players;
+    }
+
 }

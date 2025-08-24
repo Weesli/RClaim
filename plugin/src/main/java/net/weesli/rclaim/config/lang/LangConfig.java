@@ -5,6 +5,7 @@ import eu.okaeri.configs.annotation.CustomKey;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -186,20 +187,41 @@ public class LangConfig extends OkaeriConfig {
         private String deletedClaims = "&cThe claims of %player% have been successfully deleted!";
 
         public static void sendMessageToPlayer(String path, Player player, TagResolver... tagResolvers) {
-                String rawMessage =  ConfigLoader.getConfig().getPrefix() +  ConfigLoader.getLangConfig().get(path, String.class);
+                String rawMessage = ConfigLoader.getConfig().getPrefix()
+                        + ConfigLoader.getLangConfig().get(path, String.class);
+
                 MiniMessage mm = MiniMessage.miniMessage();
-                Component legacy = LegacyComponentSerializer.legacyAmpersand().deserialize(rawMessage);
+
+                Component legacy = LegacyComponentSerializer.builder()
+                        .hexColors()
+                        .character('&')
+                        .build()
+                        .deserialize(rawMessage);
+
                 String minimessage = mm.serialize(legacy).replace("\\", "");
-                player.sendMessage(mm.deserialize(minimessage,tagResolvers));
+
+                player.sendMessage(
+                        mm.deserialize(minimessage, tagResolvers)
+                                .decoration(TextDecoration.ITALIC, false)
+                );
         }
 
+
         public static void sendMessageToConsole(String path, TagResolver... tagResolvers) {
-                String rawMessage =  ConfigLoader.getConfig().getPrefix() +  ConfigLoader.getLangConfig().get(path, String.class);
+                String rawMessage = ConfigLoader.getConfig().getPrefix()
+                        + ConfigLoader.getLangConfig().get(path, String.class);
+
                 MiniMessage mm = MiniMessage.miniMessage();
+
                 Component legacy = LegacyComponentSerializer.legacyAmpersand().deserialize(rawMessage);
                 String minimessage = mm.serialize(legacy).replace("\\", "");
-                Bukkit.getConsoleSender().sendMessage(mm.deserialize(minimessage,tagResolvers));
+
+                Bukkit.getConsoleSender().sendMessage(
+                        mm.deserialize(minimessage, tagResolvers)
+                                .decoration(TextDecoration.ITALIC, false)
+                );
         }
+
 
 
 }

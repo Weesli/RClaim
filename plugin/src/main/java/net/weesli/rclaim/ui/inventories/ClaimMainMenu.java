@@ -29,7 +29,7 @@ public class ClaimMainMenu extends ClaimInventory {
                 case "claims" -> builder.setItem(new ClickableItemStack(getItemStack(item.getValue()),item.getValue().getIndex()),
                         event -> RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimsMenu.class));
                 case "upgrade-claim" -> builder.setItem(new ClickableItemStack(getItemStack(item.getValue()),item.getValue().getIndex()),
-                        event -> RClaim.getInstance().getUiManager().openResizeMenu(player, claim, 0));
+                        event -> RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimResizeInventory.class));
                 case "members" -> builder.setItem(new ClickableItemStack(getItemStack(item.getValue()), item.getValue().getIndex()),
                         event -> RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimUsersMenu.class));
                 case "options" -> builder.setItem(new ClickableItemStack(getItemStack(item.getValue()), item.getValue().getIndex()),

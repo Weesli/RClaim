@@ -8,6 +8,7 @@ import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rozslib.inventory.ClickableItemStack;
 import net.weesli.rozslib.inventory.types.PageableInventory;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -39,9 +40,9 @@ public class ClaimBlockMenu extends ClaimInventory {
                 boolean success = BaseUtil.changeBlockMaterial(player, claim, Material.getMaterial(blockType));
                 if (!success){
                     sendMessageToPlayer("HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK", player);
-                    player.closeInventory();
+                    Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
                 }
-                player.closeInventory();
+                Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
             });
         }
         builder.openDefaultInventory(player);

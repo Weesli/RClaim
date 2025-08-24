@@ -140,11 +140,9 @@ public class ClaimListener implements Listener {
         if (block.getType().equals(e.getClaim().getBlock())) {
             block.setType(Material.AIR);
         }
-        for (Player player : e.getClaim().getCenter().getWorld().getPlayers()) {
-            for (ClaimEffect effect : e.getClaim().getEffects()) {
-                if (player.hasPotionEffect(effect.getEffect().getType())) {
-                    player.removePotionEffect(effect.getEffect().getType());
-                }
+        if (ConfigLoader.getConfig().getEffects().isEnabled()){
+            for (Player player : e.getClaim().getAllPlayers()){
+                e.getClaim().clearEffects(player);
             }
         }
 
@@ -164,6 +162,9 @@ public class ClaimListener implements Listener {
     @EventHandler
     public void onEnter(ClaimEnterEvent e) {
         // Send a message to the player when they enter a claim
+        if(!ConfigLoader.getConfig().getEnterMessage().isEnabled()){
+            return; // skip if disabled
+        }
         HashMap<String, String> map = new HashMap<>();
         map.put("player", Bukkit.getOfflinePlayer(e.getClaim().getOwner()).getName());
         FormatUtil.sendMessage(e.getPlayer(), map);

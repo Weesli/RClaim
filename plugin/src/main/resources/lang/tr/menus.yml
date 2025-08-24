@@ -328,7 +328,7 @@ tagUsersMenu:
 # Etiket izinleri menüsü yapılandırma ayarları
 tagPermissionsMenu:
   title: '&8Etiket İzinleri'
-  size: 0
+  size: 54
   items:
     item-settings:
       title: '&a<permission>'

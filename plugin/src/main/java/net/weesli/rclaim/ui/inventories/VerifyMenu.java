@@ -47,7 +47,7 @@ public class VerifyMenu extends ClaimInventory {
                 case UNCLAIM:
                     RClaim.getInstance().getClaimManager().explodeClaim(String.valueOf(varible), ExplodeCause.UNCLAIM);
                     sendMessageToPlayer("UNCLAIM_SUCCESS", player);
-                    player.closeInventory();
+                    Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
                     break;
             }
         });

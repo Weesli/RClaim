@@ -8,9 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Represents a protected land claim in the game world. Claims are owned by players and can
@@ -174,6 +172,19 @@ public interface Claim {
      */
     boolean hasEffect(Effect effect);
 
+    /**
+     * Clears all claim effects for a player
+     * @param player
+     */
+    void clearEffects(Player player);
+
+    /**
+     * Clears a specific effect for a player
+     * @param effect
+     * @param player
+     */
+    void clearEffect(Effect effect, Player player);
+
     /** @return List of tags associated with the claim. */
     List<ClaimTag> getClaimTags();
 
@@ -223,4 +234,11 @@ public interface Claim {
      * @param location The new location to move the block to.
      */
     void moveBlock(Location location);
+
+
+    /**
+     * get all player's in the claim
+     * @return a collection of players
+     */
+    Collection<Player> getAllPlayers();
 }

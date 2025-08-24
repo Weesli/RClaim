@@ -212,7 +212,7 @@ public class MenuConfig extends OkaeriConfig {
     @Comment("Tag permissions menu configuration settings")
     public Menu tagPermissionsMenu = new Menu(
             "&8Tag Permissions",
-            0,
+            54,
             Map.of(
                     "item-settings", new MenuItem(null, "&a<permission>", "PAPER", 0, List.of("&7", "&aStatus: &f%status%", "&eClick to toggle permission for this tag.", "&7"))
             )
