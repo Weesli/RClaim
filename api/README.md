@@ -14,9 +14,9 @@ Below you will find information about the new API.
 
 ```xml
 <dependency>
-    <groupId>com.github.Weesli.RClaim</groupId>
-    <artifactId>RClaim-api</artifactId>
-    <version>{version}</version>
+    <groupId>com.github.Weesli</groupId>
+    <artifactId>RClaim</artifactId>
+    <version>2.4.1</version>
     <scope>provided</scope>
 </dependency>
 ```
@@ -24,7 +24,7 @@ Below you will find information about the new API.
 ### Gradle
 
 ```groovy
-compileOnly("com.github.Weesli.RClaim:RClaim-api:{version}")
+compileOnly("com.github.Weesli:RClaim:{version}")
 ```
 
 ---
