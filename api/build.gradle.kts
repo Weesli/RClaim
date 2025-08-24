@@ -5,13 +5,15 @@ plugins {
 
 java {
     toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
+        create<MavenPublication>("mavenJava") {
             artifactId = "RClaim-api"
+            from(components["java"])
         }
     }
 }

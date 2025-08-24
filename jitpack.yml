@@ -1,5 +1,4 @@
 jdk:
   - openjdk21
-
 install:
-  - ./gradlew :RClaim-api:publishToMavenLocal -x test --no-daemon
+  - ./gradlew :RClaim-api:publishToMavenLocal -x test
