@@ -12,11 +12,14 @@ java {
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
+            groupId = "com.github.Weesli"
             artifactId = "RClaim-api"
+            version = project.version.toString()
             from(components["java"])
         }
     }
 }
+
 
 repositories {
     mavenCentral()
