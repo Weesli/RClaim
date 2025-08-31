@@ -1,5 +1,6 @@
 package net.weesli.rclaim.ui.inventories.tag;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.ClaimTag;
 import net.weesli.rclaim.config.ConfigLoader;
@@ -22,7 +23,7 @@ public class ClaimTagEditMenu extends TagInventory {
 
     @Override
     public void openInventory(Player player, ClaimTag tag) {
-        SimpleInventory builder = new SimpleInventory(menu.getTitle(),menu.getSize());
+        SimpleInventory builder = new SimpleInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()),menu.getSize());
         builder.setLayout("").fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), true);
         for (Map.Entry<String, MenuItem> item : menu.getItems().entrySet()){
             ClickableItemStack itemStack = new ClickableItemStack(getItemStack(item.getValue()), item.getValue().getIndex());

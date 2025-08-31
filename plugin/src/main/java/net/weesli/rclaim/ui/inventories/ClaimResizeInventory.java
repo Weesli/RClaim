@@ -1,5 +1,6 @@
 package net.weesli.rclaim.ui.inventories;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.SubClaim;
@@ -31,7 +32,7 @@ public class ClaimResizeInventory extends ClaimInventory {
 
     @Override
     public void openInventory(Player player, Claim claim) {
-        SimpleInventory builder = new SimpleInventory(menu.getTitle(), 45);
+        SimpleInventory builder = new SimpleInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()), 45);
         builder.setLayout("").fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), true);
         setupUpgradeInventory(player, builder, claim.getCenter(), claim);
         builder.openInventory(player);

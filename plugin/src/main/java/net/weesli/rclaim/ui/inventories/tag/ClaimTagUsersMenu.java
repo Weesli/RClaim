@@ -1,5 +1,6 @@
 package net.weesli.rclaim.ui.inventories.tag;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.ClaimTag;
 import net.weesli.rclaim.config.ConfigLoader;
@@ -21,7 +22,7 @@ public class ClaimTagUsersMenu extends TagInventory {
 
     @Override
     public void openInventory(Player player, ClaimTag tag) {
-        PageableInventory builder = new PageableInventory(menu.getTitle(), 27,
+        PageableInventory builder = new PageableInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()), 27,
                 new ClickableItemStack(getItemStack(ConfigLoader.getConfig().getPublicMenu().getPreviousItem()),21),
                 new ClickableItemStack(getItemStack(ConfigLoader.getConfig().getPublicMenu().getNextItem()),23),
                 menu.getItems().get("add-user").getIndex(), 21,23

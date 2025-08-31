@@ -1,5 +1,6 @@
 package net.weesli.rclaim.ui.inventories;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimEffect;
@@ -29,7 +30,7 @@ public class ClaimEffectMenu extends ClaimInventory {
 
     @Override
     public void openInventory(Player player, Claim claim) {
-        SimpleInventory builder = new SimpleInventory(menu.getTitle(),menu.getSize());
+        SimpleInventory builder = new SimpleInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()),menu.getSize());
         builder.setLayout("").fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE),true);
         for (Map.Entry<String, MenuItem> item : menu.getItems().entrySet()){
             switch (item.getKey()){

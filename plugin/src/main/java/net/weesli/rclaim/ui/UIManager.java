@@ -3,15 +3,9 @@ package net.weesli.rclaim.ui;
 import lombok.Getter;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimTag;
-import net.weesli.rclaim.model.ClaimImpl;
-import net.weesli.rclaim.model.ClaimTagImpl;
-import net.weesli.rclaim.ui.inventories.*;
-import net.weesli.rclaim.ui.inventories.tag.*;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Getter
 public class UIManager {
@@ -19,6 +13,7 @@ public class UIManager {
     public void openInventory(Player player, Claim claim, Class<? extends ClaimInventory> clazz){
         try {
             ClaimInventory claimClass = clazz.getDeclaredConstructor().newInstance();
+
             claimClass.openInventory(player, claim);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);

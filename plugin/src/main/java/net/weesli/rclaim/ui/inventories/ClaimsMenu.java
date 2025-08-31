@@ -1,5 +1,6 @@
 package net.weesli.rclaim.ui.inventories;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
@@ -25,7 +26,7 @@ public class ClaimsMenu extends ClaimInventory {
     @Override
     public void openInventory(Player player, Claim claim) {
         int i = 1;
-        PageableInventory builder = new PageableInventory(menu.getTitle(), 54,
+        PageableInventory builder = new PageableInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()), 54,
                 new ClickableItemStack(getItemStack(ConfigLoader.getConfig().getPublicMenu().getPreviousItem()),0),
                 new ClickableItemStack(getItemStack(ConfigLoader.getConfig().getPublicMenu().getNextItem()),0));
         builder.setLayout("""

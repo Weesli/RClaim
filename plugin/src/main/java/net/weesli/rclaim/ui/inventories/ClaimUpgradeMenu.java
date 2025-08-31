@@ -1,5 +1,6 @@
 package net.weesli.rclaim.ui.inventories;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
@@ -21,7 +22,7 @@ public class ClaimUpgradeMenu extends ClaimInventory {
 
     @Override
     public void openInventory(Player player, Claim claim) {
-        SimpleInventory inventory = new SimpleInventory(menu.getTitle(),menu.getSize());
+        SimpleInventory inventory = new SimpleInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()),menu.getSize());
         inventory.setLayout("").fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), true);
         ItemStack itemStack = getItemStack(menu.getItems().get("item-settings"));
         ItemMeta meta = itemStack.getItemMeta();
