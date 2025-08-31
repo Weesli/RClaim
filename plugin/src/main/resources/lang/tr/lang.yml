@@ -33,6 +33,7 @@ IS_NOT_ADJACENT: "&cHey! Bu alan sizin claim bölgenize bitişik değil!"
 VERY_CLOSE_TO_ANOTHER_CLAIM: "&cAlmaya çalıştığınız bölge bir claim'in bölgesine yakın!"
 ALREADY_MAX_DAY: "&cClaim süresi maximum seviyeye ulaştı!"
 RENAME_SUCCESS: "&aClaim ismi değiştirildi!"
+ENTER_A_CLAIM_NAME: "&cLütfen bir claim ismi girin!"
 PVP_STATUS_NOT_CHANGEABLE: "&cHey! Bu claim'in pvp durumu degistirilemez çünkü bir düşman şuan senin bölgende!"
 HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK: "&cBu claim bloğunu seçmek için gerekli yetkiye sahip değilsiniz!"
 # claim etiketleri mesajları

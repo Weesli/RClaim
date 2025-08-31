@@ -3,6 +3,7 @@ package net.weesli.rclaim.command;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
 import net.weesli.rclaim.RClaim;
+import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.hook.other.HWorldGuard;
@@ -45,7 +46,7 @@ public class PlayerCommand extends BaseCommand {
             return;
         }
 
-        PreviewUtil.viewClaimRadius(player);
+        PreviewUtil.previewViewer(player);
         sendMessageToPlayer("PREVIEW_OPENED", player);
     }
 
@@ -159,5 +160,19 @@ public class PlayerCommand extends BaseCommand {
         } else {
             sendMessageToPlayer("BLOCK_DISABLED", player);
         }
+    }
+
+    @SubCommand("tp")
+    public void tp(Player player, @Suggestion("player_claims") String id){
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(id);
+        if (claim == null){
+            claim = RClaim.getInstance().getCacheManager().getClaims().getCache().values().stream().filter(c ->
+                    c.getDisplayName().equals(id)).findFirst().orElse(null);
+        }
+        if (claim == null || !claim.isOwner(player.getUniqueId()) && !claim.isMember(player.getUniqueId())){
+            sendMessageToPlayer("NOT_YOUR_CLAIM", player);
+            return;
+        }
+        player.teleport(claim.getBlockLocation().clone().add(0,2,0));
     }
 }

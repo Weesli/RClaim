@@ -27,6 +27,9 @@ public class LangConfig extends OkaeriConfig {
         @CustomKey("ENTER_A_PLAYER_NAME")
         private String enterAPlayerName = "&cPlease enter a player name!";
 
+        @CustomKey("ENTER_A_CLAIM_NAME")
+        private String enterAClaimName = "&cPlease enter a claim name!";
+
         @CustomKey("TARGET_NOT_FOUND")
         private String targetNotFound = "&cUser not found!";
 
