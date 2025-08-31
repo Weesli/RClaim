@@ -3,7 +3,6 @@ package net.weesli.rclaim;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import net.weesli.rclaim.api.enums.ClaimPermission;
 import net.weesli.rclaim.database.adapter.*;
 import net.weesli.rclaim.model.ClaimEffectImpl;
 import net.weesli.rclaim.model.ClaimTagImpl;
@@ -23,7 +22,7 @@ public class GsonProvider {
             .registerTypeAdapter(SubClaimImpl.class, new SubClaimTypeAdapter())
             .registerTypeAdapter(ClaimEffectImpl.class, new ClaimEffectTypeAdapter())
             .registerTypeAdapter(Location.class, new LocationTypeAdapter())
-            .registerTypeAdapter(new TypeToken<Map<UUID, List<ClaimPermission>>>() {}.getType(), new ClaimPermissionMapAdapter())
+            .registerTypeAdapter(new TypeToken<Map<UUID, List<String>>>() {}.getType(), new ClaimPermissionMapAdapter())
             .create();
 
     public static Gson getGson() {
