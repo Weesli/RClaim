@@ -8,13 +8,18 @@ import lombok.Setter;
 import net.weesli.rclaim.config.adapter.ClaimAdapter;
 import net.weesli.rclaim.config.lang.LangConfig;
 import net.weesli.rclaim.config.lang.MenuConfig;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public final class ConfigLoader {
 
-    private final Plugin plugin;
+    private static Plugin plugin = null;
 
     @Getter private static Config config;
     @Getter@Setter
@@ -25,7 +30,7 @@ public final class ConfigLoader {
     @Getter private static final List<String> defaultLanguages = List.of( "tr");
 
     private ConfigLoader(Plugin plugin, String langCode){
-        this.plugin = plugin;
+        ConfigLoader.plugin = plugin;
         initDefaultDirectory(langCode);
         boolean enableDirectory = checkDirectory(langCode);
         if(!enableDirectory){
@@ -40,7 +45,7 @@ public final class ConfigLoader {
         new ConfigLoader(plugin, langCode);
     }
 
-    private void initDefaultDirectory(String langCode){
+    private static void initDefaultDirectory(String langCode){
         File folderDir = new File(plugin.getDataFolder(), "lang/" + langCode);
         if (!folderDir.exists()) {
             folderDir.mkdirs();
@@ -75,6 +80,38 @@ public final class ConfigLoader {
                     .withBindFile(new File(plugin.getDataFolder(), "lang/" + langCode + "/lang.yml"))
                     .saveDefaults()
                     .load(true);
+        }
+        File langFile = new File(plugin.getDataFolder(), "lang/" + langCode + "/lang.yml");
+        FileConfiguration langConfig = YamlConfiguration.loadConfiguration(langFile);
+
+        try (InputStream defStream = plugin.getResource("lang/" + langCode + "/lang.yml")) {
+            if (defStream != null) {
+                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defStream));
+
+                langConfig.setDefaults(defConfig);
+                langConfig.options().copyDefaults(true);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File menuFile = new File(plugin.getDataFolder(), "lang/" + langCode + "/menus.yml");
+        FileConfiguration menuConfig = YamlConfiguration.loadConfiguration(menuFile);
+        try (InputStream defStream = plugin.getResource("lang/" + langCode + "/menus.yml")) {
+            if (defStream != null) {
+                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defStream));
+
+                menuConfig.setDefaults(defConfig);
+                menuConfig.options().copyDefaults(true);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            langConfig.save(langFile);
+            menuConfig.save(menuFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
