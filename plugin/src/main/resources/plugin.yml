@@ -1,5 +1,5 @@
 name: RClaim
-version: '${version}'
+version: ${version}
 main: net.weesli.rclaim.RClaim
 api-version: '1.13'
 load: POSTWORLD
@@ -21,6 +21,7 @@ softdepend:
   - BetterRTP
   - Multiverse-Core
   - SmartSpawner
+  - FancyHolograms
 permissions:
   rclaim.admin.clearclaim:
     description: Permission to clear all claims of player
