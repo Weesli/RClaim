@@ -1,7 +1,5 @@
 package net.weesli.rclaim.api.model;
 
-import net.weesli.rclaim.api.enums.ClaimPermission;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -42,31 +40,31 @@ public interface ClaimTag {
     /**
      * Retrieves the list of permissions granted to users within this tag.
      *
-     * @return List of {@link ClaimPermission} values.
+     * @return List of permissions.
      */
-    List<ClaimPermission> getPermissions();
+    List<String> getPermissions();
 
     /**
      * Checks if the tag has a specific permission.
      *
-     * @param permission The permission to check.
+     * @param key The permission to check.
      * @return True if the permission is present in the tag.
      */
-    boolean hasPermission(ClaimPermission permission);
+    boolean hasPermission(String key);
 
     /**
      * Grants a new permission to the tag.
      *
-     * @param permission The permission to add.
+     * @param key The permission to add.
      */
-    void addPermission(ClaimPermission permission);
+    void addPermission(String key);
 
     /**
      * Revokes a permission from the tag.
      *
-     * @param permission The permission to remove.
+     * @param key The permission to remove.
      */
-    void removePermission(ClaimPermission permission);
+    void removePermission(String key);
 
     /**
      * Checks whether the given user is part of this tag.
