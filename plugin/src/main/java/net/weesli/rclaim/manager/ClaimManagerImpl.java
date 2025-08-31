@@ -9,7 +9,6 @@ import net.weesli.rclaim.api.manager.ClaimManager;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.SubClaim;
 import net.weesli.rclaim.config.ConfigLoader;
-import net.weesli.rclaim.api.enums.ClaimStatus;
 import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.model.ClaimImpl;
 import net.weesli.rclaim.model.SubClaimImpl;
@@ -87,8 +86,7 @@ public class ClaimManagerImpl implements ClaimManager {
             ConfigLoader.getConfig().getClaimSettings().getDefaultClaimStatus().getDeclaration().getFields()
                     .forEach(value -> {
                         if (ConfigLoader.getConfig().getClaimSettings().getDefaultClaimStatus().get(value.getName(), Boolean.class)) {
-                            ClaimStatus status = ClaimStatus.valueOf(value.getName());
-                            claim.addClaimStatus(status);
+                            claim.addClaimStatus(value.getName());
                         }
                     });
             sendMessageToPlayer("SUCCESS_CLAIM_CREATED", owner);
@@ -97,13 +95,42 @@ public class ClaimManagerImpl implements ClaimManager {
     }
 
     public void removeClaim(Claim claim) {
-        Chunk chunk = Bukkit.getWorld(claim.getWorldName()).getChunkAt(claim.getX(), claim.getZ()); // get base claim chunk for remove
-        chunk.getPersistentDataContainer().remove(NameSpaceUtil.getKey());
-        claim.getSubClaims().forEach(subClaim -> {
-            Chunk subClaimChunk = chunk.getWorld().getChunkAt(subClaim.getX(),subClaim.getZ());
-            subClaimChunk.getPersistentDataContainer().remove(NameSpaceUtil.getKey());
-        });
-        RClaim.getInstance().getCacheManager().getClaims().getCache().remove(claim.getID());
+        Chunk chunk = Bukkit.getWorld(claim.getWorldName()).getChunkAt(claim.getX() >> 4, claim.getZ() >> 4); // get base claim chunk for remove
+        if (!chunk.isLoaded()) { // if chunk is not loaded, start a task for load it and finish process
+            Bukkit.getScheduler().runTask(RClaim.getInstance(), () ->{
+                chunk.load();
+                chunk.getPersistentDataContainer().remove(NameSpaceUtil.getKey());
+                claim.getSubClaims().forEach(subClaim -> {
+                    Chunk subClaimChunk = chunk.getWorld().getChunkAt(subClaim.getX(),subClaim.getZ());
+                    subClaimChunk.getPersistentDataContainer().remove(NameSpaceUtil.getKey());
+                });
+                RClaim.getInstance().getCacheManager().getClaims().getCache().remove(claim.getID());
+                RClaim.getInstance().getStorage().deleteClaim(claim.getID());
+                chunk.unload();
+            });
+        }else { // if chunk is loaded, direct finish process
+            chunk.getPersistentDataContainer().remove(NameSpaceUtil.getKey());
+            claim.getSubClaims().forEach(subClaim -> {
+                Chunk subClaimChunk = chunk.getWorld().getChunkAt(subClaim.getX(),subClaim.getZ());
+                subClaimChunk.getPersistentDataContainer().remove(NameSpaceUtil.getKey());
+            });
+            RClaim.getInstance().getCacheManager().getClaims().getCache().remove(claim.getID());
+            RClaim.getInstance().getStorage().deleteClaim(claim.getID());
+        }
+        // delete hologram, block etc.
+        if (ConfigLoader.getConfig().getHologram().isEnabled()) {
+            if (RClaim.getInstance().getHologramManager().getHologramIntegration().hasHologram(claim.getID())) {
+                RClaim.getInstance().getHologramManager().getHologramIntegration().deleteHologram(claim.getID());
+            }
+        }
+        if (claim.isEnableBlock()){
+            claim.getBlockLocation().getBlock().setType(Material.AIR);
+        }
+
+        // clear effects
+        if (ConfigLoader.getConfig().getEffects().isEnabled()) {
+            for (Player p : claim.getAllPlayers()) claim.clearEffects(p);
+        }
     }
 
     public void explodeClaim(String ID, ExplodeCause cause){
@@ -115,7 +142,6 @@ public class ClaimManagerImpl implements ClaimManager {
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()){
             removeClaim(claim);
-            RClaim.getInstance().getStorage().deleteClaim(ID);
             if (ConfigLoader.getConfig().getClaimTimeoutMessage().isEnabled()){
                 ConfigLoader.getConfig().getClaimTimeoutMessage().getText()
                         .stream().map(line-> LegacyComponentSerializer.legacySection().serialize(ColorBuilder.convertColors(line))
