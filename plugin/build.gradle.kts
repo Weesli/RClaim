@@ -7,6 +7,8 @@ plugins {
     id("com.gradleup.shadow") version "8.3.0"
 }
 
+group = "net.weesli"
+//version = "2.4.1"
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
@@ -25,6 +27,10 @@ repositories {
     maven("https://repo.codemc.org/repository/maven-public/")
     maven("https://storehouse.okaeri.eu/repository/maven-public/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven {
+        name = "fancyinnovationsReleases"
+        url = uri("https://repo.fancyinnovations.com/releases")
+    }
 }
 
 dependencies {
@@ -91,6 +97,9 @@ dependencies {
 
     // Rlib
     implementation("com.github.Weesli:Rlib:2.4.5")
+
+    // FancyHolograms
+    compileOnly("de.oliver:FancyHolograms:2.7.0")
 }
 
 dependencies {
@@ -126,7 +135,7 @@ tasks.shadowJar {
     archiveClassifier.set("")
     archiveFileName.set("RClaim-$version.jar")
     destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
-
+    archiveVersion.set(project.version.toString())
     mergeServiceFiles()
 
     relocate("org.bstats", "net.weesli.libs.bstats")
@@ -139,11 +148,12 @@ configurations.configureEach {
     exclude(group = "org.bukkit", module = "bukkit")
     exclude(group = "org.spigotmc", module = "spigot-api")
 }
+tasks.named<ProcessResources>("processResources") {
+    filteringCharset = "UTF-8"
+    val projectVersion = project.version.toString()
+    inputs.property("version", projectVersion)
 
-tasks.processResources {
     filesMatching("plugin.yml") {
-        expand(
-            "version" to project.version
-        )
+        expand("version" to projectVersion)
     }
 }

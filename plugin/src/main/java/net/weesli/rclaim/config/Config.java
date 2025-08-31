@@ -28,8 +28,8 @@ public class Config extends OkaeriConfig {
     private String prefix = "&6Claim &8>> ";
 
     @CustomKey("viewerMode")
-    @Comment({"System showing the claim zone for players, 'Particle' and 'Border' are available."})
-    private String viewerMode = "particle";
+    @Comment({"System showing the claim zone for players, 'classic' and 'Border' are available."})
+    private String viewerMode = "classic";
 
     @CustomKey("storageType")
     @Comment({"Storage type can be 'MySQL' or 'SQLite' or 'RozsDBLite", "Default: 'RozsDBLite'"})
@@ -194,12 +194,15 @@ public class Config extends OkaeriConfig {
         private boolean enabled = false;
 
         @CustomKey("hologramModule")
-        private String hologramModule = "DecentHologram";
+        @Comment("Available modules: 'DecentHolograms' and 'FancyHolograms'")
+        private String hologramModule = "DecentHolograms";
 
         @CustomKey("hologramSettings")
         private HologramSettingsConfig hologramSettings = new HologramSettingsConfig();
         @Getter@Setter
         public static class HologramSettingsConfig  extends OkaeriConfig{
+            @CustomKey("hologramHeight")
+            private float hologramHeight = 2;
             @CustomKey("hologramLines")
             private List<String> hologramLines = Arrays.asList(
                     "&e&lClaim | &f%rclaim_<id>_name%",

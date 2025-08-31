@@ -19,11 +19,14 @@ import static net.weesli.rclaim.util.ChatUtil.createTagResolver;
 
 public class HDecentHologram implements ClaimHologram {
 
+
+
     @Override
     public void createHologram(String ID) {
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(ID);
         if (claim == null)return;
-        Location hologramLocation = claim.getBlockLocation().clone().add(0.5,3.5,0.5);
+        Location hologramLocation = claim.getBlockLocation().clone().add(0.5f,
+                ConfigLoader.getConfig().getHologram().getHologramSettings().getHologramHeight(), 0.5f);
         Hologram hologram;
         try {
             hologram = DHAPI.createHologram(ID, hologramLocation);
@@ -68,6 +71,6 @@ public class HDecentHologram implements ClaimHologram {
 
     @Override
     public HologramModule Type() {
-        return HologramModule.DecentHologram;
+        return HologramModule.DecentHolograms;
     }
 }

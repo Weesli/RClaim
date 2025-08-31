@@ -8,6 +8,7 @@ import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.api.enums.HologramModule;
 import net.weesli.rclaim.hook.hologram.HDecentHologram;
 import net.weesli.rclaim.api.hook.ClaimHologram;
+import net.weesli.rclaim.hook.hologram.HFancyHologram;
 import net.weesli.rclaim.task.HologramUpdater;
 @Getter@Setter
 public class HologramManagerImpl implements HologramManager {
@@ -18,7 +19,8 @@ public class HologramManagerImpl implements HologramManager {
         if (ConfigLoader.getConfig().getHologram().isEnabled()){
             HologramModule module = HologramModule.valueOf(ConfigLoader.getConfig().getHologram().getHologramModule());
             switch (module){
-                case DecentHologram -> hologramIntegration = new HDecentHologram();
+                case DecentHolograms -> hologramIntegration = new HDecentHologram();
+                case FancyHolograms -> hologramIntegration = new HFancyHologram();
             }
             new HologramUpdater();
         }
