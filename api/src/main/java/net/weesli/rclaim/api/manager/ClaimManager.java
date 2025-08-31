@@ -1,20 +1,10 @@
 package net.weesli.rclaim.api.manager;
 
-import net.weesli.rclaim.api.enums.ClaimPermission;
-import net.weesli.rclaim.api.enums.ClaimStatus;
 import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.api.model.Claim;
-import net.weesli.rclaim.api.model.ClaimEffect;
-import net.weesli.rclaim.api.model.ClaimTag;
-import net.weesli.rclaim.api.model.SubClaim;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Provides an API for managing land claims and sub-claims.
