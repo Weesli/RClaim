@@ -93,13 +93,13 @@ public class MenuConfig extends OkaeriConfig {
             "&8Claim options",
             27,
             Map.of(
-                    "spawn-animal", new MenuItem(10, "&eSpawn Animal", "SHEEP_SPAWN_EGG", 0, List.of("&7status: &f%status%", "&7", "&7Click to spawn animals on your claim!")),
-                    "spawn-monster", new MenuItem(12, "&aSpawn Monster", "SKELETON_SPAWN_EGG", 0, List.of("&7status: &f%status%", "&7", "&7Click to spawn monsters on your claim!")),
-                    "pvp", new MenuItem(14, "&aEnable PVP", "DIAMOND_SWORD", 0, List.of("&7status: &f%status%", "&7", "&7Click to enable PVP on your claim!")),
-                    "explosion", new MenuItem(16, "&aEnable Explosion", "TNT", 0, List.of("&7status: &f%status%", "&7", "&7Click to enable explosions on your claim!")),
-                    "spread", new MenuItem(22, "&aEnable Spread", "FIRE_CHARGE", 0, List.of("&7status: &f%status%", "&7", "&7Click to enable spread on your claim!")),
-                    "weather", new MenuItem(19, "&aChange Weather Status", "WATER_BUCKET", 0, List.of("&7status: &f%status%", "&7", "&7Click to change weather status!")),
-                    "time", new MenuItem(25, "&aChange Time Status", "CLOCK", 0, List.of("&7status: &f%status%", "&7", "&7Click to change time status!"))
+                    "SPAWN_ANIMAL", new MenuItem(0, "&eSpawn Animal", "SHEEP_SPAWN_EGG", 0, List.of("&7status: &f%status%", "&7", "&7Click to spawn animals on your claim!")),
+                    "SPAWN_MONSTER", new MenuItem(0, "&aSpawn Monster", "SKELETON_SPAWN_EGG", 0, List.of("&7status: &f%status%", "&7", "&7Click to spawn monsters on your claim!")),
+                    "PVP", new MenuItem(0, "&aEnable PVP", "DIAMOND_SWORD", 0, List.of("&7status: &f%status%", "&7", "&7Click to enable PVP on your claim!")),
+                    "EXPLOSION", new MenuItem(0, "&aEnable Explosion", "TNT", 0, List.of("&7status: &f%status%", "&7", "&7Click to enable explosions on your claim!")),
+                    "SPREAD", new MenuItem(0, "&aEnable Spread", "FIRE_CHARGE", 0, List.of("&7status: &f%status%", "&7", "&7Click to enable spread on your claim!")),
+                    "WEATHER", new MenuItem(0, "&aChange Weather Status", "WATER_BUCKET", 0, List.of("&7status: &f%status%", "&7", "&7Click to change weather status!")),
+                    "TIME", new MenuItem(0, "&aChange Time Status", "CLOCK", 0, List.of("&7status: &f%status%", "&7", "&7Click to change time status!"))
             )
     );
 
@@ -126,18 +126,20 @@ public class MenuConfig extends OkaeriConfig {
 
     private static Map<String, MenuItem> createPermissionsMenuItems() {
         HashMap<String, MenuItem> items = new HashMap<>();
-        items.put("block-break", new MenuItem(1, "&aBlock Break", "STONE_PICKAXE", 0, List.of("&7status: &f%status%", "&7", "&7Toggle block breaking permission")));
-        items.put("block-place", new MenuItem(10, "&aBlock Place", "STONE", 0, List.of("&7status: &f%status%", "&7", "&7Toggle block placing permission")));
-        items.put("pickup-item", new MenuItem(19, "&aPickup Item", "DIAMOND", 0, List.of("&7status: &f%status%", "&7", "&7Toggle item pickup permission")));
-        items.put("drop-item", new MenuItem(3, "&aDrop Item", "IRON_INGOT", 0, List.of("&7status: &f%status%", "&7", "&7Toggle item dropping permission")));
-        items.put("container-open", new MenuItem(12, "&aOpen Container", "CHEST", 0, List.of("&7status: &f%status%", "&7", "&7Toggle container opening permission")));
-        items.put("interact-entity", new MenuItem(21, "&aInteract Entity", "IRON_SWORD", 0, List.of("&7status: &f%status%", "&7", "&7Toggle entity interaction permission")));
-        items.put("attack-animal", new MenuItem(5, "&aAttack Animal", "BOW", 0, List.of("&7status: &f%status%", "&7", "&7Toggle attacking animals permission")));
-        items.put("attack-monster", new MenuItem(14, "&aAttack Monster", "DIAMOND_SWORD", 0, List.of("&7status: &f%status%", "&7", "&7Toggle attacking monsters permission")));
-        items.put("break-container", new MenuItem(23, "&aBreak Container", "BARREL", 0, List.of("&7status: &f%status%", "&7", "&7Toggle breaking containers permission")));
-        items.put("use-door", new MenuItem(7, "&aUse Door", "LEVER", 0, List.of("&7status: &f%status%", "&7", "&7Toggle using doors permission")));
-        items.put("use-portal", new MenuItem(16, "&aUse Portal", "OBSIDIAN", 0, List.of("&7status: &f%status%", "&7", "&7Toggle using portals permission")));
-        items.put("use-potion", new MenuItem(25, "&aUse Potion", "POTION", 0, List.of("&7status: &f%status%", "&7", "&7Toggle using potions permission")));
+        items.put("BLOCK_BREAK", new MenuItem(0, "&aBlock Break", "STONE_PICKAXE", 0, List.of("&7status: &f%status%", "&7", "&7Toggle block breaking permission")));
+        items.put("BLOCK_PLACE", new MenuItem(0, "&aBlock Place", "STONE", 0, List.of("&7status: &f%status%", "&7", "&7Toggle block placing permission")));
+        items.put("ITEM_PICKUP", new MenuItem(0, "&aPickup Item", "DIAMOND", 0, List.of("&7status: &f%status%", "&7", "&7Toggle item pickup permission")));
+        items.put("DROP_ITEM", new MenuItem(0, "&aDrop Item", "IRON_INGOT", 0, List.of("&7status: &f%status%", "&7", "&7Toggle item dropping permission")));
+        items.put("CONTAINER_OPEN", new MenuItem(0, "&aOpen Container", "CHEST", 0, List.of("&7status: &f%status%", "&7", "&7Toggle container opening permission")));
+        items.put("INTERACT_ENTITY", new MenuItem(0, "&aInteract Entity", "IRON_SWORD", 0, List.of("&7status: &f%status%", "&7", "&7Toggle entity interaction permission")));
+        items.put("ATTACK_ANIMAL", new MenuItem(0, "&aAttack Animal", "BOW", 0, List.of("&7status: &f%status%", "&7", "&7Toggle attacking animals permission")));
+        items.put("ATTACK_MONSTER", new MenuItem(0, "&aAttack Monster", "DIAMOND_SWORD", 0, List.of("&7status: &f%status%", "&7", "&7Toggle attacking monsters permission")));
+        items.put("BREAk_CONTAINER", new MenuItem(0, "&aBreak Container", "BARREL", 0, List.of("&7status: &f%status%", "&7", "&7Toggle breaking containers permission")));
+        items.put("USE_DOOR", new MenuItem(0, "&aUse Door", "LEVER", 0, List.of("&7status: &f%status%", "&7", "&7Toggle using doors permission")));
+        items.put("USE_PORTAL", new MenuItem(0, "&aUse Portal", "OBSIDIAN", 0, List.of("&7status: &f%status%", "&7", "&7Toggle using portals permission")));
+        items.put("USE_POTION", new MenuItem(0, "&aUse Potion", "POTION", 0, List.of("&7status: &f%status%", "&7", "&7Toggle using potions permission")));
+        items.put("BUCKET_FILL", new MenuItem(0, "&aBucket Fill", "BUCKET", 0, List.of("&7status: &f%status%", "&7", "&7Toggle using bucket fill permission")));
+        items.put("BUCKET_EMPTY", new MenuItem(0, "&aBucket Empty", "LAVA_BUCKET", 0, List.of("&7status: &f%status%", "&7", "&7Toggle using bucket empty permission")));
         return items;
     }
 
@@ -213,9 +215,7 @@ public class MenuConfig extends OkaeriConfig {
     public Menu tagPermissionsMenu = new Menu(
             "&8Tag Permissions",
             54,
-            Map.of(
-                    "item-settings", new MenuItem(null, "&a<permission>", "PAPER", 0, List.of("&7", "&aStatus: &f%status%", "&eClick to toggle permission for this tag.", "&7"))
-            )
+            Map.of()
     );
 
 }

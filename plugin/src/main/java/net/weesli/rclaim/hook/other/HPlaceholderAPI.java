@@ -2,7 +2,6 @@ package net.weesli.rclaim.hook.other;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.weesli.rclaim.RClaim;
-import net.weesli.rclaim.api.enums.ClaimStatus;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.util.BaseUtil;
@@ -110,7 +109,7 @@ public class HPlaceholderAPI extends PlaceholderExpansion {
             }
             Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
             if (claim != null){
-                return claim.checkStatus(ClaimStatus.PVP) ? "true" : "false";
+                return claim.checkStatus("PVP") ? "true" : "false";
             }
         }
         return "";

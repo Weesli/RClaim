@@ -1,4 +1,4 @@
-# Ana Menü yapılandırma ayarları
+# Main menu configuration settings
 mainMenu:
   title: '&8Claim Yönetimi'
   size: 27
@@ -59,8 +59,7 @@ mainMenu:
       lore:
         - '&8'
         - '&aClaim etkilerini etkinleştirmek veya devre dışı bırakmak için tıklayın!'
-
-# Claim’ler menü yapılandırma ayarları
+# Claims menu configuration settings
 claimsMenu:
   title: '&8Claim’leriniz'
   size: 54
@@ -77,8 +76,7 @@ claimsMenu:
         - '&a'
         - '&aBu claim’in süresini uzatmak için tıklayın!'
         - '&aShift + Sağ Tıklayın ve bu claim’i kaldırın'
-
-# Yükseltme menü yapılandırma ayarları
+# Upgrade menu configuration settings
 upgradeMenu:
   title: '&8Claim’in süresini yükselt'
   size: 9
@@ -93,8 +91,7 @@ upgradeMenu:
         - '&aMaliyet : &f<cost>'
         - '&8'
         - '&aClaim’in süresini uzatmak için tıklayın!'
-
-# Üyeler menü yapılandırma ayarları
+# Members menu configuration settings
 membersMenu:
   title: '&8Claim Üyeleri'
   size: 54
@@ -115,12 +112,12 @@ membersMenu:
       lore:
         - '&8'
         - '&aEklemek için oyuncu adını girin!'
-
+# Options menu configuration settings
 optionsMenu:
   title: '&8Claim Ayarları'
   size: 27
   items:
-    pvp:
+    PVP:
       title: '&aPVP’yi Etkinleştir'
       material: DIAMOND_SWORD
       index: 14
@@ -129,7 +126,7 @@ optionsMenu:
         - '&7Durum: &f%status%'
         - '&7'
         - '&7Claim’inizde PVP’yi etkinleştirmek için tıklayın!'
-    explosion:
+    EXPLOSION:
       title: '&aPatlamaları Etkinleştir'
       material: TNT
       index: 16
@@ -138,7 +135,7 @@ optionsMenu:
         - '&7Durum: &f%status%'
         - '&7'
         - '&7Claim’inizde patlamaları etkinleştirmek için tıklayın!'
-    spread:
+    SPREAD:
       title: '&aYayılmayı Etkinleştir'
       material: FIRE_CHARGE
       index: 22
@@ -147,7 +144,7 @@ optionsMenu:
         - '&7Durum: &f%status%'
         - '&7'
         - '&7Claim’inizde yayılmayı etkinleştirmek için tıklayın!'
-    spawn-animal:
+    SPAWN_ANIMAL:
       title: '&eHayvan Doğurt'
       material: SHEEP_SPAWN_EGG
       index: 10
@@ -156,7 +153,7 @@ optionsMenu:
         - '&7Durum: &f%status%'
         - '&7'
         - '&7Claim’inizde hayvan doğurtmak için tıklayın!'
-    spawn-monster:
+    SPAWN_MONSTER:
       title: '&aCanavar Doğurt'
       material: SKELETON_SPAWN_EGG
       index: 12
@@ -165,7 +162,7 @@ optionsMenu:
         - '&7Durum: &f%status%'
         - '&7'
         - '&7Claim’inizde canavar doğurtmak için tıklayın!'
-    time:
+    TIME:
       title: '&aZaman Durumunu Değiştir'
       material: CLOCK
       index: 25
@@ -174,7 +171,7 @@ optionsMenu:
         - '&7Durum: &f%status%'
         - '&7'
         - '&7Zaman durumunu değiştirmek için tıklayın!'
-    weather:
+    WEATHER:
       title: '&aHava Durumunu Değiştir'
       material: WATER_BUCKET
       index: 19
@@ -183,8 +180,182 @@ optionsMenu:
         - '&7Durum: &f%status%'
         - '&7'
         - '&7Hava durumunu değiştirmek için tıklayın!'
-
-# Onay menü yapılandırma ayarları
+        -
+# Resize menu configuration settings
+resizeMenu:
+  title: '&8Resize your claim'
+  size: 54
+  items:
+    empty-claim:
+      title: '&eEmpty claim'
+      material: WHITE_WOOL
+      index: 0
+      custom-model-data: 0
+      lore:
+        - '&8'
+        - '&eX : &f<x>'
+        - '&eZ : &f<z>'
+        - '&e'
+        - '&eCost : &f<cost>'
+        - '&e'
+        - '&aClick to buy this claim'
+    not-available-claim:
+      title: '&eNot available claim'
+      material: RED_WOOL
+      custom-model-data: 0
+      lore:
+        - '&8'
+        - '&eX : &f<x>'
+        - '&eZ : &f<z>'
+    starter-claim:
+      title: '&eYour claim'
+      material: BLACK_WOOL
+      custom-model-data: 0
+      lore:
+        - '&8'
+        - '&eX : &f<x>'
+        - '&eZ : &f<z>'
+    self-claim:
+      title: '&eActive claim'
+      material: GREEN_WOOL
+      custom-model-data: 0
+      lore:
+        - '&8'
+        - '&eX : &f<x>'
+        - '&eZ : &f<z>'
+        - '&e'
+# Permissions menu configuration settings
+permissionsMenu:
+  title: Permissions Menu
+  size: 27
+  items:
+    PICKUP-ITEM:
+      title: '&aPickup Item'
+      material: DIAMOND
+      index: 19
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle item pickup permission'
+    BREAK_CONTAINER:
+      title: '&aBreak Container'
+      material: BARREL
+      index: 23
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle breaking containers permission'
+    USE_POTION:
+      title: '&aUse Potion'
+      material: POTION
+      index: 25
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle using potions permission'
+    BLOCK_BREAK:
+      title: '&aBlock Break'
+      material: STONE_PICKAXE
+      index: 1
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle block breaking permission'
+    ATTACK_ANIMAL:
+      title: '&aAttack Animal'
+      material: BOW
+      index: 5
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle attacking animals permission'
+    CONTAINER_OPEN:
+      title: '&aOpen Container'
+      material: CHEST
+      index: 12
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle container opening permission'
+    INTERACT_ENTITY:
+      title: '&aInteract Entity'
+      material: IRON_SWORD
+      index: 21
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle entity interaction permission'
+    USE_DOOR:
+      title: '&aUse Door'
+      material: LEVER
+      index: 7
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle using doors permission'
+    USE_PORTAL:
+      title: '&aUse Portal'
+      material: OBSIDIAN
+      index: 16
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle using portals permission'
+    BLOCK_PLACE:
+      title: '&aBlock Place'
+      material: STONE
+      index: 10
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle block placing permission'
+    DROP_ITEM:
+      title: '&aDrop Item'
+      material: IRON_INGOT
+      index: 3
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle item dropping permission'
+    ATTACK_MONSTER:
+      title: '&aAttack Monster'
+      material: DIAMOND_SWORD
+      index: 14
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle attacking monsters permission'
+    BUCKET_FILL:
+      title: '&aBucket fill'
+      material: BUCKET
+      index: 14
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle attacking bucket fill permission'
+    BUCKET_EMPTY:
+      title: '&aBucket empty'
+      material: LAVA_BUCKET
+      index: 14
+      custom-model-data: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle attacking bucket empty permission'
+# Verify menu configuration settings
 verifyMenu:
   title: '&8Emin misiniz?'
   size: 9
@@ -205,8 +376,7 @@ verifyMenu:
       lore:
         - '&8'
         - '&aİşleminizi onaylamak için tıklayın!'
-
-# Etki menüsü yapılandırma ayarları
+# Effect menu configuration settings
 effectMenu:
   title: '&8Etki Menüsü'
   size: 27
@@ -250,14 +420,12 @@ effectMenu:
         - '&7'
         - '&7Tıklayın ve etkiyi yükseltin.'
         - '&7Shift-Tıklayın ve etkiyi aç/kapat.'
-
-# Blok menüsü yapılandırma ayarları
+# Block menu configuration settings
 blockMenu:
   title: '&8Alan Bloğu Ayarı'
   size: 0
   items: {}
-
-# Etiket ana menüsü yapılandırma ayarları
+# Tag main menu configuration settings
 tagMainMenu:
   title: '&8Etiket Menüsü'
   size: 0
@@ -279,8 +447,7 @@ tagMainMenu:
         - '&7'
         - '&eYeni bir etiket eklemek için tıklayın.'
         - '&7'
-
-# Etiket düzenleyici menüsü yapılandırma ayarları
+# Tag editor menu configuration settings
 tagEditMenu:
   title: '&8Etiket Düzenleyici'
   size: 27
@@ -303,8 +470,7 @@ tagEditMenu:
         - '&7'
         - '&eBu etiketten kullanıcı ekleyin/kaldırın.'
         - '&7'
-
-# Etiket kullanıcıları menüsü yapılandırma ayarları
+# Tag users menu configuration settings
 tagUsersMenu:
   title: '&8Etiket Kullanıcıları'
   size: 0
@@ -324,18 +490,8 @@ tagUsersMenu:
       lore:
         - '&7'
         - '&aBu etikete bir oyuncu eklemek için tıklayın.'
-
-# Etiket izinleri menüsü yapılandırma ayarları
+# Tag permissions menu configuration settings
 tagPermissionsMenu:
   title: '&8Etiket İzinleri'
   size: 54
-  items:
-    item-settings:
-      title: '&a<permission>'
-      material: PAPER
-      custom-model-data: 0
-      lore:
-        - '&7'
-        - '&aDurum: &f%status%'
-        - '&eBu etiket için izni değiştirmek için tıklayın.'
-        - '&7'
+  items: {}

@@ -3,7 +3,6 @@ package net.weesli.rclaim.database.adapter;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import net.weesli.rclaim.api.enums.ClaimPermission;
 import net.weesli.rclaim.model.ClaimTagImpl;
 
 import java.io.IOException;
@@ -28,8 +27,8 @@ public class ClaimTagTypeAdapter extends TypeAdapter<ClaimTagImpl> {
 
         out.name("permissions");
         out.beginArray();
-        for (ClaimPermission permission : value.getPermissions()) {
-            out.value(permission.toString());
+        for (String permission : value.getPermissions()) {
+            out.value(permission);
         }
         out.endArray();
 
@@ -43,7 +42,7 @@ public class ClaimTagTypeAdapter extends TypeAdapter<ClaimTagImpl> {
         String id = null;
         String displayName = null;
         List<UUID> users = new ArrayList<>();
-        List<ClaimPermission> permissions = new ArrayList<>();
+        List<String> permissions = new ArrayList<>();
 
         in.beginObject();
         while (in.hasNext()) {
@@ -67,7 +66,7 @@ public class ClaimTagTypeAdapter extends TypeAdapter<ClaimTagImpl> {
                 case "permissions":
                     in.beginArray();
                     while (in.hasNext()) {
-                        permissions.add(ClaimPermission.valueOf(in.nextString()));
+                        permissions.add(in.nextString());
                     }
                     in.endArray();
                     break;

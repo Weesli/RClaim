@@ -1,40 +1,15 @@
 package net.weesli.rclaim.event;
 
-import net.weesli.rclaim.RClaim;
-import net.weesli.rclaim.api.events.ClaimEnterEvent;
-import net.weesli.rclaim.api.events.ClaimLeaveEvent;
-import net.weesli.rclaim.api.model.Claim;
-import net.weesli.rclaim.api.model.ClaimEffect;
-import net.weesli.rclaim.api.model.ClaimTag;
-import net.weesli.rclaim.api.enums.ClaimStatus;
-import net.weesli.rclaim.hook.other.HWorldGuard;
-import net.weesli.rclaim.util.ClaimBlockUtil;
-import net.weesli.rclaim.util.BaseUtil;
-import net.weesli.rclaim.api.enums.ClaimPermission;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.WeatherType;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.*;
-import org.bukkit.event.player.*;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.projectiles.ProjectileSource;
 
-import java.util.*;
-
-import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
-
+/**
+ * This class is deprecated and will be removed in the future
+ * This event system has been replaced with a modern and expandable system
+ * please check {@link ClaimPermissionListener} and {@link ClaimLifecycleListener}
+ */
+@Deprecated
 public class PlayerListener implements Listener {
-
+/*
     @EventHandler
     public void onPlaceBlock(BlockPlaceEvent e){
         if (e.getPlayer().hasPermission("rclaim.admin.bypass")){return;}
@@ -499,7 +474,7 @@ public class PlayerListener implements Listener {
                 if (player.hasPotionEffect(effect.getEffect().getType())){
                     player.removePotionEffect(effect.getEffect().getType());
                 }
-            }*/
+            }
             claim.clearEffects(player);
         }
         // for weather types
@@ -615,5 +590,5 @@ public class PlayerListener implements Listener {
         if (!claim.checkPermission(player.getUniqueId(), ClaimPermission.ATTACK_MONSTER)){
             e.setCancelled(true);
         }
-    }
+    }*/
 }

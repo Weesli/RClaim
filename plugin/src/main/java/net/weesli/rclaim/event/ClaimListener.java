@@ -9,7 +9,6 @@ import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimEffect;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.ui.inventories.ClaimMainMenu;
-import net.weesli.rclaim.api.enums.ClaimStatus;
 import net.weesli.rclaim.util.FormatUtil;
 import net.weesli.rozslib.events.BlockLeftClickEvent;
 import net.weesli.rozslib.events.BlockRightClickEvent;
@@ -29,8 +28,13 @@ import java.util.*;
 
 import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 
+/**
+ * @deprecated
+ * please check {@link ClaimStatusListener} and {@link ClaimLifecycleListener}
+ */
+@Deprecated
 public class ClaimListener implements Listener {
-
+/*
     private final List<Player> claimBlockEditors = new ArrayList<>();
 
     @EventHandler
@@ -272,5 +276,5 @@ public class ClaimListener implements Listener {
                 e.setCancelled(true);
             }
         }
-    }
+    }*/
 }

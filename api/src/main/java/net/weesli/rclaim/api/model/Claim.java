@@ -1,7 +1,5 @@
 package net.weesli.rclaim.api.model;
 
-import net.weesli.rclaim.api.enums.ClaimPermission;
-import net.weesli.rclaim.api.enums.ClaimStatus;
 import net.weesli.rclaim.api.enums.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,10 +40,10 @@ public interface Claim {
     List<UUID> getMembers();
 
     /** @return List of current statuses applied to the claim. */
-    List<ClaimStatus> getClaimStatuses();
+    List<String> getClaimStatuses();
 
     /** @return Map of player UUIDs to their associated permissions within the claim. */
-    Map<UUID, List<ClaimPermission>> getClaimPermissions();
+    Map<UUID, List<String>> getClaimPermissions();
 
     /** @return The block location that visually represents the claim. */
     Location getBlockLocation();
@@ -109,10 +107,10 @@ public interface Claim {
     void trustPlayer(Player owner, UUID target);
 
     /** Adds a status to the claim (e.g., locked, under siege). @param claimStatus The status to add. */
-    void addClaimStatus(ClaimStatus claimStatus);
+    void addClaimStatus(String key);
 
     /** Removes a status from the claim. @param claimStatus The status to remove. */
-    void removeClaimStatus(ClaimStatus claimStatus);
+    void removeClaimStatus(String key);
 
     /**
      * Checks if a given UUID is the owner of the claim.
@@ -131,23 +129,23 @@ public interface Claim {
     /**
      * Verifies if a player has a specific permission in the claim.
      * @param uuid Player UUID.
-     * @param permission The permission to check.
+     * @param key Permission key.
      * @return True if the player has the permission.
      */
-    boolean checkPermission(UUID uuid, ClaimPermission permission);
+    boolean checkPermission(UUID uuid, String key);
 
     /**
      * Checks if the claim has a specific status.
-     * @param status The status to check.
+     * @param key The status to check.
      * @return True if the claim has the given status.
      */
-    boolean checkStatus(ClaimStatus status);
+    boolean checkStatus(String key);
 
     /** Grants a specific permission to a player. */
-    void addPermission(UUID uuid, ClaimPermission permission);
+    void addPermission(UUID uuid, String key);
 
     /** Revokes a specific permission from a player. */
-    void removePermission(UUID uuid, ClaimPermission permission);
+    void removePermission(UUID uuid, String key);
 
     /** Applies an effect to the claim. @param effect The effect to add. */
     void addEffect(Effect effect);

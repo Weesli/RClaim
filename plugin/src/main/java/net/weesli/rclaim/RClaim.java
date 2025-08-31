@@ -6,6 +6,11 @@ import lombok.SneakyThrows;
 import net.weesli.rclaim.api.RClaimProvider;
 import net.weesli.rclaim.api.database.ClaimDatabase;
 import net.weesli.rclaim.api.database.Loader;
+import net.weesli.rclaim.api.permission.ClaimPermissionService;
+import net.weesli.rclaim.api.status.ClaimStatusService;
+import net.weesli.rclaim.event.ClaimLifecycleListener;
+import net.weesli.rclaim.event.ClaimPermissionListener;
+import net.weesli.rclaim.event.ClaimStatusListener;
 import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.manager.CacheManagerImpl;
 import net.weesli.rclaim.command.CommandManager;
@@ -14,12 +19,12 @@ import net.weesli.rclaim.api.enums.StorageType;
 import net.weesli.rclaim.hook.manager.*;
 import net.weesli.rclaim.hook.other.HBetterRTP;
 import net.weesli.rclaim.database.*;
-import net.weesli.rclaim.event.ClaimListener;
-import net.weesli.rclaim.event.PlayerListener;
 import net.weesli.rclaim.hook.other.HPlaceholderAPI;
 import net.weesli.rclaim.hook.map.MapLoader;
 import net.weesli.rclaim.manager.ClaimManagerImpl;
 import net.weesli.rclaim.manager.TagManagerImpl;
+import net.weesli.rclaim.permission.ClaimPermissionServiceImpl;
+import net.weesli.rclaim.status.ClaimStatusServiceImpl;
 import net.weesli.rclaim.task.PublicTask;
 import net.weesli.rclaim.ui.UIManager;
 import net.weesli.rozslib.RozsLibService;
@@ -47,6 +52,8 @@ public final class RClaim extends JavaPlugin {
     private ClaimManagerImpl claimManager;
     private TagManagerImpl tagManager;
     private CacheManagerImpl cacheManager;
+    private ClaimPermissionService permissionService;
+    private ClaimStatusService statusService;
 
     private HologramManagerImpl hologramManager;
     private EconomyManagerImpl economyManager;
@@ -65,7 +72,6 @@ public final class RClaim extends JavaPlugin {
             new HPlaceholderAPI().register();
         }
         if (!loadFile()) return;
-        loadListeners();
         loadStorage();
         spawnerManager = new SpawnerManagerImpl();
         minionsManager = new MinionsManagerImpl();
@@ -77,6 +83,13 @@ public final class RClaim extends JavaPlugin {
         tagManager = new TagManagerImpl();
         cacheManager = new CacheManagerImpl();
         textInputManager = new TextInputManager(this);
+        permissionService = new ClaimPermissionServiceImpl(this);
+        statusService = new ClaimStatusServiceImpl(this);
+        // start listeners
+        new ClaimLifecycleListener();
+        new ClaimPermissionListener();
+        new ClaimStatusListener();
+
         new CommandManager();
         new Metrics(this, 	23385);
         ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");
@@ -103,6 +116,8 @@ public final class RClaim extends JavaPlugin {
         RClaimProvider.setCombatManager(combatManager);
         RClaimProvider.setMinionsManager(minionsManager);
         RClaimProvider.setStorage(storage);
+        RClaimProvider.setPermissionService(permissionService);
+        RClaimProvider.setStatusService(statusService);
         Loader.load();
     }
 
@@ -114,8 +129,7 @@ public final class RClaim extends JavaPlugin {
 
     @SneakyThrows
     private void checkVersion() {
-        try {
-            HttpClient client = HttpClient.newBuilder().build();
+        try (HttpClient client = HttpClient.newBuilder().build()) {
             HttpRequest request = HttpRequest.newBuilder()
                     .setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
                     .GET()
@@ -134,7 +148,7 @@ public final class RClaim extends JavaPlugin {
                 response.append(line);
             }
 
-            if (!response.toString().equals("2.2.0")) {
+            if (!response.toString().equals(getDescription().getVersion())) {
                 Bukkit.getConsoleSender().sendMessage(ColorBuilder.convertColors("&cNew version of RClaim available! Please update to version &e" + response.toString()));
             }
         } catch (IOException e) {
@@ -150,11 +164,6 @@ public final class RClaim extends JavaPlugin {
             case RozsDBLite -> storage = new RozsDBLite();
         }
         Bukkit.getConsoleSender().sendMessage("[RClaim] register storage type is " + storage.getStorageType().name());
-    }
-
-    private void loadListeners() {
-        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-        Bukkit.getPluginManager().registerEvents(new ClaimListener(), this);
     }
 
     private boolean loadFile(){ // added in 2.3.0

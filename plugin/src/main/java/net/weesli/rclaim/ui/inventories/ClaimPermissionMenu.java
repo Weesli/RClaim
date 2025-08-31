@@ -1,15 +1,16 @@
 package net.weesli.rclaim.ui.inventories;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
+import net.weesli.rclaim.api.permission.ClaimPermissionRegistry;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.config.adapter.model.Menu;
 import net.weesli.rclaim.config.adapter.model.MenuItem;
-import net.weesli.rclaim.api.enums.ClaimPermission;
-import net.weesli.rclaim.model.ClaimImpl;
 import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rozslib.inventory.ClickableItemStack;
-import net.weesli.rozslib.inventory.types.SimpleInventory;
+import net.weesli.rozslib.inventory.types.PageableInventory;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -17,11 +18,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class ClaimPermissionMenu extends ClaimInventory {
-
-
+    private List<String> alreadyAdded = new java.util.ArrayList<>();
     private UUID target;
 
     public void setup(UUID target) {
@@ -32,29 +33,32 @@ public class ClaimPermissionMenu extends ClaimInventory {
 
     @Override
     public void openInventory(Player player, Claim claim) {
-        SimpleInventory builder = new SimpleInventory(menu.getTitle(),menu.getSize());
-        builder.setLayout("").fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), true);
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.BLOCK_BREAK, "block-break");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.BLOCK_PLACE, "block-place");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.PICKUP_ITEM, "pickup-item");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.DROP_ITEM, "drop-item");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.CONTAINER_OPEN, "container-open");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.INTERACT_ENTITY, "interact-entity");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.ATTACK_ANIMAL, "attack-animal");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.ATTACK_MONSTER, "attack-monster");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.BREAK_CONTAINER, "break-container");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.USE_DOOR, "use-door");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.USE_PORTAL, "use-portal");
-        addClickableItemWithStatus(builder, player, claim, ClaimPermission.USE_POTION, "use-potion");
-
+        PageableInventory builder = new PageableInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()),54,
+                new ClickableItemStack(getItemStack(ConfigLoader.getConfig().getPublicMenu().getPreviousItem()), 45),
+                new ClickableItemStack(getItemStack(ConfigLoader.getConfig().getPublicMenu().getNextItem()), 53));
+        builder.setLayout("""
+                *********
+                *       *
+                *       *
+                *       *
+                *       *
+                 *******
+                """).fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), false);
+        for (Map.Entry<String, ClaimPermissionRegistry> registryEntry : RClaim.getInstance().getPermissionService().getRegistries().entrySet()) {
+            addClickableItem(builder,player,claim, registryEntry.getKey());
+        }
         builder.openInventory(player);
     }
 
-    private void addClickableItemWithStatus(SimpleInventory builder, Player player, Claim claim,
-                                            ClaimPermission permission, String configPath) {
-        MenuItem item = menu.getItems().entrySet().stream().filter(menuItemEntry -> menuItemEntry.getKey().equals(configPath)).findFirst().get().getValue();
+    private void addClickableItem(PageableInventory builder, Player player, Claim claim, String key) {
+        String anotherKey = key.replaceAll("_", "-").toLowerCase();
+        if (alreadyAdded.contains(anotherKey) || alreadyAdded.contains(key)) return;
+        alreadyAdded.add(anotherKey);
+        alreadyAdded.add(key);
+        MenuItem item = menu.getItems().get(anotherKey) == null ? menu.getItems().get(key) : menu.getItems().get(anotherKey);
+        if (item == null) return;
         ItemStack itemStack = getItemStack(item);
-        String statusPlaceholder = claim.checkPermission(target, permission) ? BaseUtil.getStatus(true) : BaseUtil.getStatus(false);
+        String statusPlaceholder = claim.checkPermission(target, key) ? BaseUtil.getStatus(true) : BaseUtil.getStatus(false);
 
         ItemMeta meta = itemStack.getItemMeta();
         List<String> lore = meta.getLore().stream()
@@ -65,11 +69,12 @@ public class ClaimPermissionMenu extends ClaimInventory {
 
         ItemStack target_item = setupFlagItem(itemStack);
 
-        builder.setItem(new ClickableItemStack(target_item,item.getIndex()), event -> {
-            InteractPlayerPermission(target, claim, permission);
+        String finalKey = key;
+        builder.addItem(target_item, event -> {
+            InteractPlayerPermission(target, claim, finalKey);
+            alreadyAdded.clear();
             openInventory(player, claim);
         });
-
     }
 
     private ItemStack setupFlagItem(ItemStack itemStack) {
@@ -80,12 +85,13 @@ public class ClaimPermissionMenu extends ClaimInventory {
         return itemStack;
     }
 
-    private void InteractPlayerPermission(UUID target, Claim claim, ClaimPermission permission) {
-        if (claim.checkPermission(target, permission)) {
-            claim.removePermission(target, permission);
+    private void InteractPlayerPermission(UUID target, Claim claim, String key) {
+        if (claim.checkPermission(target, key)) {
+            claim.removePermission(target, key);
         } else {
-            claim.addPermission(target, permission);
+            claim.addPermission(target, key);
         }
     }
+
 
 }

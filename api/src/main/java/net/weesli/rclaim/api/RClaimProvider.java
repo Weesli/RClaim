@@ -6,6 +6,8 @@ import net.weesli.rclaim.api.hook.manager.*;
 import net.weesli.rclaim.api.manager.CacheManager;
 import net.weesli.rclaim.api.manager.ClaimManager;
 import net.weesli.rclaim.api.manager.TagManager;
+import net.weesli.rclaim.api.permission.ClaimPermissionService;
+import net.weesli.rclaim.api.status.ClaimStatusService;
 import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Level;
@@ -29,6 +31,12 @@ public final class RClaimProvider {
 
     // database
     @Getter private static ClaimDatabase storage;
+
+    // permission
+    @Getter private static ClaimPermissionService permissionService;
+
+    // status
+    @Getter private static ClaimStatusService statusService;
 
     public RClaimProvider(){}
 
@@ -100,5 +108,19 @@ public final class RClaimProvider {
             throw new IllegalArgumentException("Storage is already set!");
         }
         storage = x;
+    }
+
+    public static void setPermissionService(ClaimPermissionService permissionService) {
+        if (RClaimProvider.permissionService != null){
+            throw new IllegalArgumentException("ClaimPermissionService is already set!");
+        }
+        RClaimProvider.permissionService = permissionService;
+    }
+
+    public static void setStatusService(ClaimStatusService statusService) {
+        if (RClaimProvider.statusService != null){
+            throw new IllegalArgumentException("ClaimStatusService is already set!");
+        }
+        RClaimProvider.statusService = statusService;
     }
 }

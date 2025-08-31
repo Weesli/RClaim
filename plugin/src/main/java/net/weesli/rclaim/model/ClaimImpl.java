@@ -10,8 +10,6 @@ import net.weesli.rclaim.api.model.ClaimEffect;
 import net.weesli.rclaim.api.model.ClaimTag;
 import net.weesli.rclaim.api.model.SubClaim;
 import net.weesli.rclaim.config.ConfigLoader;
-import net.weesli.rclaim.api.enums.ClaimPermission;
-import net.weesli.rclaim.api.enums.ClaimStatus;
 import net.weesli.rclaim.api.enums.Effect;
 import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.util.BaseUtil;
@@ -34,10 +32,10 @@ public class ClaimImpl implements Claim {
     private String displayName;
     private UUID owner;
     private List<UUID> members;
-    private List<ClaimStatus> claimStatuses;
+    private List<String> claimStatuses;
     private int x,z;
     private String worldName;
-    private Map<UUID, List<ClaimPermission>> claimPermissions = new HashMap<>();
+    private Map<UUID, List<String>> claimPermissions = new HashMap<>();
     private List<ClaimEffectImpl> effects;
     private Material block;
     private boolean enableBlock;
@@ -50,7 +48,7 @@ public class ClaimImpl implements Claim {
 
     }
 
-    public ClaimImpl(String ID, UUID owner, List<UUID> members, List<ClaimStatus> claimStatuses, int x, int z, String worldName) {
+    public ClaimImpl(String ID, UUID owner, List<UUID> members, List<String> claimStatuses, int x, int z, String worldName) {
         this.ID = ID;
         this.owner = owner;
         this.members = members;
@@ -105,36 +103,36 @@ public class ClaimImpl implements Claim {
         return (int) block.getLocation().getY();
     }
 
-    public boolean checkPermission(UUID uuid, ClaimPermission permission) {
+    public boolean checkPermission(UUID uuid, String key) {
         if (!members.contains(uuid)) {
             return false;
         }
-        List<ClaimPermission> permissions = claimPermissions.getOrDefault(uuid, new ArrayList<>());
-        return permissions.contains(permission);
+        List<String> permissions = claimPermissions.getOrDefault(uuid, new ArrayList<>());
+        return permissions.contains(key);
     }
 
-    public void addPermission(UUID uuid, ClaimPermission permission) {
-        List<ClaimPermission> permissions = claimPermissions.getOrDefault(uuid, new ArrayList<>());
-        permissions.add(permission);
+    public void addPermission(UUID uuid, String key) {
+        List<String> permissions = claimPermissions.getOrDefault(uuid, new ArrayList<>());
+        permissions.add(key);
         claimPermissions.put(uuid, permissions);
     }
 
-    public void removePermission(UUID uuid, ClaimPermission permission) {
-        List<ClaimPermission> permissions = claimPermissions.getOrDefault(uuid, new ArrayList<>());
-        permissions.remove(permission);
+    public void removePermission(UUID uuid, String key) {
+        List<String> permissions = claimPermissions.getOrDefault(uuid, new ArrayList<>());
+        permissions.remove(key);
         claimPermissions.put(uuid, permissions);
     }
 
-    public void addClaimStatus(ClaimStatus status) {
-        claimStatuses.add(status);
+    public void addClaimStatus(String key) {
+        claimStatuses.add(key);
     }
 
-    public void removeClaimStatus(ClaimStatus status) {
-        claimStatuses.remove(status);
+    public void removeClaimStatus(String key) {
+        claimStatuses.remove(key);
     }
 
-    public boolean checkStatus(ClaimStatus status) {
-        return claimStatuses.contains(status);
+    public boolean checkStatus(String key) {
+        return claimStatuses.contains(key);
     }
 
     public void addMember(UUID uuid) {
@@ -300,12 +298,12 @@ public class ClaimImpl implements Claim {
     }
 
     @Override
-    public List<ClaimStatus> getClaimStatuses() {
+    public List<String> getClaimStatuses() {
         return claimStatuses;
     }
 
     @Override
-    public Map<UUID, List<ClaimPermission>> getClaimPermissions() {
+    public Map<UUID, List<String>> getClaimPermissions() {
         return claimPermissions;
     }
 

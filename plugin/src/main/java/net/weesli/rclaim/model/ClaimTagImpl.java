@@ -2,7 +2,6 @@ package net.weesli.rclaim.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.weesli.rclaim.api.enums.ClaimPermission;
 import net.weesli.rclaim.api.model.ClaimTag;
 
 import java.util.List;
@@ -17,11 +16,11 @@ public class ClaimTagImpl implements ClaimTag {
     private String displayName;
 
     private List<UUID> users;
-    private List<ClaimPermission> permissions;
+    private List<String> permissions;
 
     public ClaimTagImpl() {
     }
-    public ClaimTagImpl(String claimId, String id, String displayName, List<UUID> users, List<ClaimPermission> permissions) {
+    public ClaimTagImpl(String claimId, String id, String displayName, List<UUID> users, List<String> permissions) {
         this.claimId = claimId;
         this.id = id;
         this.displayName = displayName;
@@ -30,15 +29,15 @@ public class ClaimTagImpl implements ClaimTag {
     }
 
 
-    public boolean hasPermission(ClaimPermission permission) {
+    public boolean hasPermission(String permission) {
         return permissions.contains(permission);
     }
 
-    public void addPermission(ClaimPermission permission) {
+    public void addPermission(String permission) {
         permissions.add(permission);
     }
 
-    public void removePermission(ClaimPermission permission) {
+    public void removePermission(String permission) {
         permissions.remove(permission);
     }
 
