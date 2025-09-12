@@ -6,8 +6,7 @@ import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.SubClaim;
 
 import net.weesli.rclaim.config.ConfigLoader;
-import net.weesli.rclaim.config.adapter.model.Menu;
-import net.weesli.rclaim.config.adapter.model.MenuItem;
+import net.weesli.rclaim.config.lang.MenuConfig;
 import net.weesli.rclaim.hook.other.HWorldGuard;
 import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rclaim.util.BaseUtil;
@@ -24,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 public class ClaimResizeInventory extends ClaimInventory {
-    private static final Menu menu = ConfigLoader.getMenuConfig().getResizeMenu();
+    private static final MenuConfig.Menu menu = ConfigLoader.getMenuConfig().getResizeMenu();
 
     private int pageX, pageY;
     private Player player;
@@ -103,13 +102,13 @@ public class ClaimResizeInventory extends ClaimInventory {
     }
 
     private void getAreas(SimpleInventory inventory, Player player, Location location, Claim claim, int slot) {
-        MenuItem item = getKeyForChunk(player, claim, location);
-        ClickableItemStack itemStack = new ClickableItemStack(getItemStack(item), slot);
+        MenuConfig.MenuItem item = getKeyForChunk(player, claim, location);
+        ClickableItemStack itemStack = new ClickableItemStack(getItemStack(item,player), slot);
         inventory.setItem(itemStack, event -> handleItemClick(player, location, claim));
         updateItemMeta(itemStack, location,claim);
     }
 
-    private MenuItem getKeyForChunk(Player player, Claim claim, Location location) {
+    private MenuConfig.MenuItem getKeyForChunk(Player player, Claim claim, Location location) {
         if (claim.contains(location)) {
             return menu.getItems().get("starter-claim");
         }

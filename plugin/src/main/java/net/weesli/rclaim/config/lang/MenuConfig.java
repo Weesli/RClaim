@@ -5,9 +5,15 @@ import eu.okaeri.configs.annotation.Comment;
 import eu.okaeri.configs.annotation.Variable;
 import lombok.Getter;
 import lombok.Setter;
-import net.weesli.rclaim.config.adapter.model.Menu;
-import net.weesli.rclaim.config.adapter.model.MenuItem;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.weesli.rclaim.config.ConfigLoader;
+import net.weesli.rozslib.inventory.ClickableItemStack;
+import net.weesli.rozslib.inventory.ItemBuilder;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,12 +35,14 @@ public class MenuConfig extends OkaeriConfig {
                     "effects", new MenuItem(22, "&eClaim Effects", "BREWING_STAND", 0, List.of("&8", "&aClick to enable or disable claim effects!")),
                     "block", new MenuItem(12, "&eClaim Block", "BEDROCK", 0, List.of("&8", "&aClick to manage claim block!")),
                     "tags", new MenuItem(14, "&eClaim Tags", "NAME_TAG", 0, List.of("&8", "&aClick to manage claim tags!"))
-            )
+            ),
+            true,
+            new ArrayList<>()
     );
 
     @Variable("claims-menu")
     @Comment("Claims menu configuration settings")
-    public Menu claimsMenu = new Menu(
+    public PageableMenu claimsMenu = new PageableMenu(
             "&8Your claims",
             54,
             Map.of(
@@ -52,7 +60,11 @@ public class MenuConfig extends OkaeriConfig {
                                     "&aClick Shift + LeftClick to teleport the claim."
                             )
                     )
-            )
+            ),
+            false,
+            new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 36, 44,46, 47, 48, 49, 50, 51, 52, 53, 17, 26, 35,45,53)),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getPreviousItem(), 45),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getNextItem(), 53)
     );
 
     @Variable("upgrade-menu")
@@ -67,13 +79,15 @@ public class MenuConfig extends OkaeriConfig {
                             0,
                             List.of("&8", "&aCost : &f<cost>", "&8", "&aClick to upgrade time your claim!")
                     )
-            )
+            ),
+            true,
+            new ArrayList<>()
     );
 
 
     @Variable("members-menu")
     @Comment("Members menu configuration settings")
-    public Menu membersMenu = new Menu(
+    public PageableMenu membersMenu = new PageableMenu(
             "&8Claim members",
             54,
             Map.of(
@@ -84,14 +98,18 @@ public class MenuConfig extends OkaeriConfig {
                             0,
                             List.of("&a", "&aClick to manage this member!", "&aShift + Click to untrust player")
                     )
-            )
+            ),
+            false,
+            new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 36, 44,46, 47, 48, 50, 51, 52, 53, 17, 26, 35,45,53)),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getPreviousItem(), 45),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getNextItem(), 53)
     );
 
     @Variable("options-menu")
     @Comment("Options menu configuration settings")
-    public Menu optionsMenu = new Menu(
+    public PageableMenu optionsMenu = new PageableMenu(
             "&8Claim options",
-            27,
+            54,
             Map.of(
                     "SPAWN_ANIMAL", new MenuItem(0, "&eSpawn Animal", "SHEEP_SPAWN_EGG", 0, List.of("&7status: &f%status%", "&7", "&7Click to spawn animals on your claim!")),
                     "SPAWN_MONSTER", new MenuItem(0, "&aSpawn Monster", "SKELETON_SPAWN_EGG", 0, List.of("&7status: &f%status%", "&7", "&7Click to spawn monsters on your claim!")),
@@ -100,7 +118,11 @@ public class MenuConfig extends OkaeriConfig {
                     "SPREAD", new MenuItem(0, "&aEnable Spread", "FIRE_CHARGE", 0, List.of("&7status: &f%status%", "&7", "&7Click to enable spread on your claim!")),
                     "WEATHER", new MenuItem(0, "&aChange Weather Status", "WATER_BUCKET", 0, List.of("&7status: &f%status%", "&7", "&7Click to change weather status!")),
                     "TIME", new MenuItem(0, "&aChange Time Status", "CLOCK", 0, List.of("&7status: &f%status%", "&7", "&7Click to change time status!"))
-            )
+            ),
+            false,
+            new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17,18, 26,35,27, 36,44, 46, 47, 48, 49, 50, 51, 52,45,53)),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getPreviousItem(), 45),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getNextItem(), 53)
     );
 
     @Variable("resize-menu")
@@ -118,10 +140,14 @@ public class MenuConfig extends OkaeriConfig {
 
     @Variable("permissions-menu")
     @Comment("Permissions menu configuration settings")
-    public Menu permissionsMenu = new Menu(
+    public PageableMenu permissionsMenu = new PageableMenu(
             "Permissions Menu",
             27,
-            createPermissionsMenuItems()
+            createPermissionsMenuItems(),
+            false,
+            new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17,18, 26,35,27, 36,44, 46, 47, 48, 49, 50, 51, 52,45,53)),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getPreviousItem(), 45),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getNextItem(), 53)
     );
 
     private static Map<String, MenuItem> createPermissionsMenuItems() {
@@ -151,7 +177,9 @@ public class MenuConfig extends OkaeriConfig {
             Map.of(
                     "confirm", new MenuItem(2, "&eYes", "GREEN_WOOL", 0, List.of("&8", "&aClick to confirm your action!")),
                     "deny", new MenuItem(6, "&cNo", "RED_WOOL", 0, List.of("&8", "&aClick to cancel your action!"))
-            )
+            ),
+            true,
+            new ArrayList<>()
     );
 
     @Variable("effect-menu")
@@ -163,26 +191,36 @@ public class MenuConfig extends OkaeriConfig {
                     "speed", new MenuItem(11, "&aSpeed", "DIAMOND_BOOTS", 0, List.of("&7status: &f%status%", "&7Level: &f%level%", "&7", "&7Cost: &f%cost%", "&7", "&7Click and upgrade effect.", "&7Shift-Click and enable/disable effect.")),
                     "jump", new MenuItem(13, "&aJump", "IRON_BOOTS", 0, List.of("&7status: &f%status%", "&7Level: &f%level%", "&7", "&7Cost: &f%cost%", "&7", "&7Click and upgrade effect.", "&7Shift-Click and enable/disable effect.")),
                     "haste", new MenuItem(15, "&aHaste", "GOLDEN_PICKAXE", 0, List.of("&7status: &f%status%", "&7Level: &f%level%", "&7", "&7Cost: &f%cost%", "&7", "&7Click and upgrade effect.", "&7Shift-Click and enable/disable effect."))
-            )
+            ),
+            true,
+            new ArrayList<>()
     );
 
     @Variable("block-menu")
     @Comment("Block menu configuration settings")
-    public Menu blockMenu = new Menu(
+    public PageableMenu blockMenu = new PageableMenu(
             "&8Setting claim block",
-            0,
-            Map.of()
+            27,
+            Map.of(),
+            false,
+            new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 19, 20, 21, 22, 23, 24, 25, 17)),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getPreviousItem(), 18),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getNextItem(), 26)
     );
 
     @Variable("tag-main-menu")
     @Comment("Tag main menu configuration settings")
-    public Menu tagMainMenu = new Menu(
+    public PageableMenu tagMainMenu = new PageableMenu(
             "&8Tag Menu",
-            0,
+            27,
             Map.of(
                     "add-tag", new MenuItem(22, "&eAdd Tag", "OAK_SIGN", 0, List.of("&7", "&eClick to add a new tag.", "&7")),
                     "item-settings", new MenuItem(null, "&a<name>", "OAK_SIGN", 0, List.of("&7", "&eClick to change tag permission or users.", "&7Shift-Click and disable tag."))
-            )
+            ),
+            false,
+            new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 19, 20, 21, 22, 23, 24, 25, 17)),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getPreviousItem(), 18),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getNextItem(), 26)
     );
 
 
@@ -194,28 +232,149 @@ public class MenuConfig extends OkaeriConfig {
             Map.of(
                     "users", new MenuItem(12, "&eUsers", "PLAYER_HEAD", 0, List.of("&7", "&eAdd/remove users from this tag.", "&7")),
                     "permissions", new MenuItem(14, "&ePermissions", "BOOK", 0, List.of("&7", "&eAdd/remove permission from this tag.", "&7"))
-            )
+            ),
+            true,
+            new ArrayList<>()
     );
 
 
     @Variable("tag-users-menu")
     @Comment("Tag users menu configuration settings")
-    public Menu tagUsersMenu = new Menu(
+    public PageableMenu tagUsersMenu = new PageableMenu(
             "&8Tag Users",
-            0,
+            27,
             Map.of(
                     "add-user", new MenuItem(22, "&eAdd User", "NAME_TAG", 0, List.of("&7", "&aClick to add a player to this tag.")),
                     "item-settings", new MenuItem(null, "&e<name>", "PLAYER_HEAD", 0, List.of("&7", "&eClick and remove player from this tag!"))
-            )
+            ),
+            false,
+            new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 19, 20, 21, 22, 23, 24, 25, 17)),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getPreviousItem(), 18),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getNextItem(), 26)
     );
 
 
     @Variable("tag-permissions-menu")
     @Comment("Tag permissions menu configuration settings")
-    public Menu tagPermissionsMenu = new Menu(
+    public PageableMenu tagPermissionsMenu = new PageableMenu(
             "&8Tag Permissions",
             54,
-            Map.of()
+            Map.of(),
+            false,
+            new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 18, 27, 36,44, 46, 47, 48, 50, 51, 52,45,53)),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getPreviousItem(), 45),
+            new NavigationItem(ConfigLoader.getConfig().getPublicMenu().getNextItem(), 53)
     );
+
+    @Getter@Setter
+    public static class PageableMenu extends OkaeriConfig{
+
+        private String title;
+        private int size;
+        private Map<String, MenuItem> items;
+        private boolean autoFill;
+        private List<Integer> fillerSlots;
+        private NavigationItem previousItem;
+        private NavigationItem nextItem;
+
+
+        public PageableMenu(String title, int size, Map<String, MenuItem> items, boolean autoFill, List<Integer> fillerSlots, NavigationItem previousItem, NavigationItem nextItem) {
+            this.title = title;
+            this.size = size;
+            this.items = items;
+            this.autoFill = autoFill;
+            this.fillerSlots = fillerSlots;
+            this.previousItem = previousItem;
+            this.nextItem = nextItem;
+        }
+    }
+    @Getter@Setter
+    public static class MenuItem extends OkaeriConfig {
+
+        private String title;
+        private String material;
+        private int customModelData;
+        private List<String> lore;
+        private Integer index;
+
+        public MenuItem(Integer index, String title, String material, int customModelData, List<String> lore) {
+            this.title = title;
+            this.material = material;
+            this.customModelData = customModelData;
+            this.lore = lore;
+            this.index = index;
+        }
+
+        public MenuItem(String title, String material, int customModelData, List<String> lore){
+            this(null, title, material, customModelData, lore);
+        }
+
+
+        public boolean hasIndex(){
+            return index != null;
+        }
+    }
+    public static class NavigationItem extends OkaeriConfig {
+
+        private MenuItem menuItem;
+        private int index;
+
+        public NavigationItem(MenuItem menuItem, int slot) {
+            this.menuItem = menuItem;
+            this.index = slot;
+        }
+
+        public ClickableItemStack asClickableItemStack(@Nullable Player player, TagResolver... tags) {
+            return ItemBuilder.of(Material.getMaterial(menuItem.getMaterial()))
+                    .name(menuItem.getTitle(),player, tags)
+                    .lore(menuItem.getLore(),player, tags)
+                    .amount(1)
+                    .hideFlags()
+                    .customModelData(menuItem.getCustomModelData())
+                    .asClickableItemStack(index);
+        }
+    }
+    @Getter@Setter
+    public static class Menu extends OkaeriConfig {
+
+        private String title;
+        private int size;
+        private Map<String, MenuItem> items;
+        private boolean autoFill;
+        private List<Integer> fillerSlots;
+
+
+        public Menu(String title, int size) {
+            this.title = title;
+            this.size = size;
+        }
+
+        public Menu(String title, int size, Map<String, MenuItem> items, boolean autoFill, List<Integer> fillerSlots) {
+            this.title = title;
+            this.size = size;
+            this.items = items;
+            this.autoFill = autoFill;
+            this.fillerSlots = fillerSlots;
+        }
+
+        public Menu(String title, int size, Map<String, MenuItem> items) {
+            this.title = title;
+            this.size = size;
+            this.items = items;
+        }
+
+        public Menu addItem(String title, MenuItem item) {
+            items.put(title, item);
+            return this;
+        }
+
+        public List<Integer> getFillerSlots() {
+            if (fillerSlots == null) {
+                return new ArrayList<>();
+            }
+            return fillerSlots;
+        }
+    }
+
 
 }

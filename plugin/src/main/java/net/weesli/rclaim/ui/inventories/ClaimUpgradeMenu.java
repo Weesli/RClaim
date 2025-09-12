@@ -4,7 +4,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
-import net.weesli.rclaim.config.adapter.model.Menu;
+import net.weesli.rclaim.config.lang.MenuConfig;
 import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rozslib.inventory.ClickableItemStack;
@@ -14,17 +14,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 public class ClaimUpgradeMenu extends ClaimInventory {
 
-    private final Menu menu = ConfigLoader.getMenuConfig().getUpgradeMenu();
+    private final MenuConfig.Menu menu = ConfigLoader.getMenuConfig().getUpgradeMenu();
 
     @Override
     public void openInventory(Player player, Claim claim) {
         SimpleInventory inventory = new SimpleInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()),menu.getSize());
-        inventory.setLayout("").fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), true);
-        ItemStack itemStack = getItemStack(menu.getItems().get("item-settings"));
+        inventory.setLayout(menu.getFillerSlots()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .toArray()).fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), menu.isAutoFill());
+        ItemStack itemStack = getItemStack(menu.getItems().get("item-settings"),player);
         ItemMeta meta = itemStack.getItemMeta();
         // calculate cost for claim
         int claimCostPerDay = ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay();

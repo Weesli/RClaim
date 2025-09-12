@@ -5,7 +5,6 @@ import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.yaml.snakeyaml.YamlSnakeYamlConfigurer;
 import lombok.Getter;
 import lombok.Setter;
-import net.weesli.rclaim.config.adapter.ClaimAdapter;
 import net.weesli.rclaim.config.lang.LangConfig;
 import net.weesli.rclaim.config.lang.MenuConfig;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -64,19 +63,19 @@ public final class ConfigLoader {
     public void applyConfigBuild(Class<? extends OkaeriConfig> clazz, String langCode){
         if (clazz.equals(Config.class)) {
             config = (Config) ConfigManager.create(clazz)
-                    .withConfigurer(new YamlSnakeYamlConfigurer(), new ClaimAdapter())
+                    .withConfigurer(new YamlSnakeYamlConfigurer())
                     .withBindFile(new File(plugin.getDataFolder(), "config.yml"))
                     .saveDefaults()
                     .load(true);
         } else if (clazz.equals(MenuConfig.class)) {
             menuConfig = (MenuConfig) ConfigManager.create(clazz)
-                    .withConfigurer(new YamlSnakeYamlConfigurer(), new ClaimAdapter())
+                    .withConfigurer(new YamlSnakeYamlConfigurer())
                     .withBindFile(new File(plugin.getDataFolder(), "lang/" + langCode + "/menus.yml"))
                     .saveDefaults()
                     .load(true);
         } else if (clazz.equals(LangConfig.class)) {
             langConfig = (LangConfig) ConfigManager.create(clazz)
-                    .withConfigurer(new YamlSnakeYamlConfigurer(), new ClaimAdapter())
+                    .withConfigurer(new YamlSnakeYamlConfigurer())
                     .withBindFile(new File(plugin.getDataFolder(), "lang/" + langCode + "/lang.yml"))
                     .saveDefaults()
                     .load(true);

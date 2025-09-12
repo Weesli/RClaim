@@ -2,58 +2,50 @@ package net.weesli.rclaim.ui.inventories.tag;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.weesli.rclaim.RClaim;
-import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimTag;
 import net.weesli.rclaim.api.permission.ClaimPermissionRegistry;
 import net.weesli.rclaim.config.ConfigLoader;
-import net.weesli.rclaim.config.adapter.model.Menu;
-import net.weesli.rclaim.config.adapter.model.MenuItem;
+import net.weesli.rclaim.config.lang.MenuConfig;
 import net.weesli.rclaim.ui.TagInventory;
 import net.weesli.rclaim.util.BaseUtil;
-import net.weesli.rozslib.inventory.ClickableItemStack;
 import net.weesli.rozslib.inventory.types.PageableInventory;
-import net.weesli.rozslib.inventory.types.SimpleInventory;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class ClaimTagPermissionMenu extends TagInventory {
-    private Menu menu = ConfigLoader.getMenuConfig().getTagPermissionsMenu();
+    private MenuConfig.PageableMenu menu = ConfigLoader.getMenuConfig().getTagPermissionsMenu();
 
 
     @Override
     public void openInventory(Player player, ClaimTag tag) {
-        PageableInventory builder = new PageableInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()),54,
-                new ClickableItemStack(getItemStack(ConfigLoader.getConfig().getPublicMenu().getPreviousItem()), 45),
-                new ClickableItemStack(getItemStack(ConfigLoader.getConfig().getPublicMenu().getNextItem()), 53));
-        builder.setLayout("""
-                *********
-                *       *
-                *       *
-                *       *
-                *       *
-                 *******
-                """).fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), false);
+        PageableInventory inventory = new PageableInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()), menu.getSize(),
+                menu.getPreviousItem().asClickableItemStack(player),
+                menu.getNextItem().asClickableItemStack(player));
+        inventory.setLayout(menu.getFillerSlots()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .toArray()).fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), menu.isAutoFill());
         for (Map.Entry<String, ClaimPermissionRegistry> registryEntry : RClaim.getInstance().getPermissionService().getRegistries().entrySet()) {
-            addClickableItem(player,builder,tag, registryEntry.getKey());
+            addClickableItem(player,inventory,tag, registryEntry.getKey());
         }
-        builder.openInventory(player);
+        inventory.openInventory(player);
     }
 
 
 
     private void addClickableItem(Player player, PageableInventory builder, ClaimTag tag,String key){
-        menu = ConfigLoader.getMenuConfig().getPermissionsMenu(); // this is an exception, only for the permission menu. Tag permission menu and classic permission menu use same items in config.
+        menu =  ConfigLoader.getMenuConfig().getPermissionsMenu(); // this is an exception, only for the permission menu. Tag permission menu and classic permission menu use same items in config.
         String anotherKey = key.replaceAll("_", "-").toLowerCase();
-        MenuItem item = menu.getItems().get(anotherKey) == null ? menu.getItems().get(key) : menu.getItems().get(anotherKey);
+        MenuConfig.MenuItem item = menu.getItems().get(anotherKey) == null ? menu.getItems().get(key) : menu.getItems().get(anotherKey);
         if (item == null) return;
-        ItemStack itemStack = getItemStack(item);
+        ItemStack itemStack = getItemStack(item,player);
         String statusPlaceholder = tag.hasPermission(key) ? BaseUtil.getStatus(true) : BaseUtil.getStatus(false);
 
         ItemMeta meta = itemStack.getItemMeta();

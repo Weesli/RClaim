@@ -36,7 +36,7 @@ public class HDecentHologram implements ClaimHologram {
         if (hologram == null)return;
         for (String line : ConfigLoader.getConfig().getHologram().getHologramSettings().getHologramLines()){
             if (line == null)continue;
-            Component message = ColorBuilder.convertColors(line, createTagResolver("player", PlayerUtil.getPlayer(claim.getOwner()).getName()), createTagResolver("id", claim.getID()));
+            Component message = ColorBuilder.convertColors(line, createTagResolver("player", Bukkit.getOfflinePlayer(claim.getOwner()).getName()), createTagResolver("id", claim.getID()));
             DHAPI.addHologramLine(hologram, LegacyComponentSerializer.legacySection().serialize(message));
         }
     }

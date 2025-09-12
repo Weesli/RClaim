@@ -5,11 +5,9 @@ import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.permission.ClaimPermissionRegistry;
 import net.weesli.rclaim.config.ConfigLoader;
-import net.weesli.rclaim.config.adapter.model.Menu;
-import net.weesli.rclaim.config.adapter.model.MenuItem;
+import net.weesli.rclaim.config.lang.MenuConfig;
 import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rclaim.util.BaseUtil;
-import net.weesli.rozslib.inventory.ClickableItemStack;
 import net.weesli.rozslib.inventory.types.PageableInventory;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,25 +27,21 @@ public class ClaimPermissionMenu extends ClaimInventory {
         this.target = target;
     }
 
-    private static final Menu menu = ConfigLoader.getMenuConfig().getPermissionsMenu();
+    private static final MenuConfig.PageableMenu menu = (MenuConfig.PageableMenu) ConfigLoader.getMenuConfig().getPermissionsMenu();
 
     @Override
     public void openInventory(Player player, Claim claim) {
-        PageableInventory builder = new PageableInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()),54,
-                new ClickableItemStack(getItemStack(ConfigLoader.getConfig().getPublicMenu().getPreviousItem()), 45),
-                new ClickableItemStack(getItemStack(ConfigLoader.getConfig().getPublicMenu().getNextItem()), 53));
-        builder.setLayout("""
-                *********
-                *       *
-                *       *
-                *       *
-                *       *
-                 *******
-                """).fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), false);
+        PageableInventory inventory = new PageableInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()),menu.getSize(),
+                menu.getPreviousItem().asClickableItemStack(player),
+                menu.getNextItem().asClickableItemStack(player));
+        inventory.setLayout(menu.getFillerSlots()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .toArray()).fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), menu.isAutoFill());
         for (Map.Entry<String, ClaimPermissionRegistry> registryEntry : RClaim.getInstance().getPermissionService().getRegistries().entrySet()) {
-            addClickableItem(builder,player,claim, registryEntry.getKey());
+            addClickableItem(inventory,player,claim, registryEntry.getKey());
         }
-        builder.openInventory(player);
+        inventory.openInventory(player);
     }
 
     private void addClickableItem(PageableInventory builder, Player player, Claim claim, String key) {
@@ -55,9 +49,9 @@ public class ClaimPermissionMenu extends ClaimInventory {
         if (alreadyAdded.contains(anotherKey) || alreadyAdded.contains(key)) return;
         alreadyAdded.add(anotherKey);
         alreadyAdded.add(key);
-        MenuItem item = menu.getItems().get(anotherKey) == null ? menu.getItems().get(key) : menu.getItems().get(anotherKey);
+        MenuConfig.MenuItem item = menu.getItems().get(anotherKey) == null ? menu.getItems().get(key) : menu.getItems().get(anotherKey);
         if (item == null) return;
-        ItemStack itemStack = getItemStack(item);
+        ItemStack itemStack = getItemStack(item,player);
         String statusPlaceholder = claim.checkPermission(target, key) ? BaseUtil.getStatus(true) : BaseUtil.getStatus(false);
 
         ItemMeta meta = itemStack.getItemMeta();

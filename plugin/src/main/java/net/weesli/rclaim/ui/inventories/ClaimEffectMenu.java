@@ -5,9 +5,8 @@ import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimEffect;
 import net.weesli.rclaim.config.ConfigLoader;
-import net.weesli.rclaim.config.adapter.model.Menu;
-import net.weesli.rclaim.config.adapter.model.MenuItem;
 import net.weesli.rclaim.api.enums.Effect;
+import net.weesli.rclaim.config.lang.MenuConfig;
 import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rozslib.color.ColorBuilder;
@@ -18,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
@@ -26,29 +26,32 @@ import static net.weesli.rclaim.util.ChatUtil.createTagResolver;
 // pageable
 public class ClaimEffectMenu extends ClaimInventory {
 
-    private static final Menu menu = ConfigLoader.getMenuConfig().getEffectMenu();
+    private static final MenuConfig.Menu menu = ConfigLoader.getMenuConfig().getEffectMenu();
 
     @Override
     public void openInventory(Player player, Claim claim) {
-        SimpleInventory builder = new SimpleInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()),menu.getSize());
-        builder.setLayout("").fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE),true);
-        for (Map.Entry<String, MenuItem> item : menu.getItems().entrySet()){
+        SimpleInventory inventory = new SimpleInventory(PlaceholderAPI.setPlaceholders(player,menu.getTitle()),menu.getSize());
+        inventory.setLayout(menu.getFillerSlots()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .toArray()).fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), menu.isAutoFill());
+        for (Map.Entry<String, MenuConfig.MenuItem> item : menu.getItems().entrySet()){
             switch (item.getKey()){
-                case "speed" -> builder.setItem(new ClickableItemStack(getItem(item.getValue(), Effect.SPEED, claim),item.getValue().getIndex()), event -> {
+                case "speed" -> inventory.setItem(new ClickableItemStack(getItem(item.getValue(), Effect.SPEED, claim,player),item.getValue().getIndex()), event -> {
                     if (event.isShiftClick()){
                         ShiftInteractEffect(player, claim,Effect.SPEED);
                     }else {
                         InteractEffect(player, claim,Effect.SPEED);
                     }
                 });
-                case "jump" -> builder.setItem(new ClickableItemStack(getItem(item.getValue(), Effect.JUMP, claim),item.getValue().getIndex()), event -> {
+                case "jump" -> inventory.setItem(new ClickableItemStack(getItem(item.getValue(), Effect.JUMP, claim,player),item.getValue().getIndex()), event -> {
                     if (event.isShiftClick()){
                         ShiftInteractEffect(player, claim,Effect.JUMP);
                     } else {
                         InteractEffect(player, claim,Effect.JUMP);
                     }
                 });
-                case "haste" -> builder.setItem(new ClickableItemStack(getItem(item.getValue(), Effect.HASTE, claim),item.getValue().getIndex()), event -> {
+                case "haste" -> inventory.setItem(new ClickableItemStack(getItem(item.getValue(), Effect.HASTE, claim,player),item.getValue().getIndex()), event -> {
                     if (event.isShiftClick()){
                         ShiftInteractEffect(player, claim,Effect.HASTE);
                     } else {
@@ -57,11 +60,11 @@ public class ClaimEffectMenu extends ClaimInventory {
                 });
             }
         }
-        builder.openInventory(player);
+        inventory.openInventory(player);
     }
 
-    private ItemStack getItem(MenuItem item, Effect effect, Claim claim) {
-        ItemStack itemStack = getItemStack(item);
+    private ItemStack getItem(MenuConfig.MenuItem item, Effect effect, Claim claim, Player player){
+        ItemStack itemStack = getItemStack(item,player);
         ItemMeta meta = itemStack.getItemMeta();
         ClaimEffect model = claim.getEffect(effect);
         List<String> lore = meta.getLore().stream().map(line -> line

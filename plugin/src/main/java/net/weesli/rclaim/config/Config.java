@@ -6,7 +6,7 @@ import eu.okaeri.configs.annotation.CustomKey;
 import eu.okaeri.configs.annotation.Header;
 import lombok.Getter;
 import lombok.Setter;
-import net.weesli.rclaim.config.adapter.model.MenuItem;
+import net.weesli.rclaim.config.lang.MenuConfig;
 
 import java.util.Arrays;
 import java.util.List;
@@ -276,14 +276,14 @@ public class Config extends OkaeriConfig {
     @Getter@Setter
     public static class PublicMenuSettings extends OkaeriConfig {
         @Comment({"This item will be valid in all paged menus!"})
-        private MenuItem previousItem = new MenuItem(
+        private MenuConfig.MenuItem previousItem = new MenuConfig.MenuItem(
                 "&8Previous Page",
                 "ARROW",
                 0,
                 List.of("&8", "&aClick and view the previous page!")
         );
         @Comment({"This item will be valid in all paged menus!"})
-        private MenuItem nextItem = new MenuItem(
+        private MenuConfig.MenuItem nextItem = new MenuConfig.MenuItem(
                 "&8Next Page",
                 "ARROW",
                 0,
