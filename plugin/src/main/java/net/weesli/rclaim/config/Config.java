@@ -1,310 +1,294 @@
 package net.weesli.rclaim.config;
 
-import eu.okaeri.configs.OkaeriConfig;
-import eu.okaeri.configs.annotation.Comment;
-import eu.okaeri.configs.annotation.CustomKey;
-import eu.okaeri.configs.annotation.Header;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.weesli.rclaim.config.lang.MenuConfig;
+import net.weesli.rozsconfig.annotations.Comment;
+import net.weesli.rozsconfig.annotations.ConfigKey;
+import net.weesli.rozsconfig.model.RozsConfig;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Getter
 @Setter
-@Header("################################################################")
-@Header("#                                                              #")
-@Header("#    Author by @Weesli                                         #")
-@Header("#                                                              #")
-@Header("################################################################")
-public class Config extends OkaeriConfig {
+public class Config extends RozsConfig {
 
-    @CustomKey("language")
+    @ConfigKey("language")
     @Comment("Language for messages and commands. Available languages: 'en', 'tr'")
-    private String language = "en";
+    private String language;
 
-    @CustomKey("prefix")
-    private String prefix = "&6Claim &8>> ";
+    @ConfigKey("prefix")
+    private String prefix;
 
-    @CustomKey("viewerMode")
+    @ConfigKey("viewerMode")
     @Comment({"System showing the claim zone for players, 'classic' and 'Border' are available."})
-    private String viewerMode = "classic";
+    private String viewerMode;
 
-    @CustomKey("storageType")
+    @ConfigKey("storageType")
     @Comment({"Storage type can be 'MySQL' or 'SQLite' or 'RozsDBLite", "Default: 'RozsDBLite'"})
-    private String storageType = "RozsDBLite";
+    private String storageType;
 
-    @CustomKey("maxTrustedPlayer")
+    @ConfigKey("maxTrustedPlayer")
     @Comment({"The maximum number of people a beneficiary can trust.", "Deprecated!!!"})
-    private int maxTrustedPlayer = 10;
+    private int maxTrustedPlayer;
 
-    @CustomKey("minBetweenClaim")
+    @ConfigKey("minBetweenClaim")
     @Comment({"Minimum distance from a claim that does not have its own ownership to a claim to be taken", "type of Block size"})
-    private int minBetweenClaim = 250;
+    private int minBetweenClaim;
 
-    @CustomKey("worldGuard")
-    private WorldGuardConfig worldGuard = new WorldGuardConfig();
+    @ConfigKey("worldGuard")
+    private WorldGuardConfig worldGuard;
 
-    @CustomKey("mapSupport")
-    private MapSupportConfig mapSupport = new MapSupportConfig();
+    @ConfigKey("mapSupport")
+    private MapSupportConfig mapSupport;
 
-    @CustomKey("combatSystem")
+    @ConfigKey("combatSystem")
     @Comment("Prevents players from fleeing to their own space when fighting within the server")
-    private boolean combatSystem = true;
+    private boolean combatSystem;
 
-    @CustomKey("effects")
-    private EffectsConfig effects = new EffectsConfig();
+    @ConfigKey("effects")
+    private EffectsConfig effects;
 
-    @CustomKey("blockTypes")
-    private List<String> blockTypes = Arrays.asList("BEDROCK", "STONE", "DIAMOND_BLOCK", "GLOWSTONE");
+    @ConfigKey("blockTypes")
+    private List<String> blockTypes;
 
-    @CustomKey("publicMenuSettings")
-    private PublicMenuSettings publicMenu = new PublicMenuSettings();
+    @ConfigKey("publicMenuSettings")
+    private PublicMenuSettings publicMenu;
 
-    @CustomKey("status")
-    private StatusConfig status = new StatusConfig();
+    @ConfigKey("status")
+    private StatusConfig status;
 
-    @CustomKey("economyType")
+    @ConfigKey("economyType")
     @Comment("Economy type can be 'VAULT' or 'none' or 'PLAYER_POINTS'")
-    private String economyType = "VAULT";
+    private String economyType;
 
-    @CustomKey("claimTimeoutMessage")
-    private ClaimTimeoutMessageConfig claimTimeoutMessage = new ClaimTimeoutMessageConfig();
+    @ConfigKey("claimTimeoutMessage")
+    private ClaimTimeoutMessageConfig claimTimeoutMessage;
 
-    @CustomKey("activeWorlds")
-    private List<String> activeWorlds = Arrays.asList("world");
+    @ConfigKey("activeWorlds")
+    private List<String> activeWorlds;
 
-    @CustomKey("enterMessage")
-    private EnterMessageConfig enterMessage = new EnterMessageConfig();
+    @ConfigKey("enterMessage")
+    private EnterMessageConfig enterMessage;
 
-    @CustomKey("timeFormat")
-    private String timeFormat = "%week%w %day%d %hour%h %minute%m %second%s";
+    @ConfigKey("timeFormat")
+    private String timeFormat;
 
-    @CustomKey("database")
-    private DatabaseConfig database = new DatabaseConfig();
+    @ConfigKey("database")
+    private DatabaseConfig database;
 
-    @CustomKey("hologram")
-    private HologramConfig hologram = new HologramConfig();
+    @ConfigKey("hologram")
+    private HologramConfig hologram;
 
-    @CustomKey("claimBlock")
-    private ClaimBlockConfig claimBlock = new ClaimBlockConfig();
+    @ConfigKey("claimBlock")
+    private ClaimBlockConfig claimBlock;
 
-    @CustomKey("claimSettings")
-    private ClaimSettingsConfig claimSettings = new ClaimSettingsConfig();
+    @ConfigKey("claimSettings")
+    private ClaimSettingsConfig claimSettings;
 
-    @CustomKey("ClaimPermissionNames")
-    private ClaimPermissionNames claimPermissions = new ClaimPermissionNames();
+    @ConfigKey("ClaimPermissionNames")
+    private ClaimPermissionNames claimPermissions;
 
     @Getter@Setter
-    public static class WorldGuardConfig extends OkaeriConfig {
-        @CustomKey("enabled")
-        private boolean enabled = true;
+    @NoArgsConstructor
+    public static class WorldGuardConfig {
+        @ConfigKey("enabled")
+        private boolean enabled;
 
-        @CustomKey("bannedRegions")
-        private List<String> bannedRegions = Arrays.asList("example", "Weesli");
+        @ConfigKey("bannedRegions")
+        private List<String> bannedRegions;
     }
     @Getter@Setter
-    public static class MapSupportConfig extends OkaeriConfig {
-        @CustomKey("dynmapSupport")
-        private boolean dynmapSupport = false;
+    @NoArgsConstructor
+    public static class MapSupportConfig {
+        @ConfigKey("dynmapSupport")
+        private boolean dynmapSupport;
     }
     @Getter@Setter
-    public static class EffectsConfig extends OkaeriConfig{
-        @CustomKey("enabled")
-        private boolean enabled = true;
+    @NoArgsConstructor
+    public static class EffectsConfig{
+        @ConfigKey("enabled")
+        private boolean enabled;
 
-        @CustomKey("maxLevelMessage")
-        private String maxLevelMessage = "&6MAX LEVEL";
+        @ConfigKey("maxLevelMessage")
+        private String maxLevelMessage;
 
-        @CustomKey("speed")
-        private EffectConfig speed = new EffectConfig(1500, 3500);
+        @ConfigKey("speed")
+        private EffectConfig speed;
 
-        @CustomKey("jump")
-        private EffectConfig jump = new EffectConfig(1500, 3500);
+        @ConfigKey("jump")
+        private EffectConfig jump;
 
-        @CustomKey("haste")
-        private EffectConfig haste = new EffectConfig(1500, 3500);
+        @ConfigKey("haste")
+        private EffectConfig haste;
         @Getter@Setter
-        public static class EffectConfig extends OkaeriConfig {
-            @CustomKey("buyCost")
+        @NoArgsConstructor
+        public static class EffectConfig {
+            @ConfigKey("buyCost")
             private int buyCost;
 
-            @CustomKey("upgradeCost")
+            @ConfigKey("upgradeCost")
             private int upgradeCost;
-
-            public EffectConfig(int buyCost, int upgradeCost) {
-                this.buyCost = buyCost;
-                this.upgradeCost = upgradeCost;
-            }
         }
     }
     @Getter@Setter
-    public static class StatusConfig extends OkaeriConfig{
-        @CustomKey("active")
-        private String active = "Active";
+    @NoArgsConstructor
+    public static class StatusConfig{
+        @ConfigKey("active")
+        private String active;
 
-        @CustomKey("nonActive")
-        private String nonActive = "non-active";
+        @ConfigKey("nonActive")
+        private String nonActive;
     }
 
     @Getter@Setter
-    public static class ClaimTimeoutMessageConfig extends OkaeriConfig{
-        @CustomKey("enabled")
-        private boolean enabled = true;
+    @NoArgsConstructor
+    public static class ClaimTimeoutMessageConfig{
+        @ConfigKey("enabled")
+        private boolean enabled;
 
-        @CustomKey("text")
-        private List<String> text = Arrays.asList("&aThe claim region of &b%player% at coordinates &b%x% &b%z% has been destroyed!");
+        @ConfigKey("text")
+        private List<String> text;
     }
 
     @Getter@Setter
-    public static class EnterMessageConfig extends OkaeriConfig {
-        @CustomKey("enabled")
-        private boolean enabled = true;
+    @NoArgsConstructor
+    public static class EnterMessageConfig {
+        @ConfigKey("enabled")
+        private boolean enabled;
 
-        @CustomKey("format")
+        @ConfigKey("format")
         @Comment("available format 'actionbar' and 'title'")
-        private String format = "title";
+        private String format;
 
-        @CustomKey("text")
-        private String text = "&cClaim owner &f%player%";
+        @ConfigKey("text")
+        private String text;
     }
 
     @Getter@Setter
-    public static class DatabaseConfig  extends OkaeriConfig{
-        @CustomKey("host")
-        private String host = "localhost";
+    @NoArgsConstructor
+    public static class DatabaseConfig {
+        @ConfigKey("host")
+        private String host;
 
-        @CustomKey("port")
-        private int port = 3306;
+        @ConfigKey("port")
+        private int port;
 
-        @CustomKey("username")
-        private String username = "root";
+        @ConfigKey("username")
+        private String username;
 
-        @CustomKey("password")
-        private String password = "";
+        @ConfigKey("password")
+        private String password;
 
-        @CustomKey("database")
-        private String database = "rclaims";
+        @ConfigKey("database")
+        private String database;
     }
 
     @Getter@Setter
-    public static class HologramConfig extends OkaeriConfig {
-        @CustomKey("enabled")
-        private boolean enabled = false;
+    @NoArgsConstructor
+    public static class HologramConfig {
+        @ConfigKey("enabled")
+        private boolean enabled;
 
-        @CustomKey("hologramModule")
+        @ConfigKey("hologramModule")
         @Comment("Available modules: 'DecentHolograms' and 'FancyHolograms'")
-        private String hologramModule = "DecentHolograms";
+        private String hologramModule;
 
-        @CustomKey("hologramSettings")
-        private HologramSettingsConfig hologramSettings = new HologramSettingsConfig();
+        @ConfigKey("hologramSettings")
+        private HologramSettingsConfig hologramSettings;
         @Getter@Setter
-        public static class HologramSettingsConfig  extends OkaeriConfig{
-            @CustomKey("hologramHeight")
-            private float hologramHeight = 2;
-            @CustomKey("hologramLines")
-            private List<String> hologramLines = Arrays.asList(
-                    "&e&lClaim | &f%rclaim_<id>_name%",
-                    "&eOwner: &f<player>",
-                    "&e",
-                    "&eRemaining time: &f%rclaim_<id>_time%",
-                    "&eProgressBar: &f%rclaim_<id>_progressbar%",
-                    "&e",
-                    "&eClick and manage claim!"
-            );
+        @NoArgsConstructor
+        public static class HologramSettingsConfig {
+            @ConfigKey("hologramHeight")
+            private float hologramHeight;
+            @ConfigKey("hologramLines")
+            private List<String> hologramLines;
         }
     }
 
     @Getter@Setter
-    public static class ClaimBlockConfig extends OkaeriConfig {
-        @CustomKey("enabled")
-        private boolean enabled = true;
+    @NoArgsConstructor
+    public static class ClaimBlockConfig {
+        @ConfigKey("enabled")
+        private boolean enabled;
 
-        @CustomKey("item")
-        private ClaimBlockItemConfig item = new ClaimBlockItemConfig();
+        @ConfigKey("item")
+        private ClaimBlockItemConfig item;
         @Getter@Setter
-        public static class ClaimBlockItemConfig extends OkaeriConfig {
-            @CustomKey("material")
-            private String material = "STONE";
+        @NoArgsConstructor
+        public static class ClaimBlockItemConfig {
+            @ConfigKey("material")
+            private String material;
 
-            @CustomKey("customModelData")
-            private int customModelData = 0;
+            @ConfigKey("customModelData")
+            private int customModelData;
 
-            @CustomKey("title")
-            private String title = "&aClaim Block";
+            @ConfigKey("title")
+            private String title;
 
-            @CustomKey("lore")
-            private List<String> lore = Arrays.asList(
-                    "&7",
-                    "&7It allows you to claim the area where you put it.",
-                    "&cFor single use only, Operation is irreversible!",
-                    "&7",
-                    "&7Place and create claim"
-            );
+            @ConfigKey("lore")
+            private List<String> lore;
         }
     }
 
     @Getter@Setter
-    public static class ClaimSettingsConfig extends OkaeriConfig {
-        @CustomKey("claim-cost-per-day")
+
+    @NoArgsConstructor
+    public static class ClaimSettingsConfig {
+        @ConfigKey("claim-cost-per-day")
         @Comment({"Required money for buy claim, 0 for free, -1 for disabled", "day * claimCost"})
-        private int claimCostPerDay = 250;
+        private int claimCostPerDay;
 
-        @CustomKey("claimDuration")
-        private int claimDuration = 30;
+        @ConfigKey("claimDuration")
+        private int claimDuration;
 
-        @CustomKey("defaultClaimStatus")
-        private ClaimStatusConfig defaultClaimStatus = new ClaimStatusConfig();
+        @ConfigKey("defaultClaimStatus")
+        private ClaimStatusConfig defaultClaimStatus;
         @Getter@Setter
-        public static class ClaimStatusConfig extends OkaeriConfig {
 
-            @CustomKey("SPAWN_ANIMAL")
-            private boolean spawnAnimal = true;
+        @NoArgsConstructor
+        public static class ClaimStatusConfig {
 
-            @CustomKey("SPAWN_MONSTER")
-            private boolean spawnMonster = false;
+            @ConfigKey("SPAWN_ANIMAL")
+            private boolean spawnAnimal;
 
-            @CustomKey("EXPLOSION")
-            private boolean explosion = false;
+            @ConfigKey("SPAWN_MONSTER")
+            private boolean spawnMonster;
 
-            @CustomKey("PVP")
-            private boolean pvp = false;
+            @ConfigKey("EXPLOSION")
+            private boolean explosion;
+
+            @ConfigKey("PVP")
+            private boolean pvp;
         }
     }
 
     @Getter@Setter
-    public static class PublicMenuSettings extends OkaeriConfig {
+    @NoArgsConstructor
+    public static class PublicMenuSettings {
         @Comment({"This item will be valid in all paged menus!"})
-        private MenuConfig.MenuItem previousItem = new MenuConfig.MenuItem(
-                "&8Previous Page",
-                "ARROW",
-                0,
-                List.of("&8", "&aClick and view the previous page!")
-        );
+        private MenuConfig.MenuItem previousItem;
         @Comment({"This item will be valid in all paged menus!"})
-        private MenuConfig.MenuItem nextItem = new MenuConfig.MenuItem(
-                "&8Next Page",
-                "ARROW",
-                0,
-                List.of("&8", "&aClick and view the next page!"));
+        private MenuConfig.MenuItem nextItem;
     }
 
     @Getter@Setter
-    public static class ClaimPermissionNames extends OkaeriConfig {
+    @NoArgsConstructor
+    public static class ClaimPermissionNames {
 
-        private String BLOCK_BREAK = "Block Break";
-        private String BLOCK_PLACE = "Block Place";
-        private String PICKUP_ITEM = "Pickup Item";
-        private String DROP_ITEM = "Drop Item";
-        private String CONTAINER_OPEN = "Container open";
-        private String INTERACT_ENTITY = "Interact Entity";
-        private String ATTACK_ANIMAL = "Attack Animal";
-        private String ATTACK_MONSTER = "Attack Monster";
-        private String BREAK_CONTAINER = "Break Container";
-        private String USE_DOOR = "Use Door";
-        private String USE_PORTAL = "Use Portal";
-        private String USE_POTION = "Use Potion";
+        private String BLOCK_BREAK;
+        private String BLOCK_PLACE;
+        private String PICKUP_ITEM;
+        private String DROP_ITEM;
+        private String CONTAINER_OPEN;
+        private String INTERACT_ENTITY;
+        private String ATTACK_ANIMAL;
+        private String ATTACK_MONSTER;
+        private String BREAK_CONTAINER;
+        private String USE_DOOR;
+        private String USE_PORTAL;
+        private String USE_POTION;
 
     }
 }

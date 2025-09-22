@@ -25,7 +25,6 @@ repositories {
     maven("https://repo.mikeprimm.com/")
     maven("https://repo.bluecolored.de/releases")
     maven("https://repo.codemc.org/repository/maven-public/")
-    maven("https://storehouse.okaeri.eu/repository/maven-public/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven {
         name = "fancyinnovationsReleases"
@@ -86,9 +85,6 @@ dependencies {
     // PvPManager
     compileOnly("me.NoChance.PvPManager:pvpmanager:3.18.21")
 
-    // Okaeri configs
-    implementation("eu.okaeri:okaeri-configs-yaml-snakeyaml:5.0.5")
-
     // SmartSpawner
     compileOnly("com.github.ptthanh02:SmartSpawner:1.3.8")
 
@@ -100,6 +96,8 @@ dependencies {
 
     // FancyHolograms
     compileOnly("de.oliver:FancyHolograms:2.7.0")
+
+    implementation("com.github.Weesli:RozsConfig:1.2.1")
 }
 
 dependencies {
@@ -139,7 +137,6 @@ tasks.shadowJar {
     mergeServiceFiles()
 
     relocate("org.bstats", "net.weesli.libs.bstats")
-    relocate("eu.okaeri", "net.weesli.libs.okaeri")
 
 }
 

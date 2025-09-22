@@ -1,116 +1,64 @@
 package net.weesli.rclaim.config;
 
-import eu.okaeri.configs.ConfigManager;
-import eu.okaeri.configs.OkaeriConfig;
-import eu.okaeri.configs.yaml.snakeyaml.YamlSnakeYamlConfigurer;
-import lombok.Getter;
-import lombok.Setter;
 import net.weesli.rclaim.config.lang.LangConfig;
 import net.weesli.rclaim.config.lang.MenuConfig;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import net.weesli.rozsconfig.serializer.ConfigMapper;
 import org.bukkit.plugin.Plugin;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
 
 public final class ConfigLoader {
 
-    private static Plugin plugin = null;
+    private static ConfigMapper configMapper;
+    private static ConfigMapper langMapper;
+    private static ConfigMapper menuMapper;
 
-    @Getter private static Config config;
-    @Getter@Setter
-    private static LangConfig langConfig;
-    @Getter@Setter
-    private static MenuConfig menuConfig;
-
-    @Getter private static final List<String> defaultLanguages = List.of( "tr");
+    private static Config config;
+    private static LangConfig lang;
+    private static MenuConfig menu;
 
     private ConfigLoader(Plugin plugin, String langCode){
-        ConfigLoader.plugin = plugin;
-        initDefaultDirectory(langCode);
-        boolean enableDirectory = checkDirectory(langCode);
-        if(!enableDirectory){
-            throw new IllegalArgumentException("Language directory not found! Please check the provided language code.");
-        }
-        applyConfigBuild(Config.class, langCode);
-        applyConfigBuild(LangConfig.class, langCode);
-        applyConfigBuild(MenuConfig.class, langCode);
+        configMapper = ConfigMapper.of(Config.class).load(plugin.getResource("config.yml"))
+                .file(plugin.getDataPath().resolve("config.yml").toFile());
+        langMapper = ConfigMapper.of(LangConfig.class).load(plugin.getResource("lang/" + langCode + "/lang.yml"))
+                .file(plugin.getDataPath().resolve("lang").resolve(langCode).resolve("lang.yml").toFile());
+        menuMapper = ConfigMapper.of(MenuConfig.class).load(plugin.getResource("lang/" + langCode + "/menus.yml"))
+                .file(plugin.getDataPath().resolve("lang").resolve(langCode).resolve("menus.yml").toFile());
+        save();
+    }
+
+    private void save() {
+        configMapper.save(getConfig());
+        langMapper.save(getLangConfig());
+        menuMapper.save(getMenuConfig());
     }
 
     public static void create(Plugin plugin, String langCode){
         new ConfigLoader(plugin, langCode);
     }
 
-    private static void initDefaultDirectory(String langCode){
-        File folderDir = new File(plugin.getDataFolder(), "lang/" + langCode);
-        if (!folderDir.exists()) {
-            folderDir.mkdirs();
-            if (getDefaultLanguages().contains(langCode)) {
-                plugin.saveResource("lang/" + langCode + "/lang.yml", true);
-                plugin.saveResource("lang/" + langCode + "/menus.yml", true);
-            }
+    public static Config getConfig() {
+        if (config == null) {
+            config = configMapper.build();
         }
+        return config;
     }
 
-    private  boolean checkDirectory(String langCode){
-        File langDir = new File(plugin.getDataFolder(), "lang/" + langCode);
-        return langDir.exists() && langDir.isDirectory();
+    public static LangConfig getLangConfig() {
+        if (lang == null) {
+            lang = langMapper.build();
+        }
+        return lang;
     }
 
-    public void applyConfigBuild(Class<? extends OkaeriConfig> clazz, String langCode){
-        if (clazz.equals(Config.class)) {
-            config = (Config) ConfigManager.create(clazz)
-                    .withConfigurer(new YamlSnakeYamlConfigurer())
-                    .withBindFile(new File(plugin.getDataFolder(), "config.yml"))
-                    .saveDefaults()
-                    .load(true);
-        } else if (clazz.equals(MenuConfig.class)) {
-            menuConfig = (MenuConfig) ConfigManager.create(clazz)
-                    .withConfigurer(new YamlSnakeYamlConfigurer())
-                    .withBindFile(new File(plugin.getDataFolder(), "lang/" + langCode + "/menus.yml"))
-                    .saveDefaults()
-                    .load(true);
-        } else if (clazz.equals(LangConfig.class)) {
-            langConfig = (LangConfig) ConfigManager.create(clazz)
-                    .withConfigurer(new YamlSnakeYamlConfigurer())
-                    .withBindFile(new File(plugin.getDataFolder(), "lang/" + langCode + "/lang.yml"))
-                    .saveDefaults()
-                    .load(true);
+    public static MenuConfig getMenuConfig() {
+        if (menu == null) {
+            menu = menuMapper.build();
         }
-        File langFile = new File(plugin.getDataFolder(), "lang/" + langCode + "/lang.yml");
-        FileConfiguration langConfig = YamlConfiguration.loadConfiguration(langFile);
+        return menu;
+    }
 
-        try (InputStream defStream = plugin.getResource("lang/" + langCode + "/lang.yml")) {
-            if (defStream != null) {
-                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defStream));
-
-                langConfig.setDefaults(defConfig);
-                langConfig.options().copyDefaults(true);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        File menuFile = new File(plugin.getDataFolder(), "lang/" + langCode + "/menus.yml");
-        FileConfiguration menuConfig = YamlConfiguration.loadConfiguration(menuFile);
-        try (InputStream defStream = plugin.getResource("lang/" + langCode + "/menus.yml")) {
-            if (defStream != null) {
-                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defStream));
-
-                menuConfig.setDefaults(defConfig);
-                menuConfig.options().copyDefaults(true);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            langConfig.save(langFile);
-            menuConfig.save(menuFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public static void reload(){
+        config = configMapper.build();
+        lang = langMapper.build();
+        menu = menuMapper.build();
     }
 }

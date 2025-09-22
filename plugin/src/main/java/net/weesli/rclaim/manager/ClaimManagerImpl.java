@@ -15,6 +15,7 @@ import net.weesli.rclaim.model.SubClaimImpl;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rclaim.util.NameSpaceUtil;
 import net.weesli.rclaim.util.PermissionUtil;
+import net.weesli.rozsconfig.annotations.ConfigKey;
 import net.weesli.rozslib.color.ColorBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -25,6 +26,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 import static net.weesli.rclaim.util.BaseUtil.generateId;
@@ -83,12 +86,36 @@ public class ClaimManagerImpl implements ClaimManager {
 
             block.setType(Material.BEDROCK);
 
-            ConfigLoader.getConfig().getClaimSettings().getDefaultClaimStatus().getDeclaration().getFields()
-                    .forEach(value -> {
-                        if (ConfigLoader.getConfig().getClaimSettings().getDefaultClaimStatus().get(value.getName(), Boolean.class)) {
-                            claim.addClaimStatus(value.getName());
+            /*Arrays.stream(ConfigLoader.getConfig().getClaimPermissions().getClass().getFields())
+                    .toList().forEach(value -> {
+                        try {
+                            if (ConfigLoader.getConfig().getClaimSettings().getDefaultClaimStatus().getClass().getField(value.getName()) != null) {
+                                claim.addClaimStatus(value.getName());
+                            }
+                        } catch (NoSuchFieldException e) {
+                            throw new RuntimeException(e);
                         }
                     });
+             */
+            List<String> defaultStatues = Arrays.stream(ConfigLoader.getConfig().getClaimSettings().getDefaultClaimStatus().getClass().getFields()).map(field -> {
+                boolean value;
+                try {
+                    value = field.getBoolean(ConfigLoader.getConfig().getClaimSettings().getDefaultClaimStatus());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+                if (value){
+                    return field.getName();
+                }
+                ConfigKey key = field.getAnnotation(ConfigKey.class);
+                if (key !=null){
+                    return key.value();
+                }
+                return field.getName();
+            }).toList();
+            for (String status : defaultStatues) {
+                claim.addClaimStatus(status);
+            }
             sendMessageToPlayer("SUCCESS_CLAIM_CREATED", owner);
         }
 

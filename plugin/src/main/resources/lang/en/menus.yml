@@ -1,0 +1,865 @@
+# Main menu configuration settings
+mainMenu:
+  title: '&8Claim Management'
+  size: 27
+  items:
+    claims:
+      title: '&eYour Claims'
+      material: GRASS_BLOCK
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick to view your claims!'
+      index: 4
+    effects:
+      title: '&eClaim Effects'
+      material: BREWING_STAND
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick to enable or disable claim effects!'
+      index: 22
+    options:
+      title: '&eClaim Options'
+      material: REDSTONE_BLOCK
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and settings your claims!'
+      index: 16
+    upgrade-claim:
+      title: '&eUpgrade Claim'
+      material: BEACON
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and upgrade your claim!'
+      index: 10
+    block:
+      title: '&eClaim Block'
+      material: BEDROCK
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick to manage claim block!'
+      index: 12
+    members:
+      title: '&eManage Members'
+      material: PLAYER_HEAD
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick to manage your members!'
+      index: 13
+    tags:
+      title: '&eClaim Tags'
+      material: NAME_TAG
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick to manage claim tags!'
+      index: 14
+  autoFill: true
+  fillerSlots: []
+# Claims menu configuration settings
+claimsMenu:
+  title: '&8Your claims'
+  size: 54
+  items:
+    item-settings:
+      title: '&eYour claim #<count>'
+      material: GRASS_BLOCK
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aX: <x>'
+        - '&aZ: <z>'
+        - '&aCountdown: <time>'
+        - '&a'
+        - '&aClick to upgrade time this claim!'
+        - '&aClick Shift + RightClick to unClaim this claim.'
+        - '&aClick Shift + LeftClick to teleport the claim.'
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 18
+    - 27
+    - 36
+    - 44
+    - 46
+    - 47
+    - 48
+    - 49
+    - 50
+    - 51
+    - 52
+    - 53
+    - 17
+    - 26
+    - 35
+    - 45
+    - 53
+  previousItem:
+    menuItem:
+      title: '&8Previous Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the previous page!'
+      custom-model-data: 0
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Next Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the next page!'
+      custom-model-data: 0
+    index: 53
+# Upgrade menu configuration settings
+upgradeMenu:
+  title: '&8Upgrade time your claim'
+  size: 9
+  items:
+    item-settings:
+      title: '&eUpgrade claim'
+      material: BEACON
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aCost : &f<cost>'
+        - '&8'
+        - '&aClick to upgrade time your claim!'
+      index: 4
+  autoFill: true
+  fillerSlots: []
+# Members menu configuration settings
+membersMenu:
+  title: '&8Claim members'
+  size: 54
+  items:
+    add-member:
+      title: '&eAdd Member'
+      material: NAME_TAG
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aEnter player''s name to add them!'
+      index: 49
+    item-settings:
+      title: '&eMember, <name>'
+      material: PLAYER_HEAD
+      customModelData: 0
+      lore:
+        - '&a'
+        - '&aClick to manage this member!'
+        - '&aShift + Click to untrust player'
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 18
+    - 27
+    - 36
+    - 44
+    - 46
+    - 47
+    - 48
+    - 50
+    - 51
+    - 52
+    - 53
+    - 17
+    - 26
+    - 35
+    - 45
+    - 53
+  previousItem:
+    menuItem:
+      title: '&8Previous Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the previous page!'
+      custom-model-data: 0
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Next Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the next page!'
+      custom-model-data: 0
+    index: 53
+# Options menu configuration settings
+optionsMenu:
+  title: '&8Claim options'
+  size: 54
+  items:
+    SPAWN_ANIMAL:
+      title: '&eSpawn Animal'
+      material: SHEEP_SPAWN_EGG
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Click to spawn animals on your claim!'
+      index: 0
+    EXPLOSION:
+      title: '&aEnable Explosion'
+      material: TNT
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Click to enable explosions on your claim!'
+      index: 0
+    WEATHER:
+      title: '&aChange Weather Status'
+      material: WATER_BUCKET
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Click to change weather status!'
+      index: 0
+    PVP:
+      title: '&aEnable PVP'
+      material: DIAMOND_SWORD
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Click to enable PVP on your claim!'
+      index: 0
+    SPREAD:
+      title: '&aEnable Spread'
+      material: FIRE_CHARGE
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Click to enable spread on your claim!'
+      index: 0
+    SPAWN_MONSTER:
+      title: '&aSpawn Monster'
+      material: SKELETON_SPAWN_EGG
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Click to spawn monsters on your claim!'
+      index: 0
+    TIME:
+      title: '&aChange Time Status'
+      material: CLOCK
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Click to change time status!'
+      index: 0
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 17
+    - 18
+    - 26
+    - 35
+    - 27
+    - 36
+    - 44
+    - 46
+    - 47
+    - 48
+    - 49
+    - 50
+    - 51
+    - 52
+    - 45
+    - 53
+  previousItem:
+    menuItem:
+      title: '&8Previous Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the previous page!'
+      custom-model-data: 0
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Next Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the next page!'
+      custom-model-data: 0
+    index: 53
+# Resize menu configuration settings
+resizeMenu:
+  title: '&8Resize your claim'
+  size: 54
+  items:
+    starter-claim:
+      title: '&eYour claim'
+      material: BLACK_WOOL
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&eX : &f<x>'
+        - '&eZ : &f<z>'
+    not-available-claim:
+      title: '&eNot available claim'
+      material: RED_WOOL
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&eX : &f<x>'
+        - '&eZ : &f<z>'
+    empty-claim:
+      title: '&eEmpty claim'
+      material: WHITE_WOOL
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&eX : &f<x>'
+        - '&eZ : &f<z>'
+        - '&e'
+        - '&eCost : &f<cost>'
+        - '&e'
+        - '&aClick to buy this claim'
+      index: 0
+    self-claim:
+      title: '&eActive claim'
+      material: GREEN_WOOL
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&eX : &f<x>'
+        - '&eZ : &f<z>'
+        - '&e'
+  autoFill: false
+# Permissions menu configuration settings
+permissionsMenu:
+  title: Permissions Menu
+  size: 27
+  items:
+    BUCKET_FILL:
+      title: '&aBucket Fill'
+      material: BUCKET
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle using bucket fill permission'
+      index: 0
+    USE_DOOR:
+      title: '&aUse Door'
+      material: LEVER
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle using doors permission'
+      index: 0
+    BLOCK_BREAK:
+      title: '&aBlock Break'
+      material: STONE_PICKAXE
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle block breaking permission'
+      index: 0
+    CONTAINER_OPEN:
+      title: '&aOpen Container'
+      material: CHEST
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle container opening permission'
+      index: 0
+    BUCKET_EMPTY:
+      title: '&aBucket Empty'
+      material: LAVA_BUCKET
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle using bucket empty permission'
+      index: 0
+    USE_PORTAL:
+      title: '&aUse Portal'
+      material: OBSIDIAN
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle using portals permission'
+      index: 0
+    INTERACT_ENTITY:
+      title: '&aInteract Entity'
+      material: IRON_SWORD
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle entity interaction permission'
+      index: 0
+    DROP_ITEM:
+      title: '&aDrop Item'
+      material: IRON_INGOT
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle item dropping permission'
+      index: 0
+    BREAk_CONTAINER:
+      title: '&aBreak Container'
+      material: BARREL
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle breaking containers permission'
+      index: 0
+    ATTACK_ANIMAL:
+      title: '&aAttack Animal'
+      material: BOW
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle attacking animals permission'
+      index: 0
+    ITEM_PICKUP:
+      title: '&aPickup Item'
+      material: DIAMOND
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle item pickup permission'
+      index: 0
+    ATTACK_MONSTER:
+      title: '&aAttack Monster'
+      material: DIAMOND_SWORD
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle attacking monsters permission'
+      index: 0
+    USE_POTION:
+      title: '&aUse Potion'
+      material: POTION
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle using potions permission'
+      index: 0
+    BLOCK_PLACE:
+      title: '&aBlock Place'
+      material: STONE
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7'
+        - '&7Toggle block placing permission'
+      index: 0
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 17
+    - 18
+    - 26
+    - 35
+    - 27
+    - 36
+    - 44
+    - 46
+    - 47
+    - 48
+    - 49
+    - 50
+    - 51
+    - 52
+    - 45
+    - 53
+  previousItem:
+    menuItem:
+      title: '&8Previous Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the previous page!'
+      custom-model-data: 0
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Next Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the next page!'
+      custom-model-data: 0
+    index: 53
+# Verify menu configuration settings
+verifyMenu:
+  title: '&8Are you sure?'
+  size: 9
+  items:
+    confirm:
+      title: '&eYes'
+      material: GREEN_WOOL
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick to confirm your action!'
+      index: 2
+    deny:
+      title: '&cNo'
+      material: RED_WOOL
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick to cancel your action!'
+      index: 6
+  autoFill: true
+  fillerSlots: []
+# Effect menu configuration settings
+effectMenu:
+  title: '&8Effect Menu'
+  size: 27
+  items:
+    jump:
+      title: '&aJump'
+      material: IRON_BOOTS
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7Level: &f%level%'
+        - '&7'
+        - '&7Cost: &f%cost%'
+        - '&7'
+        - '&7Click and upgrade effect.'
+        - '&7Shift-Click and enable/disable effect.'
+      index: 13
+    haste:
+      title: '&aHaste'
+      material: GOLDEN_PICKAXE
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7Level: &f%level%'
+        - '&7'
+        - '&7Cost: &f%cost%'
+        - '&7'
+        - '&7Click and upgrade effect.'
+        - '&7Shift-Click and enable/disable effect.'
+      index: 15
+    speed:
+      title: '&aSpeed'
+      material: DIAMOND_BOOTS
+      customModelData: 0
+      lore:
+        - '&7status: &f%status%'
+        - '&7Level: &f%level%'
+        - '&7'
+        - '&7Cost: &f%cost%'
+        - '&7'
+        - '&7Click and upgrade effect.'
+        - '&7Shift-Click and enable/disable effect.'
+      index: 11
+  autoFill: true
+  fillerSlots: []
+# Block menu configuration settings
+blockMenu:
+  title: '&8Setting claim block'
+  size: 27
+  items: {}
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 17
+  previousItem:
+    menuItem:
+      title: '&8Previous Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the previous page!'
+      custom-model-data: 0
+    index: 18
+  nextItem:
+    menuItem:
+      title: '&8Next Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the next page!'
+      custom-model-data: 0
+    index: 26
+# Tag main menu configuration settings
+tagMainMenu:
+  title: '&8Tag Menu'
+  size: 27
+  items:
+    add-tag:
+      title: '&eAdd Tag'
+      material: OAK_SIGN
+      customModelData: 0
+      lore:
+        - '&7'
+        - '&eClick to add a new tag.'
+        - '&7'
+      index: 22
+    item-settings:
+      title: '&a<name>'
+      material: OAK_SIGN
+      customModelData: 0
+      lore:
+        - '&7'
+        - '&eClick to change tag permission or users.'
+        - '&7Shift-Click and disable tag.'
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 17
+  previousItem:
+    menuItem:
+      title: '&8Previous Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the previous page!'
+      custom-model-data: 0
+    index: 18
+  nextItem:
+    menuItem:
+      title: '&8Next Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the next page!'
+      custom-model-data: 0
+    index: 26
+# Tag editor menu configuration settings
+tagEditMenu:
+  title: '&8Tag Editor'
+  size: 27
+  items:
+    users:
+      title: '&eUsers'
+      material: PLAYER_HEAD
+      customModelData: 0
+      lore:
+        - '&7'
+        - '&eAdd/remove users from this tag.'
+        - '&7'
+      index: 12
+    permissions:
+      title: '&ePermissions'
+      material: BOOK
+      customModelData: 0
+      lore:
+        - '&7'
+        - '&eAdd/remove permission from this tag.'
+        - '&7'
+      index: 14
+  autoFill: true
+  fillerSlots: []
+# Tag users menu configuration settings
+tagUsersMenu:
+  title: '&8Tag Users'
+  size: 27
+  items:
+    add-user:
+      title: '&eAdd User'
+      material: NAME_TAG
+      customModelData: 0
+      lore:
+        - '&7'
+        - '&aClick to add a player to this tag.'
+      index: 22
+    item-settings:
+      title: '&e<name>'
+      material: PLAYER_HEAD
+      customModelData: 0
+      lore:
+        - '&7'
+        - '&eClick and remove player from this tag!'
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 17
+  previousItem:
+    menuItem:
+      title: '&8Previous Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the previous page!'
+      custom-model-data: 0
+    index: 18
+  nextItem:
+    menuItem:
+      title: '&8Next Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the next page!'
+      custom-model-data: 0
+    index: 26
+# Tag permissions menu configuration settings
+tagPermissionsMenu:
+  title: '&8Tag Permissions'
+  size: 54
+  items: {}
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 18
+    - 27
+    - 36
+    - 44
+    - 46
+    - 47
+    - 48
+    - 50
+    - 51
+    - 52
+    - 45
+    - 53
+  previousItem:
+    menuItem:
+      title: '&8Previous Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the previous page!'
+      custom-model-data: 0
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Next Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the next page!'
+      custom-model-data: 0
+    index: 53

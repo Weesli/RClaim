@@ -47,9 +47,6 @@ dependencyResolutionManagement {
 
         // Bluecolored
         maven("https://repo.bluecolored.de/releases")
-
-        // Okaeri
-        maven("https://storehouse.okaeri.eu/repository/maven-public/")
         maven {
             name = "fancyinnovationsReleases"
             url = uri("https://repo.fancyinnovations.com/releases")

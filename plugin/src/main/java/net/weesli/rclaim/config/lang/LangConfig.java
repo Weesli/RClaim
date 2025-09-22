@@ -1,7 +1,5 @@
 package net.weesli.rclaim.config.lang;
 
-import eu.okaeri.configs.OkaeriConfig;
-import eu.okaeri.configs.annotation.CustomKey;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -9,185 +7,186 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.config.ConfigLoader;
+import net.weesli.rozsconfig.annotations.ConfigKey;
+import net.weesli.rozsconfig.model.RozsConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @Getter
 @Setter
-public class LangConfig extends OkaeriConfig {
+public class LangConfig extends RozsConfig {
 
-        @CustomKey("IS_NOT_SUITABLE")
-        private String isNotSuitable = "&cThis area already is a claim!";
+        @ConfigKey("IS_NOT_SUITABLE")
+        private String isNotSuitable;
 
-        @CustomKey("SUCCESS_CLAIM_CREATED")
-        private String successClaimCreated = "&aClaim created successfully!";
+        @ConfigKey("SUCCESS_CLAIM_CREATED")
+        private String successClaimCreated;
 
-        @CustomKey("ENTER_A_PLAYER_NAME")
-        private String enterAPlayerName = "&cPlease enter a player name!";
+        @ConfigKey("ENTER_A_PLAYER_NAME")
+        private String enterAPlayerName;
 
-        @CustomKey("ENTER_A_CLAIM_NAME")
-        private String enterAClaimName = "&cPlease enter a claim name!";
+        @ConfigKey("ENTER_A_CLAIM_NAME")
+        private String enterAClaimName;
 
-        @CustomKey("TARGET_NOT_FOUND")
-        private String targetNotFound = "&cUser not found!";
+        @ConfigKey("TARGET_NOT_FOUND")
+        private String targetNotFound;
 
-        @CustomKey("TRUSTED_PLAYER")
-        private String trustedPlayer = "&aPlayer added to your claims";
+        @ConfigKey("TRUSTED_PLAYER")
+        private String trustedPlayer;
 
-        @CustomKey("UNTRUSTED_PLAYER")
-        private String untrustedPlayer = "&aPlayer removed from your claims";
+        @ConfigKey("UNTRUSTED_PLAYER")
+        private String untrustedPlayer;
 
-        @CustomKey("NOT_TRUSTED_PLAYER")
-        private String notTrustedPlayer = "&cThis player is already not trusted!";
+        @ConfigKey("NOT_TRUSTED_PLAYER")
+        private String notTrustedPlayer;
 
-        @CustomKey("ALREADY_TRUSTED_PLAYER")
-        private String alreadyTrustedPlayer = "&cPlayer has already been trusted!";
+        @ConfigKey("ALREADY_TRUSTED_PLAYER")
+        private String alreadyTrustedPlayer;
 
-        @CustomKey("PREVIEW_OPENED")
-        private String previewOpened = "&aClaim is viewing preview if wish you buy this claim run /claim confirm";
+        @ConfigKey("PREVIEW_OPENED")
+        private String previewOpened;
 
-        @CustomKey("HASNT_MONEY")
-        private String hasntMoney = "&cHey! You haven't money for request!";
+        @ConfigKey("HASNT_MONEY")
+        private String hasntMoney;
 
-        @CustomKey("TIME_UPGRADE")
-        private String timeUpgrade = "&aRequest deadline extended!";
+        @ConfigKey("TIME_UPGRADE")
+        private String timeUpgrade;
 
-        @CustomKey("HOME_SET")
-        private String homeSet = "&aHome set successfully";
+        @ConfigKey("HOME_SET")
+        private String homeSet;
 
-        @CustomKey("HASNT_HOME")
-        private String hasntHome = "&cHey! You haven't a home!";
+        @ConfigKey("HASNT_HOME")
+        private String hasntHome;
 
-        @CustomKey("YOU_DONT_IN_CLAIM")
-        private String youDontInClaim = "&cHey! You need a claim for that!";
+        @ConfigKey("YOU_DONT_IN_CLAIM")
+        private String youDontInClaim;
 
-        @CustomKey("CANNOT_CLAIM_MULTIPLE_CLAIMS")
-        private String cannotClaimMultipleClaims = "&cYou can't claim more than one claim";
+        @ConfigKey("CANNOT_CLAIM_MULTIPLE_CLAIMS")
+        private String cannotClaimMultipleClaims;
 
-        @CustomKey("UNCLAIMED_CLAIM")
-        private String unclaimedClaim = "&aClaim has been unclaimed";
+        @ConfigKey("UNCLAIMED_CLAIM")
+        private String unclaimedClaim;
 
-        @CustomKey("NOT_YOUR_CLAIM")
-        private String notYourClaim = "&cClaim needs to belong to you!";
+        @ConfigKey("NOT_YOUR_CLAIM")
+        private String notYourClaim;
 
-        @CustomKey("CONFIRM_UNCLAIMED")
-        private String confirmUnclaimed = "&cAre you sure you want to delete the claim /unclaim confirm";
+        @ConfigKey("CONFIRM_UNCLAIMED")
+        private String confirmUnclaimed;
 
-        @CustomKey("YOU_CANT_PLACE_SPAWNER")
-        private String youCantPlaceSpawner = "&cYou can only place spawners in areas you own.";
+        @ConfigKey("YOU_CANT_PLACE_SPAWNER")
+        private String youCantPlaceSpawner;
 
-        @CustomKey("NOT_IN_CLAIMABLE_WORLD")
-        private String notInClaimableWorld = "&cYou can't get a claim in this world!";
+        @ConfigKey("NOT_IN_CLAIMABLE_WORLD")
+        private String notInClaimableWorld;
 
-        @CustomKey("MAX_TRUSTED_PLAYERS")
-        private String maxTrustedPlayers = "&cYou have reached the maximum member addition limit";
+        @ConfigKey("MAX_TRUSTED_PLAYERS")
+        private String maxTrustedPlayers;
 
-        @CustomKey("YOU_CANT_PLACE_MINION")
-        private String youCantPlaceMinion = "&cYou need to be in your own territory to place minions!";
+        @ConfigKey("YOU_CANT_PLACE_MINION")
+        private String youCantPlaceMinion;
 
-        @CustomKey("AREA_DISABLED")
-        private String areaDisabled = "&cYou cannot buy a claim in this area!";
+        @ConfigKey("AREA_DISABLED")
+        private String areaDisabled;
 
-        @CustomKey("EFFECT_BOUGHT")
-        private String effectBought = "&aThe Claim effect has been purchased!";
+        @ConfigKey("EFFECT_BOUGHT")
+        private String effectBought;
 
-        @CustomKey("EFFECT_LEVEL_UP")
-        private String effectLevelUp = "&aClaim effect increased to &b%level%&a!";
+        @ConfigKey("EFFECT_LEVEL_UP")
+        private String effectLevelUp;
 
-        @CustomKey("EFFECT_MAX_LEVEL")
-        private String effectMaxLevel = "&cThis effect is currently max level!";
+        @ConfigKey("EFFECT_MAX_LEVEL")
+        private String effectMaxLevel;
 
-        @CustomKey("ALREADY_ADDED_USER")
-        private String alreadyAddedUser = "&cThis player has already been added to the tag!";
-        @CustomKey("ENABLE_CLAIM_BLOCK_EDIT_MODE")
-        private String enableEditMode = "&aClaim block move mode enabled!";
-        @CustomKey("DISABLE_CLAIM_BLOCK_EDIT_MODE")
-        private String disableEditMode = "&aClaim block move mode disabled!";
-        @CustomKey("CLAIM_LIMIT")
-        private String claimLimit = "&cYou have reached the maximum limit of claims!";
-        @CustomKey("HASNT_TP_PERMISSION")
-        private String hasntTpPermission = "&cYou don't have permission to teleport!";
-        @CustomKey("IS_NOT_ADJACENT")
-        private String isNotAdjacent = "&cThis area is not adjacent to the claim!";
-        @CustomKey("BLOCK_ENABLED")
-        private String blockEnabled = "&aClaim block is now enabled!";
-        @CustomKey("BLOCK_DISABLED")
-        private String blockDisabled = "&aClaim block is now disabled!";
+        @ConfigKey("ALREADY_ADDED_USER")
+        private String alreadyAddedUser;
+        @ConfigKey("ENABLE_CLAIM_BLOCK_EDIT_MODE")
+        private String enableEditMode;
+        @ConfigKey("DISABLE_CLAIM_BLOCK_EDIT_MODE")
+        private String disableEditMode;
+        @ConfigKey("CLAIM_LIMIT")
+        private String claimLimit;
+        @ConfigKey("HASNT_TP_PERMISSION")
+        private String hasntTpPermission;
+        @ConfigKey("IS_NOT_ADJACENT")
+        private String isNotAdjacent;
+        @ConfigKey("BLOCK_ENABLED")
+        private String blockEnabled;
+        @ConfigKey("BLOCK_DISABLED")
+        private String blockDisabled;
         // claim tags messages
-        @CustomKey("ENTER_TAG_NAME")
-        private String enterTagName = "&cEnter tag name!";
-        @CustomKey("ENTER_A_TAG_NAME")
-        private String enterATagName = "&cYou must enter a tag name!";
-        @CustomKey("TAG_CREATED")
-        private String tagCreated = "&aTag created successfully!";
-        @CustomKey("ALREADY_CREATED_TAG")
-        private String alreadyCreatedTag = "&cThis tag has already been created!";
-        @CustomKey("ADDED_USER_TO_TAG")
-        private String addedUserToTag = "&aPlayer added to tag successfully!";
-        @CustomKey("VERY_CLOSE_TO_ANOTHER_CLAIM")
-        private String veryCloseToAnotherClaim = "&cYou are very close to another claim!";
-        @CustomKey("ALREADY_MAX_DAY")
-        private String alreadyMaxDay = "&cYou have reached the maximum day limit!";
-        @CustomKey("RENAME_SUCCESS")
-        private String renameSuccess = "&aClaim renamed successfully!";
-        @CustomKey("PVP_STATUS_NOT_CHANGEABLE")
-        private String pvpStatusNotChangeable = "&cYou can't change pvp status in this area because a enemy is in your claim!";
-        @CustomKey("HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK")
-        private String hasntPermissionToChangeClaimBlock = "&cYou don't have permission for active this block!";
+        @ConfigKey("ENTER_TAG_NAME")
+        private String enterTagName;
+        @ConfigKey("ENTER_A_TAG_NAME")
+        private String enterATagName;
+        @ConfigKey("TAG_CREATED")
+        private String tagCreated;
+        @ConfigKey("ALREADY_CREATED_TAG")
+        private String alreadyCreatedTag;
+        @ConfigKey("ADDED_USER_TO_TAG")
+        private String addedUserToTag;
+        @ConfigKey("VERY_CLOSE_TO_ANOTHER_CLAIM")
+        private String veryCloseToAnotherClaim;
+        @ConfigKey("ALREADY_MAX_DAY")
+        private String alreadyMaxDay;
+        @ConfigKey("RENAME_SUCCESS")
+        private String renameSuccess;
+        @ConfigKey("PVP_STATUS_NOT_CHANGEABLE")
+        private String pvpStatusNotChangeable;
+        @ConfigKey("HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK")
+        private String hasntPermissionToChangeClaimBlock;
         // Hook messages
 
-        @CustomKey("COMBAT_SYSTEM_MESSAGE")
-        private String combatSystemMessage = "&cYou cannot enter a claim while in combat!";
+        @ConfigKey("COMBAT_SYSTEM_MESSAGE")
+        private String combatSystemMessage;
 
         // Permission messages
 
-        @CustomKey("PERMISSION_BLOCK_PLACE")
-        private String permissionBlockPlace = "&cYou can't place a block this area!";
+        @ConfigKey("PERMISSION_BLOCK_PLACE")
+        private String permissionBlockPlace;
 
-        @CustomKey("PERMISSION_BLOCK_BREAK")
-        private String permissionBlockBreak = "&cYou can't break block from this area!";
+        @ConfigKey("PERMISSION_BLOCK_BREAK")
+        private String permissionBlockBreak;
 
-        @CustomKey("PERMISSION_CONTAINER_OPEN")
-        private String permissionContainerOpen = "&cYou can't access this container!";
+        @ConfigKey("PERMISSION_CONTAINER_OPEN")
+        private String permissionContainerOpen;
 
-        @CustomKey("PERMISSION_PICKUP_ITEM")
-        private String permissionPickupItem = "&cYou can't pick up an item from this area!";
+        @ConfigKey("PERMISSION_PICKUP_ITEM")
+        private String permissionPickupItem;
 
-        @CustomKey("PERMISSION_DROP_ITEM")
-        private String permissionDropItem = "&cYou can't drop an item to this area!";
+        @ConfigKey("PERMISSION_DROP_ITEM")
+        private String permissionDropItem;
 
-        @CustomKey("PERMISSION_ATTACK_ANIMAL")
-        private String permissionAttackAnimal = "&cYou can't attack an animal in this area";
+        @ConfigKey("PERMISSION_ATTACK_ANIMAL")
+        private String permissionAttackAnimal;
 
-        @CustomKey("PERMISSION_ATTACK_MONSTER")
-        private String permissionAttackMonster = "&cYou can't attack an monster in this area";
+        @ConfigKey("PERMISSION_ATTACK_MONSTER")
+        private String permissionAttackMonster;
 
-        @CustomKey("PERMISSION_ENTITY_INTERACT")
-        private String permissionEntityInteract = "&cYou can't interact any entity in this area";
+        @ConfigKey("PERMISSION_ENTITY_INTERACT")
+        private String permissionEntityInteract;
 
-        @CustomKey("PERMISSION_BREAK_CONTAINER")
-        private String permissionBreakContainer = "&cYou can't break a container in this area";
+        @ConfigKey("PERMISSION_BREAK_CONTAINER")
+        private String permissionBreakContainer;
 
-        @CustomKey("PERMISSION_DOOR_OPEN")
-        private String permissionDoorOpen = "&cYou can't interact with the door in this area!";
+        @ConfigKey("PERMISSION_DOOR_OPEN")
+        private String permissionDoorOpen;
 
-        @CustomKey("PERMISSION_ENTER_PORTAL")
-        private String permissionEnterPortal = "&cYou can't enter a portal in this area";
+        @ConfigKey("PERMISSION_ENTER_PORTAL")
+        private String permissionEnterPortal;
 
-        @CustomKey("PERMISSION_USE_POTION")
-        private String permissionUsePotion = "&cYou can't use the potion in this area'";
+        @ConfigKey("PERMISSION_USE_POTION")
+        private String permissionUsePotion;
 
         // Status messages
 
-        @CustomKey("STATUS_PVP")
-        private String statusPvp = "&cYou can't hit any player in this area!";
+        @ConfigKey("STATUS_PVP")
+        private String statusPvp;
 
         // Admin messages
 
-        @CustomKey("DELETED_CLAIMS")
-        private String deletedClaims = "&cThe claims of %player% have been successfully deleted!";
+        @ConfigKey("DELETED_CLAIMS")
+        private String deletedClaims;
 
         public static void sendMessageToPlayer(String path, Player player, TagResolver... tagResolvers) {
                 String rawMessage = ConfigLoader.getConfig().getPrefix()

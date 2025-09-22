@@ -1,0 +1,145 @@
+################################################################
+#                                                              #
+#    Author by @Weesli                                         #
+#                                                              #
+################################################################
+# Language for messages and commands. Available languages: 'en', 'tr'
+language: en
+prefix: '&6Claim &8>> '
+# System showing the claim zone for players, 'classic' and 'Border' are available.
+viewerMode: classic
+# Storage type can be 'MySQL' or 'SQLite' or 'RozsDBLite
+# Default: 'RozsDBLite'
+storageType: RozsDBLite
+# The maximum number of people a beneficiary can trust.
+# Deprecated!!!
+maxTrustedPlayer: 10
+# Minimum distance from a claim that does not have its own ownership to a claim to be taken
+# type of Block size
+minBetweenClaim: 75
+worldGuard:
+  enabled: true
+  bannedRegions:
+    - example
+    - Weesli
+mapSupport:
+  dynmapSupport: false
+# Prevents players from fleeing to their own space when fighting within the server
+combatSystem: true
+effects:
+  enabled: true
+  maxLevelMessage: '&6MAX LEVEL'
+  speed:
+    buyCost: 1500
+    upgradeCost: 3500
+  jump:
+    buyCost: 1500
+    upgradeCost: 3500
+  haste:
+    buyCost: 1500
+    upgradeCost: 3500
+blockTypes:
+  - BEDROCK
+  - STONE
+  - DIAMOND_BLOCK
+  - GLOWSTONE
+  - DIRT
+  - GRASS_BLOCK
+  - SAND
+  - OAK_LOG
+  - COBBLESTONE
+  - SANDSTONE
+publicMenuSettings:
+  # This item will be valid in all paged menus!
+  previousItem:
+    title: '&8Previous Page'
+    material: ARROW
+    customModelData: 0
+    lore:
+      - '&8'
+      - '&aClick and view the previous page!'
+    index: null
+    custom-model-data: 0
+  # This item will be valid in all paged menus!
+  nextItem:
+    title: '&8Next Page'
+    material: ARROW
+    customModelData: 0
+    lore:
+      - '&8'
+      - '&aClick and view the next page!'
+    index: null
+    custom-model-data: 0
+status:
+  active: Active
+  nonActive: non-active
+# Economy type can be 'VAULT' or 'none' or 'PLAYER_POINTS'
+economyType: VAULT
+claimTimeoutMessage:
+  enabled: true
+  text:
+    - '&aThe claim region of &b%player% at coordinates &b%x% &b%z% has been destroyed!'
+activeWorlds:
+  - world
+enterMessage:
+  enabled: true
+  # available format 'actionbar' and 'title'
+  format: title
+  text: '&cClaim owner &f%player%'
+timeFormat: '%week% Week %day% Day %hour% Hour %minute% Minute %second% Second'
+database:
+  host: localhost
+  port: 3306
+  username: root
+  password: ''
+  database: rclaims
+hologram:
+  enabled: true
+  # Available modules: 'DecentHolograms' and 'FancyHolograms'
+  hologramModule: DecentHolograms
+  hologramSettings:
+    hologramHeight: 3.5
+    hologramLines:
+      - '&e&lClaim'
+      - '&eOwner: &f%player%'
+      - '&e'
+      - '&eRemaining time: &f%rclaim_<id>_time%'
+      - '&eProgressBar: &f%rclaim_<id>_progressbar%'
+      - '&e'
+      - '&eClick and manage claim!'
+claimBlock:
+  enabled: true
+  item:
+    material: STONE
+    customModelData: 0
+    title: '&aClaim Block'
+    lore:
+      - '&7'
+      - '&7It allows you to claim the area where you put it.'
+      - '&cFor single use only, Operation is irreversible!'
+      - '&7'
+      - '&7Place and create claim'
+claimSettings:
+  # Required money for buy claim, 0 for free, -1 for disabled
+  # day * claimCost
+  claim-cost-per-day: 250
+  claimDuration: 14
+  defaultClaimStatus:
+    SPAWN_ANIMAL: true
+    SPAWN_MONSTER: false
+    EXPLOSION: false
+    PVP: false
+  claimCost: 10000
+ClaimPermissionNames:
+  BLOCK_BREAK: Block Break
+  BLOCK_PLACE: Block Place
+  PICKUP_ITEM: Pickup Item
+  DROP_ITEM: Drop Item
+  CONTAINER_OPEN: Container open
+  INTERACT_ENTITY: Interact Entity
+  ATTACK_ANIMAL: Attack Animal
+  ATTACK_MONSTER: Attack Monster
+  BREAK_CONTAINER: Break Container
+  USE_DOOR: Use Door
+  USE_PORTAL: Use Portal
+  USE_POTION: Use Potion

@@ -54,9 +54,7 @@ public class AdminCommand extends BaseCommand {
     @SubCommand("reload")
     public void reload(CommandSender commandSender){
         if (!commandSender.isOp())return;
-        ConfigLoader.getConfig().load();
-        ConfigLoader.getLangConfig().load();
-        ConfigLoader.getMenuConfig().load();
+        ConfigLoader.reload();
         commandSender.sendMessage(ColorBuilder.convertColors("&aAll files reloaded!"));
     }
 
