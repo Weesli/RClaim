@@ -5,6 +5,8 @@ import net.weesli.rclaim.config.lang.MenuConfig;
 import net.weesli.rozsconfig.serializer.ConfigMapper;
 import org.bukkit.plugin.Plugin;
 
+import java.io.File;
+
 public final class ConfigLoader {
 
     private static ConfigMapper configMapper;
@@ -17,11 +19,11 @@ public final class ConfigLoader {
 
     private ConfigLoader(Plugin plugin, String langCode){
         configMapper = ConfigMapper.of(Config.class).load(plugin.getResource("config.yml"))
-                .file(plugin.getDataPath().resolve("config.yml").toFile());
+                .file(new File(plugin.getDataFolder(), "config.yml"));
         langMapper = ConfigMapper.of(LangConfig.class).load(plugin.getResource("lang/" + langCode + "/lang.yml"))
-                .file(plugin.getDataPath().resolve("lang").resolve(langCode).resolve("lang.yml").toFile());
+                .file(new File(plugin.getDataFolder(), "lang/" + langCode + "/lang.yml"));
         menuMapper = ConfigMapper.of(MenuConfig.class).load(plugin.getResource("lang/" + langCode + "/menus.yml"))
-                .file(plugin.getDataPath().resolve("lang").resolve(langCode).resolve("menus.yml").toFile());
+                .file(new File(plugin.getDataFolder(), "lang/" + langCode + "/menus.yml"));
         save();
     }
 
