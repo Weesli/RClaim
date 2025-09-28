@@ -124,7 +124,18 @@ public class ClaimManagerImpl implements ClaimManager {
     public void removeClaim(Claim claim) {
         Chunk chunk = Bukkit.getWorld(claim.getWorldName()).getChunkAt(claim.getX() >> 4, claim.getZ() >> 4); // get base claim chunk for remove
         if (!chunk.isLoaded()) { // if chunk is not loaded, start a task for load it and finish process
-            Bukkit.getScheduler().runTask(RClaim.getInstance(), () ->{
+            /*Bukkit.getScheduler().runTask(RClaim.getInstance(), () ->{
+                chunk.load();
+                chunk.getPersistentDataContainer().remove(NameSpaceUtil.getKey());
+                claim.getSubClaims().forEach(subClaim -> {
+                    Chunk subClaimChunk = chunk.getWorld().getChunkAt(subClaim.getX(),subClaim.getZ());
+                    subClaimChunk.getPersistentDataContainer().remove(NameSpaceUtil.getKey());
+                });
+                RClaim.getInstance().getCacheManager().getClaims().getCache().remove(claim.getID());
+                RClaim.getInstance().getStorage().deleteClaim(claim.getID());
+                chunk.unload();
+            });*/
+            RClaim.getInstance().getFoliaLib().getScheduler().runNextTick((wrapper) -> {
                 chunk.load();
                 chunk.getPersistentDataContainer().remove(NameSpaceUtil.getKey());
                 claim.getSubClaims().forEach(subClaim -> {

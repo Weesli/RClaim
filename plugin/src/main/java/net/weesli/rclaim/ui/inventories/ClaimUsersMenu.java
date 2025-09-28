@@ -44,7 +44,8 @@ public class ClaimUsersMenu extends ClaimInventory {
             });
         }
         inventory.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-member"),player),menu.getItems().get("add-member").getIndex()),event ->{
-            Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
+            //Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
+            RClaim.getInstance().getFoliaLib().getScheduler().runNextTick((wrapper) -> player.closeInventory());
             sendMessageToPlayer("ENTER_A_PLAYER_NAME", player);
             RClaim.getInstance().getTextInputManager().runAction(player,
                     TextInputManager.TextInputAction.ADD_PLAYER_TO_CLAIM, claim);

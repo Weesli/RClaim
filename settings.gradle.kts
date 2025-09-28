@@ -51,5 +51,7 @@ dependencyResolutionManagement {
             name = "fancyinnovationsReleases"
             url = uri("https://repo.fancyinnovations.com/releases")
         }
+        // FoliaLib
+        maven("https://repo.tcoded.com/releases")
     }
 }

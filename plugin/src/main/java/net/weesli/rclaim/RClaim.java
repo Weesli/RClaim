@@ -1,5 +1,7 @@
 package net.weesli.rclaim;
 
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.util.FoliaLibOptions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -64,15 +66,17 @@ public final class RClaim extends JavaPlugin {
 
    @Getter private static RClaim instance;
 
+   private FoliaLib foliaLib = new FoliaLib(this);
+
     @Override
     public void onEnable() {
-        
         instance = this;
         if (this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
             new HPlaceholderAPI().register();
         }
         if (!loadFile()) return;
         loadStorage();
+        cacheManager = new CacheManagerImpl();
         spawnerManager = new SpawnerManagerImpl();
         minionsManager = new MinionsManagerImpl();
         economyManager = new EconomyManagerImpl();
@@ -81,7 +85,6 @@ public final class RClaim extends JavaPlugin {
         combatManager = new CombatManagerImpl();
         claimManager = new ClaimManagerImpl();
         tagManager = new TagManagerImpl();
-        cacheManager = new CacheManagerImpl();
         textInputManager = new TextInputManager(this);
         permissionService = new ClaimPermissionServiceImpl(this);
         statusService = new ClaimStatusServiceImpl(this);
@@ -101,9 +104,13 @@ public final class RClaim extends JavaPlugin {
         RozsLibService.start(this);
 
         // start the public task
-        Bukkit.getScheduler().runTaskAsynchronously(this, (this::checkVersion));
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, Loader::save, 12000L, 12000L);
-        new PublicTask();
+        //Bukkit.getScheduler().runTaskAsynchronously(this, (this::checkVersion));
+        //Bukkit.getScheduler().runTaskTimerAsynchronously(this, Loader::save, 12000L, 12000L);
+        foliaLib.getScheduler().runAsync((wrappedTask) -> {
+            checkVersion();
+        });
+        foliaLib.getScheduler().runTimerAsync(Loader::save, 12000L, 12000L);
+        new PublicTask(foliaLib);
 
         // publish RClaimAPI for other plugins
         RClaimProvider.setPlugin(this);

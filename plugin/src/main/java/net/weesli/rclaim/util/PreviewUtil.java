@@ -88,11 +88,12 @@ public class PreviewUtil {
         }
 
         PREVIEWS.put(player.getUniqueId(), originals);
-        Bukkit.getScheduler().runTaskLater(
+        /*Bukkit.getScheduler().runTaskLater(
                 RClaim.getInstance(),
                 () -> clearPreview(player),
                 DURATION_TICKS
-        );
+        );*/
+        RClaim.getInstance().getFoliaLib().getScheduler().runLater(() -> clearPreview(player), DURATION_TICKS);
     }
 
     public static void clearPreview(Player player) {
@@ -110,10 +111,11 @@ public class PreviewUtil {
         border.setSize(16);
         player.setWorldBorder(border);
         border.setSize(16,5);
-        Bukkit.getScheduler().runTaskLater(
+        /*Bukkit.getScheduler().runTaskLater(
                 RClaim.getInstance(),
                 () -> border.setSize(16, 3),
                 DURATION_TICKS
-        );
+        );*/
+        RClaim.getInstance().getFoliaLib().getScheduler().runLater(() -> border.setSize(16, 3), DURATION_TICKS);
     }
 }

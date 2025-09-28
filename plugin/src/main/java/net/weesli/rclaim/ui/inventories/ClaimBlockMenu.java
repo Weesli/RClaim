@@ -7,11 +7,8 @@ import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.config.lang.MenuConfig;
 import net.weesli.rclaim.ui.ClaimInventory;
 import net.weesli.rclaim.util.BaseUtil;
-import net.weesli.rozslib.inventory.ClickableItemStack;
 import net.weesli.rozslib.inventory.types.PageableInventory;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,7 +17,7 @@ import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 // pageable
 public class ClaimBlockMenu extends ClaimInventory {
 
-    private final MenuConfig.PageableMenu menu = (MenuConfig.PageableMenu) ConfigLoader.getMenuConfig().getBlockMenu();
+    private final MenuConfig.PageableMenu menu = ConfigLoader.getMenuConfig().getBlockMenu();
 
     @Override
     public void openInventory(Player player, Claim claim) {
@@ -33,15 +30,15 @@ public class ClaimBlockMenu extends ClaimInventory {
                 .toArray()).fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), menu.isAutoFill());
         List<String> blockTypes = ConfigLoader.getConfig().getBlockTypes();
         for (String blockType : blockTypes) {
-            ClickableItemStack itemStack = new ClickableItemStack(new ItemStack(Material.getMaterial(blockType)), 0);
-            itemStack.setSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
-            inventory.setItem(itemStack , event -> {
+            inventory.addItem(new ItemStack(Material.getMaterial(blockType)) , event -> {
                 boolean success = BaseUtil.changeBlockMaterial(player, claim, Material.getMaterial(blockType));
                 if (!success){
                     sendMessageToPlayer("HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK", player);
-                    Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
+                    //Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
+                    RClaim.getInstance().getFoliaLib().getScheduler().runNextTick((wrapper) -> player.closeInventory());
                 }
-                Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
+                //Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
+                RClaim.getInstance().getFoliaLib().getScheduler().runNextTick((wrapper) -> player.closeInventory());
             });
         }
         inventory.openDefaultInventory(player);

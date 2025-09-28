@@ -1,17 +1,17 @@
 package net.weesli.rclaim.task;
 
+import com.tcoded.folialib.FoliaLib;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import org.bukkit.scheduler.BukkitRunnable;
 
 
-public class HologramUpdater extends BukkitRunnable {
+public class HologramUpdater {
 
-    public HologramUpdater(){
-        runTaskTimerAsynchronously(RClaim.getInstance(), 0, 20);
+    public HologramUpdater(FoliaLib foliaLib){
+        foliaLib.getScheduler().runTimerAsync(this::run,0,20L);
     }
 
-    @Override
     public void run() {
         for (Claim claim : RClaim.getInstance().getCacheManager().getClaims().getCache().values()){
             if (!claim.isEnableBlock())continue;

@@ -8,29 +8,6 @@ plugins {
 }
 
 group = "net.weesli"
-//version = "2.4.1"
-repositories {
-    mavenCentral()
-    maven("https://jitpack.io")
-    maven("https://nexus.sirblobman.xyz/public/")
-    maven("https://repo.triumphteam.dev/snapshots")
-    maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://oss.sonatype.org/content/groups/public/")
-    maven("https://repo.helpch.at/releases")
-    maven("https://repo.codemc.io/repository/maven-public/")
-    maven("https://repo.dustplanet.de/artifactory/libs-release-local")
-    maven("https://eldonexus.de/repository/maven-releases/")
-    maven("https://repo.rosewooddev.io/repository/public/")
-    maven("https://maven.enginehub.org/repo/")
-    maven("https://repo.mikeprimm.com/")
-    maven("https://repo.bluecolored.de/releases")
-    maven("https://repo.codemc.org/repository/maven-public/")
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven {
-        name = "fancyinnovationsReleases"
-        url = uri("https://repo.fancyinnovations.com/releases")
-    }
-}
 
 dependencies {
     // API dependency
@@ -98,6 +75,8 @@ dependencies {
     compileOnly("de.oliver:FancyHolograms:2.7.0")
 
     implementation("com.github.Weesli:RozsConfig:1.2.1")
+
+    implementation("com.tcoded:FoliaLib:0.5.1")
 }
 
 dependencies {
@@ -137,6 +116,7 @@ tasks.shadowJar {
     mergeServiceFiles()
 
     relocate("org.bstats", "net.weesli.libs.bstats")
+    relocate("com.tcoded.foliolib", "net.weesli.libs.foliolib")
 
 }
 

@@ -28,7 +28,10 @@ public class HDynmap implements Listener {
         api = (DynmapCommonAPI) dynmap;
         markerAPI = api.getMarkerAPI();
         createMarkset();
-        Bukkit.getScheduler().runTaskTimerAsynchronously(RClaim.getInstance(), () -> {
+        /*Bukkit.getScheduler().runTaskTimerAsynchronously(RClaim.getInstance(), () -> {
+            RClaim.getInstance().getCacheManager().getClaims().getCache().values().forEach(this::UpdateMarkers);
+        },0,20L);*/
+        RClaim.getInstance().getFoliaLib().getScheduler().runTimerAsync(() -> {
             RClaim.getInstance().getCacheManager().getClaims().getCache().values().forEach(this::UpdateMarkers);
         },0,20L);
         Bukkit.getPluginManager().registerEvents(this, RClaim.getInstance());

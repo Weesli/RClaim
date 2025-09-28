@@ -1,497 +1,878 @@
-# Main menu configuration settings
+# Ana menü yapılandırma ayarları
 mainMenu:
   title: '&8Claim Yönetimi'
   size: 27
   items:
     claims:
-      title: '&eClaim’leriniz'
+      title: '&eClaimlerin'
       material: GRASS_BLOCK
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClaimlerini görüntülemek için tıkla!'
       index: 4
-      custom-model-data: 0
+    effects:
+      title: '&eClaim Efektleri'
+      material: BREWING_STAND
+      customModelData: 0
       lore:
         - '&8'
-        - '&aClaim’lerinizi görüntülemek için tıklayın!'
-    tags:
-      title: '&eClaim Etiketleri'
-      material: NAME_TAG
-      index: 14
-      custom-model-data: 0
+        - '&aClaim efektlerini aç/kapatmak için tıkla!'
+      index: 22
+    options:
+      title: '&eClaim Ayarları'
+      material: REDSTONE_BLOCK
+      customModelData: 0
       lore:
         - '&8'
-        - '&aClaim etiketlerini yönetmek için tıklayın!'
+        - '&aClaim ayarlarını değiştirmek için tıkla!'
+      index: 16
+    upgrade-claim:
+      title: '&eClaim Yükselt'
+      material: BEACON
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClaimini yükseltmek için tıkla!'
+      index: 10
+    block:
+      title: '&eClaim Blok'
+      material: BEDROCK
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClaim bloklarını yönetmek için tıkla!'
+      index: 12
     members:
       title: '&eÜyeleri Yönet'
       material: PLAYER_HEAD
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClaim üyelerini yönetmek için tıkla!'
       index: 13
-      custom-model-data: 0
+    tags:
+      title: '&eClaim Etiketleri'
+      material: NAME_TAG
+      customModelData: 0
       lore:
         - '&8'
-        - '&aÜyelerinizi yönetmek için tıklayın!'
-    block:
-      title: '&eClaim Blokları'
-      material: BEDROCK
-      index: 12
-      custom-model-data: 0
-      lore:
-        - '&8'
-        - '&aClaim bloğunu yönetmek için tıklayın!'
-    upgrade-claim:
-      title: '&eClaim’i Yükselt'
-      material: BEACON
-      index: 10
-      custom-model-data: 0
-      lore:
-        - '&8'
-        - '&aTıklayın ve claim’inizi yükseltin!'
-    options:
-      title: '&eClaim Seçenekleri'
-      material: REDSTONE_BLOCK
-      index: 16
-      custom-model-data: 0
-      lore:
-        - '&8'
-        - '&aTıklayın ve claim ayarlarını yapın!'
-    effects:
-      title: '&eClaim Etkileri'
-      material: BREWING_STAND
-      index: 22
-      custom-model-data: 0
-      lore:
-        - '&8'
-        - '&aClaim etkilerini etkinleştirmek veya devre dışı bırakmak için tıklayın!'
-# Claims menu configuration settings
+        - '&aClaim etiketlerini yönetmek için tıkla!'
+      index: 14
+  autoFill: true
+  fillerSlots: []
+
+# Claimler menüsü yapılandırma ayarları
 claimsMenu:
-  title: '&8Claim’leriniz'
+  title: '&8Claimlerin'
   size: 54
   items:
     item-settings:
-      title: '&eClaim #<count>'
+      title: '&eClaimin #<count>'
       material: GRASS_BLOCK
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&8'
         - '&aX: <x>'
         - '&aZ: <z>'
-        - '&aGeri Sayım: <time>'
+        - '&aSüre: <time>'
         - '&a'
-        - '&aBu claim’in süresini uzatmak için tıklayın!'
-        - '&aShift + Sağ Tıklayın ve bu claim’i kaldırın'
-# Upgrade menu configuration settings
+        - '&aClaim süresini uzatmak için tıkla!'
+        - '&aShift + Sağ Tık → Claimi kaldır'
+        - '&aShift + Sol Tık → Claime ışınlan'
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 18
+    - 27
+    - 36
+    - 44
+    - 46
+    - 47
+    - 48
+    - 49
+    - 50
+    - 51
+    - 52
+    - 53
+    - 17
+    - 26
+    - 35
+    - 45
+    - 53
+  previousItem:
+    menuItem:
+      title: '&8Önceki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aÖnceki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Sonraki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSonraki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 53
+
+# Yükseltme menüsü yapılandırma ayarları
 upgradeMenu:
-  title: '&8Claim’in süresini yükselt'
+  title: '&8Claim Süresini Yükselt'
   size: 9
   items:
     item-settings:
-      title: '&eClaim’i Yükselt'
+      title: '&eClaim Yükselt'
       material: BEACON
-      index: 4
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&8'
         - '&aMaliyet : &f<cost>'
         - '&8'
-        - '&aClaim’in süresini uzatmak için tıklayın!'
-# Members menu configuration settings
+        - '&aClaim süresini yükseltmek için tıkla!'
+      index: 4
+  autoFill: true
+  fillerSlots: []
+
+# Üyeler menüsü yapılandırma ayarları
 membersMenu:
   title: '&8Claim Üyeleri'
   size: 54
   items:
-    item-settings:
-      title: '&eÜye, <name>'
-      material: PLAYER_HEAD
-      custom-model-data: 0
-      lore:
-        - '&a'
-        - '&aBu üyeyi yönetmek için tıklayın!'
-        - '&aShift + Tıklayın ve güveni kaldırın'
     add-member:
       title: '&eÜye Ekle'
       material: NAME_TAG
-      index: 49
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&8'
-        - '&aEklemek için oyuncu adını girin!'
-# Options menu configuration settings
+        - '&aEklemek için oyuncu adını gir!'
+      index: 49
+    item-settings:
+      title: '&eÜye: <name>'
+      material: PLAYER_HEAD
+      customModelData: 0
+      lore:
+        - '&a'
+        - '&aBu üyeyi yönetmek için tıkla!'
+        - '&aShift + Tık → Oyuncunun güvenini kaldır'
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 18
+    - 27
+    - 36
+    - 44
+    - 46
+    - 47
+    - 48
+    - 50
+    - 51
+    - 52
+    - 53
+    - 17
+    - 26
+    - 35
+    - 45
+    - 53
+  previousItem:
+    menuItem:
+      title: '&8Önceki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aÖnceki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Sonraki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSonraki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 53
+
+# Ayarlar menüsü yapılandırma ayarları
 optionsMenu:
   title: '&8Claim Ayarları'
-  size: 27
+  size: 54
   items:
-    PVP:
-      title: '&aPVP’yi Etkinleştir'
-      material: DIAMOND_SWORD
-      index: 14
-      custom-model-data: 0
-      lore:
-        - '&7Durum: &f%status%'
-        - '&7'
-        - '&7Claim’inizde PVP’yi etkinleştirmek için tıklayın!'
-    EXPLOSION:
-      title: '&aPatlamaları Etkinleştir'
-      material: TNT
-      index: 16
-      custom-model-data: 0
-      lore:
-        - '&7Durum: &f%status%'
-        - '&7'
-        - '&7Claim’inizde patlamaları etkinleştirmek için tıklayın!'
-    SPREAD:
-      title: '&aYayılmayı Etkinleştir'
-      material: FIRE_CHARGE
-      index: 22
-      custom-model-data: 0
-      lore:
-        - '&7Durum: &f%status%'
-        - '&7'
-        - '&7Claim’inizde yayılmayı etkinleştirmek için tıklayın!'
     SPAWN_ANIMAL:
-      title: '&eHayvan Doğurt'
+      title: '&eHayvan Doğurma'
       material: SHEEP_SPAWN_EGG
-      index: 10
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&7Durum: &f%status%'
         - '&7'
-        - '&7Claim’inizde hayvan doğurtmak için tıklayın!'
-    SPAWN_MONSTER:
-      title: '&aCanavar Doğurt'
-      material: SKELETON_SPAWN_EGG
-      index: 12
-      custom-model-data: 0
+        - '&7Claim içinde hayvan doğurmaya izin vermek için tıkla!'
+      index: 0
+    EXPLOSION:
+      title: '&aPatlamaları Aç'
+      material: TNT
+      customModelData: 0
       lore:
         - '&7Durum: &f%status%'
         - '&7'
-        - '&7Claim’inizde canavar doğurtmak için tıklayın!'
-    TIME:
-      title: '&aZaman Durumunu Değiştir'
-      material: CLOCK
-      index: 25
-      custom-model-data: 0
-      lore:
-        - '&7Durum: &f%status%'
-        - '&7'
-        - '&7Zaman durumunu değiştirmek için tıklayın!'
+        - '&7Claim içinde patlamaları açmak için tıkla!'
+      index: 0
     WEATHER:
       title: '&aHava Durumunu Değiştir'
       material: WATER_BUCKET
-      index: 19
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&7Durum: &f%status%'
         - '&7'
-        - '&7Hava durumunu değiştirmek için tıklayın!'
-        -
-# Resize menu configuration settings
+        - '&7Claim hava durumunu değiştirmek için tıkla!'
+      index: 0
+    PVP:
+      title: '&aPVP Aç'
+      material: DIAMOND_SWORD
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Claim içinde PVP açmak için tıkla!'
+      index: 0
+    SPREAD:
+      title: '&aYayılmayı Aç'
+      material: FIRE_CHARGE
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Claim içinde yayılmayı açmak için tıkla!'
+      index: 0
+    SPAWN_MONSTER:
+      title: '&aCanavar Doğurma'
+      material: SKELETON_SPAWN_EGG
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Claim içinde canavar doğurmaya izin vermek için tıkla!'
+      index: 0
+    TIME:
+      title: '&aZamanı Değiştir'
+      material: CLOCK
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Claim zamanını değiştirmek için tıkla!'
+      index: 0
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 17
+    - 18
+    - 26
+    - 35
+    - 27
+    - 36
+    - 44
+    - 46
+    - 47
+    - 48
+    - 49
+    - 50
+    - 51
+    - 52
+    - 45
+    - 53
+  previousItem:
+    menuItem:
+      title: '&8Önceki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aÖnceki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Sonraki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSonraki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 53
+# Boyut değiştirme menüsü yapılandırma ayarları
 resizeMenu:
-  title: '&8Resize your claim'
+  title: '&8Claimini Yeniden Boyutlandır'
   size: 54
   items:
-    empty-claim:
-      title: '&eEmpty claim'
-      material: WHITE_WOOL
-      index: 0
-      custom-model-data: 0
-      lore:
-        - '&8'
-        - '&eX : &f<x>'
-        - '&eZ : &f<z>'
-        - '&e'
-        - '&eCost : &f<cost>'
-        - '&e'
-        - '&aClick to buy this claim'
-    not-available-claim:
-      title: '&eNot available claim'
-      material: RED_WOOL
-      custom-model-data: 0
-      lore:
-        - '&8'
-        - '&eX : &f<x>'
-        - '&eZ : &f<z>'
     starter-claim:
-      title: '&eYour claim'
+      title: '&eClaimin'
       material: BLACK_WOOL
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&8'
         - '&eX : &f<x>'
         - '&eZ : &f<z>'
-    self-claim:
-      title: '&eActive claim'
-      material: GREEN_WOOL
-      custom-model-data: 0
+    not-available-claim:
+      title: '&eKullanılamaz Claim'
+      material: RED_WOOL
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&eX : &f<x>'
+        - '&eZ : &f<z>'
+    empty-claim:
+      title: '&eBoş Claim'
+      material: WHITE_WOOL
+      customModelData: 0
       lore:
         - '&8'
         - '&eX : &f<x>'
         - '&eZ : &f<z>'
         - '&e'
-# Permissions menu configuration settings
+        - '&eMaliyet : &f<cost>'
+        - '&e'
+        - '&aBu claimi satın almak için tıkla'
+      index: 0
+    self-claim:
+      title: '&eAktif Claim'
+      material: GREEN_WOOL
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&eX : &f<x>'
+        - '&eZ : &f<z>'
+        - '&e'
+  autoFill: false
+
+# İzinler menüsü yapılandırma ayarları
 permissionsMenu:
-  title: Permissions Menu
-  size: 27
+  title: '&8İzinler Menüsü'
+  size: 54
   items:
-    PICKUP-ITEM:
-      title: '&aPickup Item'
-      material: DIAMOND
-      index: 19
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle item pickup permission'
-    BREAK_CONTAINER:
-      title: '&aBreak Container'
-      material: BARREL
-      index: 23
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle breaking containers permission'
-    USE_POTION:
-      title: '&aUse Potion'
-      material: POTION
-      index: 25
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle using potions permission'
-    BLOCK_BREAK:
-      title: '&aBlock Break'
-      material: STONE_PICKAXE
-      index: 1
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle block breaking permission'
-    ATTACK_ANIMAL:
-      title: '&aAttack Animal'
-      material: BOW
-      index: 5
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle attacking animals permission'
-    CONTAINER_OPEN:
-      title: '&aOpen Container'
-      material: CHEST
-      index: 12
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle container opening permission'
-    INTERACT_ENTITY:
-      title: '&aInteract Entity'
-      material: IRON_SWORD
-      index: 21
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle entity interaction permission'
-    USE_DOOR:
-      title: '&aUse Door'
-      material: LEVER
-      index: 7
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle using doors permission'
-    USE_PORTAL:
-      title: '&aUse Portal'
-      material: OBSIDIAN
-      index: 16
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle using portals permission'
-    BLOCK_PLACE:
-      title: '&aBlock Place'
-      material: STONE
-      index: 10
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle block placing permission'
-    DROP_ITEM:
-      title: '&aDrop Item'
-      material: IRON_INGOT
-      index: 3
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle item dropping permission'
-    ATTACK_MONSTER:
-      title: '&aAttack Monster'
-      material: DIAMOND_SWORD
-      index: 14
-      custom-model-data: 0
-      lore:
-        - '&7status: &f%status%'
-        - '&7'
-        - '&7Toggle attacking monsters permission'
     BUCKET_FILL:
-      title: '&aBucket fill'
+      title: '&aKova Doldurma'
       material: BUCKET
-      index: 14
-      custom-model-data: 0
+      customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7Durum: &f%status%'
         - '&7'
-        - '&7Toggle attacking bucket fill permission'
+        - '&7Kova doldurma iznini aç/kapat'
+      index: 0
+    USE_DOOR:
+      title: '&aKapı Kullanımı'
+      material: LEVER
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Kapı kullanma iznini aç/kapat'
+      index: 0
+    BLOCK_BREAK:
+      title: '&aBlok Kırma'
+      material: STONE_PICKAXE
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Blok kırma iznini aç/kapat'
+      index: 0
+    CONTAINER_OPEN:
+      title: '&aKonteyner Açma'
+      material: CHEST
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Sandık/varil açma iznini aç/kapat'
+      index: 0
     BUCKET_EMPTY:
-      title: '&aBucket empty'
+      title: '&aKova Boşaltma'
       material: LAVA_BUCKET
-      index: 14
-      custom-model-data: 0
+      customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7Durum: &f%status%'
         - '&7'
-        - '&7Toggle attacking bucket empty permission'
-# Verify menu configuration settings
+        - '&7Kova boşaltma iznini aç/kapat'
+      index: 0
+    USE_PORTAL:
+      title: '&aPortal Kullanımı'
+      material: OBSIDIAN
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Portal kullanma iznini aç/kapat'
+      index: 0
+    INTERACT_ENTITY:
+      title: '&aVarlıklarla Etkileşim'
+      material: IRON_SWORD
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Varlık etkileşimi iznini aç/kapat'
+      index: 0
+    DROP_ITEM:
+      title: '&aEşya Atma'
+      material: IRON_INGOT
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Eşya atma iznini aç/kapat'
+      index: 0
+    BREAk_CONTAINER:
+      title: '&aKonteyner Kırma'
+      material: BARREL
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Sandık/varil kırma iznini aç/kapat'
+      index: 0
+    ATTACK_ANIMAL:
+      title: '&aHayvanlara Saldırma'
+      material: BOW
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Hayvanlara saldırma iznini aç/kapat'
+      index: 0
+    ITEM_PICKUP:
+      title: '&aEşya Toplama'
+      material: DIAMOND
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Eşya toplama iznini aç/kapat'
+      index: 0
+    ATTACK_MONSTER:
+      title: '&aCanavarlara Saldırma'
+      material: DIAMOND_SWORD
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Canavarlara saldırma iznini aç/kapat'
+      index: 0
+    USE_POTION:
+      title: '&aİksir Kullanımı'
+      material: POTION
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7İksir kullanma iznini aç/kapat'
+      index: 0
+    BLOCK_PLACE:
+      title: '&aBlok Yerleştirme'
+      material: STONE
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7'
+        - '&7Blok yerleştirme iznini aç/kapat'
+      index: 0
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 17
+    - 18
+    - 26
+    - 35
+    - 27
+    - 36
+    - 44
+    - 46
+    - 47
+    - 48
+    - 49
+    - 50
+    - 51
+    - 52
+    - 45
+    - 53
+  previousItem:
+    menuItem:
+      title: '&8Önceki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aÖnceki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Sonraki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSonraki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 53
+
+# Onay menüsü yapılandırma ayarları
 verifyMenu:
-  title: '&8Emin misiniz?'
+  title: '&8Emin misin?'
   size: 9
   items:
-    deny:
-      title: '&cHayır'
-      material: RED_WOOL
-      index: 6
-      custom-model-data: 0
-      lore:
-        - '&8'
-        - '&aİşleminizi iptal etmek için tıklayın!'
     confirm:
       title: '&eEvet'
       material: GREEN_WOOL
-      index: 2
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&8'
-        - '&aİşleminizi onaylamak için tıklayın!'
-# Effect menu configuration settings
+        - '&aOnaylamak için tıkla!'
+      index: 2
+    deny:
+      title: '&cHayır'
+      material: RED_WOOL
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aİptal etmek için tıkla!'
+      index: 6
+  autoFill: true
+  fillerSlots: []
+
+# Efekt menüsü yapılandırma ayarları
 effectMenu:
-  title: '&8Etki Menüsü'
+  title: '&8Efekt Menüsü'
   size: 27
   items:
-    speed:
-      title: '&aHız'
-      material: DIAMOND_BOOTS
-      index: 11
-      custom-model-data: 0
-      lore:
-        - '&7Durum: &f%status%'
-        - '&7Seviye: &f%level%'
-        - '&7'
-        - '&7Maliyet: &f%cost%'
-        - '&7'
-        - '&7Tıklayın ve etkiyi yükseltin.'
-        - '&7Shift-Tıklayın ve etkiyi aç/kapat.'
-    haste:
-      title: '&aÇeviklik'
-      material: GOLDEN_PICKAXE
-      index: 15
-      custom-model-data: 0
-      lore:
-        - '&7Durum: &f%status%'
-        - '&7Seviye: &f%level%'
-        - '&7'
-        - '&7Maliyet: &f%cost%'
-        - '&7'
-        - '&7Tıklayın ve etkiyi yükseltin.'
-        - '&7Shift-Tıklayın ve etkiyi aç/kapat.'
     jump:
       title: '&aZıplama'
       material: IRON_BOOTS
-      index: 13
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&7Durum: &f%status%'
         - '&7Seviye: &f%level%'
         - '&7'
         - '&7Maliyet: &f%cost%'
         - '&7'
-        - '&7Tıklayın ve etkiyi yükseltin.'
-        - '&7Shift-Tıklayın ve etkiyi aç/kapat.'
-# Block menu configuration settings
+        - '&7Yükseltmek için tıkla.'
+        - '&7Shift-Tık → Aç/Kapat'
+      index: 13
+    haste:
+      title: '&aHızlı Kazma'
+      material: GOLDEN_PICKAXE
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7Seviye: &f%level%'
+        - '&7'
+        - '&7Maliyet: &f%cost%'
+        - '&7'
+        - '&7Yükseltmek için tıkla.'
+        - '&7Shift-Tık → Aç/Kapat'
+      index: 15
+    speed:
+      title: '&aHız'
+      material: DIAMOND_BOOTS
+      customModelData: 0
+      lore:
+        - '&7Durum: &f%status%'
+        - '&7Seviye: &f%level%'
+        - '&7'
+        - '&7Maliyet: &f%cost%'
+        - '&7'
+        - '&7Yükseltmek için tıkla.'
+        - '&7Shift-Tık → Aç/Kapat'
+      index: 11
+  autoFill: true
+  fillerSlots: []
+
+# Blok menüsü yapılandırma ayarları
 blockMenu:
-  title: '&8Alan Bloğu Ayarı'
-  size: 0
+  title: '&8Claim Blok Ayarları'
+  size: 27
   items: {}
-# Tag main menu configuration settings
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 18
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 26
+    - 17
+  previousItem:
+    menuItem:
+      title: '&8Önceki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aÖnceki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 18
+  nextItem:
+    menuItem:
+      title: '&8Sonraki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSonraki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 26
+# Etiket ana menüsü yapılandırma ayarları
 tagMainMenu:
   title: '&8Etiket Menüsü'
-  size: 0
+  size: 27
   items:
-    item-settings:
-      title: '&a<name>'
-      material: OAK_SIGN
-      custom-model-data: 0
-      lore:
-        - '&7'
-        - '&eTıklayın ve etiket iznini veya kullanıcıları değiştirin.'
-        - '&7Shift-Tıklayın ve etiketi devre dışı bırakın.'
     add-tag:
       title: '&eEtiket Ekle'
       material: OAK_SIGN
-      index: 22
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&7'
-        - '&eYeni bir etiket eklemek için tıklayın.'
+        - '&eYeni bir etiket eklemek için tıkla.'
         - '&7'
-# Tag editor menu configuration settings
+      index: 22
+    item-settings:
+      title: '&a<name>'
+      material: OAK_SIGN
+      customModelData: 0
+      lore:
+        - '&7'
+        - '&eEtiket izinlerini veya kullanıcılarını düzenlemek için tıkla.'
+        - '&7Shift-Tık → Etiketi devre dışı bırak.'
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 17
+  previousItem:
+    menuItem:
+      title: '&8Önceki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aÖnceki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 18
+  nextItem:
+    menuItem:
+      title: '&8Sonraki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSonraki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 26
+
+# Etiket düzenleyici menüsü yapılandırma ayarları
 tagEditMenu:
   title: '&8Etiket Düzenleyici'
   size: 27
   items:
-    permissions:
-      title: '&eİzinler'
-      material: BOOK
-      index: 14
-      custom-model-data: 0
-      lore:
-        - '&7'
-        - '&eBu etiketten izin ekleyin/kaldırın.'
-        - '&7'
     users:
       title: '&eKullanıcılar'
       material: PLAYER_HEAD
-      index: 12
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&7'
-        - '&eBu etiketten kullanıcı ekleyin/kaldırın.'
+        - '&eBu etikete kullanıcı ekle/kaldır.'
         - '&7'
-# Tag users menu configuration settings
+      index: 12
+    permissions:
+      title: '&eİzinler'
+      material: BOOK
+      customModelData: 0
+      lore:
+        - '&7'
+        - '&eBu etikete izin ekle/kaldır.'
+        - '&7'
+      index: 14
+  autoFill: true
+  fillerSlots: []
+
+# Etiket kullanıcıları menüsü yapılandırma ayarları
 tagUsersMenu:
   title: '&8Etiket Kullanıcıları'
-  size: 0
+  size: 27
   items:
-    item-settings:
-      title: '&e<name>'
-      material: PLAYER_HEAD
-      custom-model-data: 0
-      lore:
-        - '&7'
-        - '&eTıklayın ve bu etiketten oyuncuyu kaldırın!'
     add-user:
       title: '&eKullanıcı Ekle'
       material: NAME_TAG
-      index: 22
-      custom-model-data: 0
+      customModelData: 0
       lore:
         - '&7'
-        - '&aBu etikete bir oyuncu eklemek için tıklayın.'
-# Tag permissions menu configuration settings
+        - '&aBu etikete oyuncu eklemek için tıkla.'
+      index: 22
+    item-settings:
+      title: '&e<name>'
+      material: PLAYER_HEAD
+      customModelData: 0
+      lore:
+        - '&7'
+        - '&eBu oyuncuyu etiketten kaldırmak için tıkla!'
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
+    - 17
+  previousItem:
+    menuItem:
+      title: '&8Önceki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aÖnceki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 18
+  nextItem:
+    menuItem:
+      title: '&8Sonraki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSonraki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 26
+
+# Etiket izinleri menüsü yapılandırma ayarları
 tagPermissionsMenu:
   title: '&8Etiket İzinleri'
   size: 54
   items: {}
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 18
+    - 27
+    - 36
+    - 44
+    - 46
+    - 47
+    - 48
+    - 50
+    - 51
+    - 52
+    - 45
+    - 53
+  previousItem:
+    menuItem:
+      title: '&8Önceki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aÖnceki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Sonraki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSonraki sayfayı görmek için tıkla!'
+      custom-model-data: 0
+    index: 53

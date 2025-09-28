@@ -1,5 +1,6 @@
 package net.weesli.rclaim.input;
 
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimTag;
@@ -37,13 +38,14 @@ public class TextInputManager {
 
     public void runAction(Player player, TextInputAction action, Object o) {
 
-        BukkitTask task = new BukkitRunnable() {
+        /*BukkitTask task = new BukkitRunnable() {
             @Override
             public void run() {
                 actions.remove(player);
                 cancel();
             }
-        }.runTaskLater(RClaim.getInstance(), 120L);
+        }.runTaskLater(RClaim.getInstance(), 120L);*/
+        WrappedTask task = RClaim.getInstance().getFoliaLib().getScheduler().runLater(() -> actions.remove(player), 120L);
         TextPlayer textPlayer = new TextPlayer(task,action, o);
         actions.put(player, textPlayer);
     }

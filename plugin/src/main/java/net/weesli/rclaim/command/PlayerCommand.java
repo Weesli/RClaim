@@ -173,6 +173,6 @@ public class PlayerCommand extends BaseCommand {
             sendMessageToPlayer("NOT_YOUR_CLAIM", player);
             return;
         }
-        player.teleport(claim.getBlockLocation().clone().add(0,2,0));
+        player.teleportAsync(claim.getBlockLocation().clone().add(0,2,0));
     }
 }

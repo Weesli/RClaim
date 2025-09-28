@@ -3,6 +3,7 @@ version: ${version}
 main: net.weesli.rclaim.RClaim
 api-version: '1.13'
 load: POSTWORLD
+folia-supported: true
 softdepend:
   - Vault
   - PlaceholderAPI

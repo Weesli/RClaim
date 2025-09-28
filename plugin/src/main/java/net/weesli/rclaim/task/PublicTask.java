@@ -1,17 +1,17 @@
 package net.weesli.rclaim.task;
 
+import com.tcoded.folialib.FoliaLib;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.enums.ExplodeCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class PublicTask extends BukkitRunnable {
+public class PublicTask {
 
-    public PublicTask() {
-        this.runTaskTimer(RClaim.getInstance(),0,20);
+    public PublicTask(FoliaLib lib) {
+        lib.getScheduler().runTimer(this::run,0,20L);
     }
 
-    @Override
     public void run() {
         for (Claim claimImpl : RClaim.getInstance().getCacheManager().getClaims().getCache().values()){
             if (claimImpl.isExpired()){

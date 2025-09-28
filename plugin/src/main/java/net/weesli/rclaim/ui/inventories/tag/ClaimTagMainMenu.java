@@ -51,7 +51,8 @@ public class ClaimTagMainMenu extends ClaimInventory {
             });
         }
         inventory.addStaticItem(new ClickableItemStack(getItemStack(menu.getItems().get("add-tag"),player),menu.getItems().get("add-tag").getIndex()), event ->{
-            Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
+            //Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> player.closeInventory());
+            RClaim.getInstance().getFoliaLib().getScheduler().runNextTick((wrapper) -> player.closeInventory());
             sendMessageToPlayer("ENTER_TAG_NAME", player);
             RClaim.getInstance().getTextInputManager().runAction(
                     player,

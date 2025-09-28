@@ -1,5 +1,7 @@
 package net.weesli.rclaim.event;
 
+import com.tcoded.folialib.FoliaLib;
+import lombok.NonNull;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.events.ClaimEnterEvent;
 import net.weesli.rclaim.api.events.ClaimLeaveEvent;
@@ -22,6 +24,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffect;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
@@ -74,7 +77,17 @@ public class ClaimLifecycleListener implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
-        Bukkit.getScheduler().runTaskLater(RClaim.getInstance(), () -> {
+        /*Bukkit.getScheduler().runTaskLater(RClaim.getInstance(), () -> {
+            Player player = e.getPlayer();
+            Location loc = player.getRespawnLocation();
+            if (loc != null) {
+                Claim claim = RClaim.getInstance().getClaimManager().getClaim(loc);
+                if (claim != null) {
+                    Bukkit.getPluginManager().callEvent(new ClaimEnterEvent(claim, player));
+                }
+            }
+        }, 20L);*/
+        RClaim.getInstance().getFoliaLib().getScheduler().runLater(() -> {
             Player player = e.getPlayer();
             Location loc = player.getRespawnLocation();
             if (loc != null) {
@@ -180,30 +193,33 @@ public class ClaimLifecycleListener implements Listener {
 
     @EventHandler
     public void onClaimStatusChange(ClaimStatusChangeEvent e){
-        Chunk chunk = Bukkit.getWorld(e.getClaim().getWorldName()).getChunkAt(e.getClaim().getX(), e.getClaim().getZ());
-        if (!e.isChangeStatus()) {
-            if ("WEATHER".equals(e.getStatus())) {
-                Arrays.stream(chunk.getEntities())
-                        .filter(ent -> ent instanceof Player)
-                        .forEach(ent -> ((Player) ent).resetPlayerWeather());
+        World world = Objects.requireNonNull(Bukkit.getWorld(e.getClaim().getWorldName()));
+        RClaim.getInstance().getFoliaLib().getScheduler().runAtLocation(new Location(world, e.getClaim().getX(), 0, e.getClaim().getZ()), (wrapper) -> {
+            Chunk chunk = world.getChunkAt(e.getClaim().getX() >> 4, e.getClaim().getZ() >> 4);
+            if (!e.isChangeStatus()) {
+                if ("WEATHER".equals(e.getStatus())) {
+                    Arrays.stream(chunk.getEntities())
+                            .filter(ent -> ent instanceof Player)
+                            .forEach(ent -> ((Player) ent).resetPlayerWeather());
+                }
+                if ("TIME".equals(e.getStatus())) {
+                    Arrays.stream(chunk.getEntities())
+                            .filter(ent -> ent instanceof Player)
+                            .forEach(ent -> ((Player) ent).resetPlayerTime());
+                }
+            } else {
+                if ("WEATHER".equals(e.getStatus())) {
+                    Arrays.stream(chunk.getEntities())
+                            .filter(ent -> ent instanceof Player)
+                            .forEach(ent -> ((Player) ent).setPlayerWeather(WeatherType.CLEAR));
+                }
+                if ("TIME".equals(e.getStatus())) {
+                    Arrays.stream(chunk.getEntities())
+                            .filter(ent -> ent instanceof Player)
+                            .forEach(ent -> ((Player) ent).setPlayerTime(6000, false));
+                }
             }
-            if ("TIME".equals(e.getStatus())) {
-                Arrays.stream(chunk.getEntities())
-                        .filter(ent -> ent instanceof Player)
-                        .forEach(ent -> ((Player) ent).resetPlayerTime());
-            }
-        } else {
-            if ("WEATHER".equals(e.getStatus())) {
-                Arrays.stream(chunk.getEntities())
-                        .filter(ent -> ent instanceof Player)
-                        .forEach(ent -> ((Player) ent).setPlayerWeather(WeatherType.CLEAR));
-            }
-            if ("TIME".equals(e.getStatus())) {
-                Arrays.stream(chunk.getEntities())
-                        .filter(ent -> ent instanceof Player)
-                        .forEach(ent -> ((Player) ent).setPlayerTime(6000, false));
-            }
-        }
+        });
     }
 
     @EventHandler

@@ -53,9 +53,13 @@ public class ClaimsMenu extends ClaimInventory {
                         return;
                     }
 
-                    Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> {
+                    /*Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> {
                         player.closeInventory();
                         player.teleport(target.getBlockLocation().clone().add(0,2,0));
+                    });*/
+                    RClaim.getInstance().getFoliaLib().getScheduler().runNextTick((wrapper) -> {
+                        player.closeInventory();
+                        player.teleportAsync(target.getBlockLocation().clone().add(0,2,0));
                     });
                     return;
                 }

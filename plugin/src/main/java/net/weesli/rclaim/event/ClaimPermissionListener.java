@@ -6,6 +6,7 @@ import net.weesli.rclaim.api.permission.ClaimPermissionService;
 import org.bukkit.Material;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -184,7 +185,7 @@ public class ClaimPermissionListener {
             if (!(e.getCause().equals(org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)
                     || e.getCause().equals(org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.END_PORTAL))) return;
             if (e.getPlayer().hasPermission("rclaim.admin.bypass")) return;
-            if (!internalCheck(e.getPlayer(), e.getTo())) {
+            if (!internalCheck(e.getPlayer(), e.getFrom())) {
                 e.setCancelled(true);
                 sendMessageToPlayer("PERMISSION_ENTER_PORTAL", e.getPlayer());
             }
@@ -197,7 +198,7 @@ public class ClaimPermissionListener {
         public void on(PotionSplashEvent e) {
             if (!(e.getPotion().getShooter() instanceof Player p)) return;
             if (p.hasPermission("rclaim.admin.bypass")) return;
-            if (!internalCheck(p, p.getLocation())) {
+            if (!internalCheck(p, (e.getHitBlock() == null ? e.getHitEntity().getLocation() : e.getHitBlock().getLocation()))) {
                 e.setCancelled(true);
                 p.getInventory().addItem(e.getEntity().getItem());
                 sendMessageToPlayer("PERMISSION_USE_POTION", p);
@@ -207,7 +208,7 @@ public class ClaimPermissionListener {
         public void on(LingeringPotionSplashEvent e) {
             if (!(e.getEntity().getShooter() instanceof Player p)) return;
             if (p.hasPermission("rclaim.admin.bypass")) return;
-            if (!internalCheck(p, p.getLocation())) {
+            if (!internalCheck(p, (e.getHitBlock() == null ? e.getHitEntity().getLocation() : e.getHitBlock().getLocation()))) {
                 e.setCancelled(true);
                 p.getInventory().addItem(e.getEntity().getItem());
                 sendMessageToPlayer("PERMISSION_USE_POTION", p);

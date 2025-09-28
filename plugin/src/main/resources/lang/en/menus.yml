@@ -377,7 +377,7 @@ resizeMenu:
 # Permissions menu configuration settings
 permissionsMenu:
   title: Permissions Menu
-  size: 27
+  size: 54
   items:
     BUCKET_FILL:
       title: '&aBucket Fill'
@@ -639,6 +639,7 @@ blockMenu:
     - 7
     - 8
     - 9
+    - 18
     - 19
     - 20
     - 21
@@ -646,6 +647,7 @@ blockMenu:
     - 23
     - 24
     - 25
+    - 26
     - 17
   previousItem:
     menuItem:

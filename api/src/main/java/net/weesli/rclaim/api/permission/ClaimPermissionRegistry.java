@@ -60,7 +60,7 @@ public abstract class ClaimPermissionRegistry implements Listener {
     }
 
     protected void deny(Player player, Event e) {
-        if (e instanceof Cancellable c) c.setCancelled(true);
+        if (e instanceof Cancellable) ((Cancellable) e).setCancelled(true);
         onDeny(player, e);
     }
 

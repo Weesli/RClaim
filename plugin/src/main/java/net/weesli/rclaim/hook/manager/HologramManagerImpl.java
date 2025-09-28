@@ -22,7 +22,7 @@ public class HologramManagerImpl implements HologramManager {
                 case DecentHolograms -> hologramIntegration = new HDecentHologram();
                 case FancyHolograms -> hologramIntegration = new HFancyHologram();
             }
-            new HologramUpdater();
+            new HologramUpdater(RClaim.getInstance().getFoliaLib());
         }
     }
 }
