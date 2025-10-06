@@ -78,7 +78,7 @@ If you want to contribute to this project, you can fork the repository and make 
 ***
 For any problems and suggestions you can contact [Here](https://github.com/Weesli/RClaim/issues) or [weesli](https://discord.gg/9nsNtRzrSu) account.
 
-MIT License
+```MIT License
 
 Copyright (c) 2025 Weesli
 
@@ -98,4 +98,4 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+SOFTWARE.```
