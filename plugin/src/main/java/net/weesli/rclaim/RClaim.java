@@ -1,7 +1,12 @@
+/*
+This source file is part of RClaim.
+Copyright (c) 2025 Weesli
+Licensed under the MIT License.
+See LICENSE.md file for full license text.
+ */
 package net.weesli.rclaim;
 
 import com.tcoded.folialib.FoliaLib;
-import com.tcoded.folialib.util.FoliaLibOptions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
