@@ -48,6 +48,6 @@ public class UnClaimCommand extends BaseCommand {
             RClaim.getInstance().getClaimManager().removeClaim(claim);
             RClaim.getInstance().getStorage().deleteClaim(claim.getID());
         }
-        sendMessageToPlayer("UNCLAIM_SUCCESS", player);
+        sendMessageToPlayer("UNCLAIMED_CLAIM", player);
     }
 }
