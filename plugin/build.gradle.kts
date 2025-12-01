@@ -123,6 +123,8 @@ tasks.shadowJar {
 
     relocate("org.bstats", "net.weesli.libs.bstats")
     relocate("com.tcoded.folialib", "net.weesli.libs.folialib")
+    // Kotlin bad! Kotlin is used in other plugins that can create conflicts, just relocate it
+    relocate("kotlin", "net.weesli.libs.kotlin")
 
 }
 
