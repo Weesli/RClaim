@@ -74,6 +74,12 @@ dependencies {
     // FancyHolograms
     compileOnly("de.oliver:FancyHolograms:2.7.0")
 
+    // DeluxeCombat
+    compileOnly("com.github.timderspieler:DeluxeCombat-API:1.5.1")
+
+    // RoseStacker
+    compileOnly("dev.rosewood:rosestacker:1.5.37")
+
     implementation("com.github.Weesli:RozsConfig:1.2.1")
 
     implementation("com.tcoded:FoliaLib:0.5.1")

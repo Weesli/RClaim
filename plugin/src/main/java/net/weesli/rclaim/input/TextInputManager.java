@@ -13,8 +13,6 @@ import net.weesli.rclaim.util.PlayerUtil;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +43,7 @@ public class TextInputManager {
                 cancel();
             }
         }.runTaskLater(RClaim.getInstance(), 120L);*/
-        WrappedTask task = RClaim.getInstance().getFoliaLib().getScheduler().runLater(() -> actions.remove(player), 120L);
+        WrappedTask task = RClaim.getInstance().getFoliaLib().getScheduler().runAtEntityLater(player, () -> actions.remove(player), 120L);
         TextPlayer textPlayer = new TextPlayer(task,action, o);
         actions.put(player, textPlayer);
     }
