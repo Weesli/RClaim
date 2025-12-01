@@ -122,7 +122,7 @@ tasks.shadowJar {
     mergeServiceFiles()
 
     relocate("org.bstats", "net.weesli.libs.bstats")
-    relocate("com.tcoded.foliolib", "net.weesli.libs.foliolib")
+    relocate("com.tcoded.folialib", "net.weesli.libs.folialib")
 
 }
 
