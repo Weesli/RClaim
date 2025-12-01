@@ -80,6 +80,9 @@ dependencies {
     // RoseStacker
     compileOnly("dev.rosewood:rosestacker:1.5.37")
 
+    // WildStacker
+    compileOnly("com.bgsoftware:WildStackerAPI:2025.2")
+
     implementation("com.github.Weesli:RozsConfig:1.2.1")
 
     implementation("com.tcoded:FoliaLib:0.5.1")
@@ -123,6 +126,8 @@ tasks.shadowJar {
 
     relocate("org.bstats", "net.weesli.libs.bstats")
     relocate("com.tcoded.folialib", "net.weesli.libs.folialib")
+    // Kotlin bad! Kotlin is used in other plugins that can create conflicts, just relocate it
+    relocate("kotlin", "net.weesli.libs.kotlin")
 
 }
 

@@ -1,10 +1,12 @@
-package net.weesli.rclaim.hook.other;
+package net.weesli.rclaim.hook.stacker;
 
 import dev.rosewood.rosestacker.event.BlockStackEvent;
 import dev.rosewood.rosestacker.event.BlockUnstackEvent;
 import dev.rosewood.rosestacker.event.SpawnerStackEvent;
 import dev.rosewood.rosestacker.event.SpawnerUnstackEvent;
+import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.RClaimProvider;
+import net.weesli.rclaim.api.hook.ClaimStacker;
 import net.weesli.rclaim.api.model.Claim;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -15,17 +17,10 @@ import org.bukkit.plugin.Plugin;
 
 import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 
-public class HRoseStacker implements Listener {
+public class HRoseStacker implements Listener, ClaimStacker {
 
-    public HRoseStacker(Plugin plugin) {
+    public HRoseStacker(RClaim plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    }
-
-    private boolean availableArea(Player player, Location location) {
-        Chunk chunk = location.getChunk();
-        Claim claim = RClaimProvider.getClaimManager().getClaim(chunk);
-        if (claim == null) return false;
-        return claim.isOwner(player.getUniqueId());
     }
 
     @EventHandler
@@ -41,7 +36,7 @@ public class HRoseStacker implements Listener {
         if (event.getPlayer() == null) return;
         if (!availableArea(event.getPlayer(), event.getStack().getLocation())) {
             event.setCancelled(true);
-            sendMessageToPlayer("YOU_CANT_STACK_BLOCKS", event.getPlayer());
+            sendMessageToPlayer("YOU_CANT_UNSTACK_BLOCKS", event.getPlayer());
         }
     }
 
@@ -58,7 +53,7 @@ public class HRoseStacker implements Listener {
         if (event.getPlayer() == null) return;
         if (!availableArea(event.getPlayer(), event.getStack().getLocation())) {
             event.setCancelled(true);
-            sendMessageToPlayer("YOU_CANT_STACK_SPAWNERS", event.getPlayer());
+            sendMessageToPlayer("YOU_CANT_UNSTACK_SPAWNERS", event.getPlayer());
         }
     }
 }
