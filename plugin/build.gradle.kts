@@ -131,6 +131,7 @@ configurations.configureEach {
     exclude(group = "org.bukkit", module = "bukkit")
     exclude(group = "org.spigotmc", module = "spigot-api")
 }
+tasks.named("build") { dependsOn(tasks.named("shadowJar")) }
 tasks.named<ProcessResources>("processResources") {
     filteringCharset = "UTF-8"
     val projectVersion = project.version.toString()
