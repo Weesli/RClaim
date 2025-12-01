@@ -80,6 +80,9 @@ dependencies {
     // RoseStacker
     compileOnly("dev.rosewood:rosestacker:1.5.37")
 
+    // WildStacker
+    compileOnly("com.bgsoftware:WildStackerAPI:2025.2")
+
     implementation("com.github.Weesli:RozsConfig:1.2.1")
 
     implementation("com.tcoded:FoliaLib:0.5.1")
