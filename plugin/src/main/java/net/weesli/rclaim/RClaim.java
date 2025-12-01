@@ -83,7 +83,7 @@ public final class RClaim extends JavaPlugin {
         if (!loadFile()) return;
         loadStorage();
         cacheManager = new CacheManagerImpl();
-        spawnerManager = new SpawnerManagerImpl();
+        spawnerManager = new SpawnerManagerImpl(this.foliaLib);
         minionsManager = new MinionsManagerImpl();
         economyManager = new EconomyManagerImpl();
         hologramManager = new HologramManagerImpl();
