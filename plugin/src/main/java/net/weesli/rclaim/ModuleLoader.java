@@ -12,6 +12,7 @@ import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Level;
 
 public final class ModuleLoader {
     public static void loadAddons(String addonsFolderPath) {
@@ -19,7 +20,7 @@ public final class ModuleLoader {
         if (!addonsFolder.exists()) {
             boolean created = addonsFolder.mkdirs();
             if (!created) {
-                System.err.println("Failed to create addons folder");
+                Bukkit.getLogger().log(Level.SEVERE, "Failed to create addons folder");
                 return;
             }
         }
@@ -34,7 +35,7 @@ public final class ModuleLoader {
             try {
                 loadAddon(file);
             } catch (Exception e) {
-                e.printStackTrace();
+                Bukkit.getLogger().log(Level.SEVERE, "Failed to load module " + file.getName(), e);
             }
         }
     }

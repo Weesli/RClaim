@@ -63,7 +63,7 @@ dependencies {
     compileOnly("me.NoChance.PvPManager:pvpmanager:3.18.21")
 
     // SmartSpawner
-    compileOnly("com.github.ptthanh02:SmartSpawner:1.3.8")
+    compileOnly("com.github.NighterDevelopment:smartspawner:1.5.7.1")
 
     // RozsDB-Lite
     implementation("com.github.Weesli:RozsDB-Lite:1.1.1")
@@ -73,6 +73,12 @@ dependencies {
 
     // FancyHolograms
     compileOnly("de.oliver:FancyHolograms:2.7.0")
+
+    // DeluxeCombat
+    compileOnly("com.github.timderspieler:DeluxeCombat-API:1.5.1")
+
+    // RoseStacker
+    compileOnly("dev.rosewood:rosestacker:1.5.37")
 
     implementation("com.github.Weesli:RozsConfig:1.2.1")
 
@@ -116,7 +122,7 @@ tasks.shadowJar {
     mergeServiceFiles()
 
     relocate("org.bstats", "net.weesli.libs.bstats")
-    relocate("com.tcoded.foliolib", "net.weesli.libs.foliolib")
+    relocate("com.tcoded.folialib", "net.weesli.libs.folialib")
 
 }
 
@@ -125,6 +131,7 @@ configurations.configureEach {
     exclude(group = "org.bukkit", module = "bukkit")
     exclude(group = "org.spigotmc", module = "spigot-api")
 }
+tasks.named("build") { dependsOn(tasks.named("shadowJar")) }
 tasks.named<ProcessResources>("processResources") {
     filteringCharset = "UTF-8"
     val projectVersion = project.version.toString()

@@ -30,7 +30,8 @@ public class ClaimUsersMenu extends ClaimInventory {
                 .mapToInt(Integer::intValue)
                 .toArray()).fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), menu.isAutoFill());
         for (UUID member : claim.getMembers()){
-            ItemStack itemStack = getItemStack(menu.getItems().get("item-settings"),player, Placeholder.parsed("name", PlayerUtil.getPlayer(member).getName()));
+            String memberName = PlayerUtil.getPlayer(member).getName();
+            ItemStack itemStack = getItemStack(menu.getItems().get("item-settings"),player, Placeholder.parsed("name", memberName != null ? memberName : ""));
             inventory.addItem(itemStack,event-> {
                 if (event.isShiftClick()){
                     VerifyMenu verifyMenu = new VerifyMenu();

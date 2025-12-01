@@ -18,11 +18,9 @@ public class HBetterRTP implements Listener {
         Location location = e.getLocation();
         if (location==null)return;
         // Cancel teleport if player is in a claim
-        RClaim.getInstance().getCacheManager().getClaims().getCache().values().forEach(claim -> {
-            if(claim.contains(location)){
-                e.setCancelled(true);
-            }
-        });
+        RClaim.getInstance().getCacheManager().getClaims().getCache().values().stream()
+                .takeWhile(claim -> claim.contains(location))
+                .findFirst().ifPresent(claim -> e.setCancelled(true));
     }
 
 }

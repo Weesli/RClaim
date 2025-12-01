@@ -15,7 +15,8 @@ public abstract class ClaimInventory {
     public abstract void openInventory(Player player, Claim claim);
 
     public ItemStack getItemStack(MenuConfig.MenuItem menuItem, @Nullable Player player, TagResolver... tags){
-        return ItemBuilder.of(Material.getMaterial(menuItem.getMaterial()))
+        Material material = Material.getMaterial(menuItem.getMaterial());
+        return ItemBuilder.of(material != null ? material : Material.BEDROCK)
                 .name(menuItem.getTitle(),player, tags)
                 .lore(menuItem.getLore(),player, tags)
                 .hideFlags()

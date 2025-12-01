@@ -18,6 +18,7 @@ import net.weesli.rclaim.api.status.ClaimStatusService;
 import net.weesli.rclaim.event.ClaimLifecycleListener;
 import net.weesli.rclaim.event.ClaimPermissionListener;
 import net.weesli.rclaim.event.ClaimStatusListener;
+import net.weesli.rclaim.hook.other.HRoseStacker;
 import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.manager.CacheManagerImpl;
 import net.weesli.rclaim.command.CommandManager;
@@ -82,7 +83,7 @@ public final class RClaim extends JavaPlugin {
         if (!loadFile()) return;
         loadStorage();
         cacheManager = new CacheManagerImpl();
-        spawnerManager = new SpawnerManagerImpl();
+        spawnerManager = new SpawnerManagerImpl(this.foliaLib);
         minionsManager = new MinionsManagerImpl();
         economyManager = new EconomyManagerImpl();
         hologramManager = new HologramManagerImpl();
@@ -104,6 +105,8 @@ public final class RClaim extends JavaPlugin {
         new MapLoader();
         // initialize betterRTP hook if plugin is enabled
         if (getServer().getPluginManager().isPluginEnabled("BetterRTP")) new HBetterRTP(this);
+        // initialize roseStacker hook if plugin is enabled
+        if (getServer().getPluginManager().isPluginEnabled("RoseStacker")) new HRoseStacker(this);
 
         // register RozsLibService in this plugin
         RozsLibService.start(this);

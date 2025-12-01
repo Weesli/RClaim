@@ -3,7 +3,6 @@ package net.weesli.rclaim.task;
 import com.tcoded.folialib.FoliaLib;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
-import org.bukkit.scheduler.BukkitRunnable;
 
 
 public class HologramUpdater {
