@@ -166,7 +166,7 @@ public class PlayerCommand extends BaseCommand {
     public void tp(Player player, @Suggestion("player_claims") String id){
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(id);
         if (claim == null){
-            claim = RClaim.getInstance().getCacheManager().getClaims().getCache().values().stream().filter(c ->
+            claim = RClaim.getInstance().getCacheManager().getClaims().getCache().values().stream().takeWhile(c ->
                     c.getDisplayName().equals(id)).findFirst().orElse(null);
         }
         if (claim == null || !claim.isOwner(player.getUniqueId()) && !claim.isMember(player.getUniqueId())){

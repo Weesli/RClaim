@@ -20,7 +20,8 @@ public class ClaimBlockUtil {
 
 
     private static ItemStack getItem(){
-        ItemStack itemStack = new ItemStack(Material.getMaterial(ConfigLoader.getConfig().getClaimBlock().getItem().getMaterial()));
+        Material material = Material.getMaterial(ConfigLoader.getConfig().getClaimBlock().getItem().getMaterial());
+        ItemStack itemStack = new ItemStack(material != null ? material : Material.BEDROCK);
         ItemMeta meta = itemStack.getItemMeta();
         meta.displayName(ColorBuilder.convertColors(ConfigLoader.getConfig().getClaimBlock().getItem().getTitle()));
         meta.lore(ConfigLoader.getConfig().getClaimBlock().getItem().getLore().stream().map(ColorBuilder::convertColors).toList());

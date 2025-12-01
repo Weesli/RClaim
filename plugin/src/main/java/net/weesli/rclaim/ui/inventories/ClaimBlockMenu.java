@@ -30,7 +30,8 @@ public class ClaimBlockMenu extends ClaimInventory {
                 .toArray()).fill(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), menu.isAutoFill());
         List<String> blockTypes = ConfigLoader.getConfig().getBlockTypes();
         for (String blockType : blockTypes) {
-            inventory.addItem(new ItemStack(Material.getMaterial(blockType)) , event -> {
+            Material material = Material.getMaterial(blockType);
+            inventory.addItem(new ItemStack(material != null ? material : Material.BEDROCK) , event -> {
                 boolean success = BaseUtil.changeBlockMaterial(player, claim, Material.getMaterial(blockType));
                 if (!success){
                     sendMessageToPlayer("HASN'T_PERMISSION_TO_CHANGE_CLAIM_BLOCK", player);

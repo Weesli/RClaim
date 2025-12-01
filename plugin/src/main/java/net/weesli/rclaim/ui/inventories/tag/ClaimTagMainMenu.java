@@ -38,7 +38,7 @@ public class ClaimTagMainMenu extends ClaimInventory {
         for (ClaimTag tag : tags){
             ClickableItemStack itemStack = new ClickableItemStack(getItemStack(menu.getItems().get("item-settings"),player), 0);
             ItemMeta meta = itemStack.getItemStack().getItemMeta();
-            meta.setDisplayName(meta.getDisplayName().replaceAll("<name>", tag.getDisplayName()));
+            meta.setDisplayName(meta.hasDisplayName() ? meta.getDisplayName().replaceAll("<name>", tag.getDisplayName()) : null);
             itemStack.getItemStack().setItemMeta(meta);
             itemStack.setSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);
             inventory.setItem(itemStack , event -> {

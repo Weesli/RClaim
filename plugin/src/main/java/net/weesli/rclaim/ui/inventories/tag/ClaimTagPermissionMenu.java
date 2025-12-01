@@ -49,9 +49,9 @@ public class ClaimTagPermissionMenu extends TagInventory {
         String statusPlaceholder = tag.hasPermission(key) ? BaseUtil.getStatus(true) : BaseUtil.getStatus(false);
 
         ItemMeta meta = itemStack.getItemMeta();
-        List<String> lore = meta.getLore().stream()
+        List<String> lore = meta.hasLore() ? meta.getLore().stream()
                 .map(line -> line.replace("%status%", statusPlaceholder))
-                .toList();
+                .toList() : null;
         meta.setLore(lore);
         itemStack.setItemMeta(meta);
 

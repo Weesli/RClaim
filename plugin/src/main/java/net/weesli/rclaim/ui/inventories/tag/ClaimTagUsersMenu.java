@@ -46,7 +46,8 @@ public class ClaimTagUsersMenu extends TagInventory {
         for (UUID uuid : tag.getUsers()){
             ItemStack itemStack = getItemStack(menu.getItems().get("item-settings"),player);
             ItemMeta meta = itemStack.getItemMeta();
-            meta.setDisplayName(meta.getDisplayName().replaceAll("<name>", Bukkit.getOfflinePlayer(uuid).getName()));
+            String playerName = Bukkit.getOfflinePlayer(uuid).getName();
+            meta.setDisplayName(meta.hasDisplayName() ? meta.getDisplayName().replaceAll("<name>", playerName != null ? playerName : "") : null);
             itemStack.setItemMeta(meta);
             ClickableItemStack clickableItemStack  = new ClickableItemStack(itemStack, 0);
             clickableItemStack.setSound(Sound.ENTITY_EXPERIENCE_ORB_PICKUP);

@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -67,11 +68,11 @@ public class ClaimEffectMenu extends ClaimInventory {
         ItemStack itemStack = getItemStack(item,player);
         ItemMeta meta = itemStack.getItemMeta();
         ClaimEffect model = claim.getEffect(effect);
-        List<String> lore = meta.getLore().stream().map(line -> line
+        List<String> lore = meta.hasLore() ? meta.getLore().stream().map(line -> line
                 .replaceAll("%status%", BaseUtil.getStatus(model != null && model.isEnabled() && claim.hasEffect(effect)))
                 .replaceAll("%level%", String.valueOf(model == null ? 0 : model.getLevel()))
                 .replaceAll("%cost%", String.valueOf(model == null ? BaseUtil.getCost(effect, claim) : model.isMaxLevel() ? ColorBuilder.convertColors(ConfigLoader.getConfig().getEffects().getMaxLevelMessage()) : BaseUtil.getCost(effect, claim)))
-        ).toList();
+        ).toList() : null;
         meta.setLore(lore);
         itemStack.setItemMeta(meta);
         return itemStack;

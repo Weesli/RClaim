@@ -90,7 +90,8 @@ public class MenuConfig {
         private MenuItem menuItem;
         private int index;
         public ClickableItemStack asClickableItemStack(@Nullable Player player, TagResolver... tags) {
-            return ItemBuilder.of(Material.getMaterial(menuItem.getMaterial()))
+            Material material = Material.getMaterial(menuItem.getMaterial());
+            return ItemBuilder.of(material != null ? material : Material.BEDROCK)
                     .name(menuItem.getTitle(),player, tags)
                     .lore(menuItem.getLore(),player, tags)
                     .amount(1)

@@ -37,8 +37,8 @@ public class ClaimsMenu extends ClaimInventory {
         for (Claim target : Claims) {
             ItemStack itemStack = getItemStack(menu.getItems().get("item-settings"),player);
             ItemMeta meta = itemStack.getItemMeta();
-            meta.setDisplayName(meta.getDisplayName().replaceAll("<count>", String.valueOf(i)));
-            meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<x>", String.valueOf(target.getX())).replaceAll("<z>", String.valueOf(target.getZ())).replaceAll("<time>", BaseUtil.getTimeFormat(target.getID()))).collect(Collectors.toList()));
+            meta.setDisplayName(meta.hasDisplayName() ? meta.getDisplayName().replaceAll("<count>", String.valueOf(i)) : null);
+            meta.setLore(meta.hasLore() ? meta.getLore().stream().map(line -> line.replaceAll("<x>", String.valueOf(target.getX())).replaceAll("<z>", String.valueOf(target.getZ())).replaceAll("<time>", BaseUtil.getTimeFormat(target.getID()))).collect(Collectors.toList()) : null);
             itemStack.setItemMeta(meta);
             inventory.addItem(itemStack, e -> {
                 if (e.isShiftClick() && e.isRightClick()){

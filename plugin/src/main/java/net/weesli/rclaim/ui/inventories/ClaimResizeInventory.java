@@ -112,7 +112,7 @@ public class ClaimResizeInventory extends ClaimInventory {
         if (claim.contains(location)) {
             return menu.getItems().get("starter-claim");
         }
-        Claim targetClaim = RClaim.getInstance().getCacheManager().getClaims().getCache().values().stream().filter(c -> {
+        Claim targetClaim = RClaim.getInstance().getCacheManager().getClaims().getCache().values().stream().takeWhile(c -> {
             if (c.contains(location)) {
                 return true;
             }
@@ -168,11 +168,11 @@ public class ClaimResizeInventory extends ClaimInventory {
 
     private void updateItemMeta(ClickableItemStack itemStack, Location location, Claim claim) {
         ItemMeta meta = itemStack.getItemStack().getItemMeta();
-        List<String> updatedLore = meta.getLore().stream()
+        List<String> updatedLore = meta.hasLore() ? meta.getLore().stream()
                 .map(line -> line.replaceAll("<cost>", String.valueOf(calculateSubClaimCost(claim)))
                         .replaceAll("<x>", String.valueOf(location.getX()))
                         .replaceAll("<z>", String.valueOf(location.getZ())))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) : null;
         meta.setLore(updatedLore);
         itemStack.getItemStack().setItemMeta(meta);
     }

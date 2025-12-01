@@ -34,7 +34,7 @@ public class ClaimImpl implements Claim {
     private List<UUID> members;
     private List<String> claimStatuses;
     private int x,z;
-    private String worldName;
+    private World world;
     private Map<UUID, List<String>> claimPermissions = new HashMap<>();
     private List<ClaimEffectImpl> effects;
     private Material block;
@@ -48,7 +48,7 @@ public class ClaimImpl implements Claim {
 
     }
 
-    public ClaimImpl(String ID, UUID owner, List<UUID> members, List<String> claimStatuses, int x, int z, String worldName) {
+    public ClaimImpl(String ID, UUID owner, List<UUID> members, List<String> claimStatuses, int x, int z, World world) {
         this.ID = ID;
         this.owner = owner;
         this.members = members;
@@ -59,7 +59,7 @@ public class ClaimImpl implements Claim {
         subClaims = new ArrayList<>();
         this.x = x;
         this.z = z;
-        this.worldName = worldName;
+        this.world = world;
         timestamp = BaseUtil.getSec(ConfigLoader.getConfig().getClaimSettings().getClaimDuration());
         this.enableBlock = true;
     }
@@ -87,7 +87,7 @@ public class ClaimImpl implements Claim {
     public Location getCenter() {
         int centerX = x + 8;
         int centerZ = z + 8;
-        return new Location(Bukkit.getWorld(worldName),  centerX, getYLocation(Bukkit.getWorld(worldName), centerX , centerZ), centerZ);
+        return new Location(world,  centerX, getYLocation(world, centerX , centerZ), centerZ);
     }
 
     public int getYLocation(World world, int x, int z) {
@@ -220,12 +220,17 @@ public class ClaimImpl implements Claim {
         blockLocation.setType(material);
     }
 
+    @Override
+    public void setWorldName(String worldName) {
+        this.world = Bukkit.getWorld(worldName);
+    }
+
     public void addClaimTag(ClaimTag claimTag) {
         claimTags.add((ClaimTagImpl) claimTag);
     }
 
     public void removeClaimTag(ClaimTag claimTag) {
-        claimTags.remove(claimTag);
+        claimTags.remove((ClaimTagImpl) claimTag);
     }
 
     @SuppressWarnings("unchecked")
@@ -239,7 +244,7 @@ public class ClaimImpl implements Claim {
     }
 
     public void removeSubClaim(SubClaim subClaim) {
-        subClaims.remove(subClaim);
+        subClaims.remove((SubClaimImpl) subClaim);
     }
 
     public void updateTimestamp(int duration) {
@@ -289,7 +294,7 @@ public class ClaimImpl implements Claim {
 
     @Override
     public String getWorldName() {
-        return worldName;
+        return world.getName();
     }
 
     @Override

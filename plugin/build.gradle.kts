@@ -63,7 +63,7 @@ dependencies {
     compileOnly("me.NoChance.PvPManager:pvpmanager:3.18.21")
 
     // SmartSpawner
-    compileOnly("com.github.ptthanh02:SmartSpawner:1.3.8")
+    compileOnly("com.github.NighterDevelopment:smartspawner:1.5.7.1")
 
     // RozsDB-Lite
     implementation("com.github.Weesli:RozsDB-Lite:1.1.1")
