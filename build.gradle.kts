@@ -16,6 +16,5 @@ subprojects {
             url = uri("https://repo.papermc.io/repository/maven-public/")
         }
         maven("https://jitpack.io")
-        maven("https://repo.rosewooddev.io/repository/public/")
     }
 }
