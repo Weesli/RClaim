@@ -72,7 +72,7 @@ public class ClaimManagerImpl implements ClaimManager {
             return;
         }
         String id = generateId();
-        Claim claim = new ClaimImpl(id, owner.getUniqueId(), new ArrayList<>() , new ArrayList<>(), chunk.getX() * 16,chunk.getZ() * 16, chunk.getWorld().getName());
+        Claim claim = new ClaimImpl(id, owner.getUniqueId(), new ArrayList<>() , new ArrayList<>(), chunk.getX() * 16,chunk.getZ() * 16, chunk.getWorld());
         ClaimCreateEvent event = new ClaimCreateEvent(owner, claim);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {

@@ -18,6 +18,7 @@ import net.weesli.rclaim.api.status.ClaimStatusService;
 import net.weesli.rclaim.event.ClaimLifecycleListener;
 import net.weesli.rclaim.event.ClaimPermissionListener;
 import net.weesli.rclaim.event.ClaimStatusListener;
+import net.weesli.rclaim.hook.stacker.HRoseStacker;
 import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.manager.CacheManagerImpl;
 import net.weesli.rclaim.command.CommandManager;
@@ -67,6 +68,7 @@ public final class RClaim extends JavaPlugin {
     private SpawnerManagerImpl spawnerManager;
     private MinionsManagerImpl minionsManager;
     private CombatManagerImpl combatManager;
+    private StackerManagerImpl stackerManager;
 
 
    @Getter private static RClaim instance;
@@ -82,12 +84,13 @@ public final class RClaim extends JavaPlugin {
         if (!loadFile()) return;
         loadStorage();
         cacheManager = new CacheManagerImpl();
-        spawnerManager = new SpawnerManagerImpl();
+        spawnerManager = new SpawnerManagerImpl(this.foliaLib);
         minionsManager = new MinionsManagerImpl();
         economyManager = new EconomyManagerImpl();
         hologramManager = new HologramManagerImpl();
         uiManager = new UIManager();
         combatManager = new CombatManagerImpl();
+        stackerManager = new StackerManagerImpl(this);
         claimManager = new ClaimManagerImpl();
         tagManager = new TagManagerImpl();
         textInputManager = new TextInputManager(this);

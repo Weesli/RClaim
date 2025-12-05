@@ -23,6 +23,9 @@ softdepend:
   - Multiverse-Core
   - SmartSpawner
   - FancyHolograms
+  - DeluxeCombat
+  - RoseStacker
+  - WildStacker
 permissions:
   rclaim.admin.clearclaim:
     description: Permission to clear all claims of player

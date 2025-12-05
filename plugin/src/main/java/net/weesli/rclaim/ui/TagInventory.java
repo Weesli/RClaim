@@ -15,7 +15,8 @@ public abstract class TagInventory {
     public abstract void openInventory(Player player, ClaimTag tag);
 
     public ItemStack getItemStack(MenuConfig.MenuItem menuItem, @Nullable Player player, TagResolver... tags){
-        return ItemBuilder.of(Material.getMaterial(menuItem.getMaterial()))
+        Material material = Material.getMaterial(menuItem.getMaterial());
+        return ItemBuilder.of(material != null ? material : Material.BEDROCK)
                 .name(menuItem.getTitle(),player, tags)
                 .lore(menuItem.getLore(),player, tags)
                 .amount(1)

@@ -5,6 +5,7 @@ import net.weesli.rclaim.api.hook.manager.CombatManager;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.api.hook.ClaimCombat;
 import net.weesli.rclaim.hook.combat.CombatLogX;
+import net.weesli.rclaim.hook.combat.DeluxeCombat;
 import net.weesli.rclaim.hook.combat.PvPManager;
 import org.bukkit.Bukkit;
 
@@ -22,6 +23,8 @@ public class CombatManagerImpl implements CombatManager {
             combatIntegration = new CombatLogX();
         } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("PvPManager")) {
             combatIntegration = new PvPManager();
+        } else if (Bukkit.getServer().getPluginManager().isPluginEnabled("DeluxeCombat")) {
+            combatIntegration = new DeluxeCombat();
         }
     }
 

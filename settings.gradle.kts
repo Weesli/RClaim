@@ -53,5 +53,8 @@ dependencyResolutionManagement {
         }
         // FoliaLib
         maven("https://repo.tcoded.com/releases")
+
+        // WildStacker
+        maven("https://repo.bg-software.com/repository/api/")
     }
 }

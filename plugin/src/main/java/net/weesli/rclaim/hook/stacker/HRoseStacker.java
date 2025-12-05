@@ -1,0 +1,59 @@
+package net.weesli.rclaim.hook.stacker;
+
+import dev.rosewood.rosestacker.event.BlockStackEvent;
+import dev.rosewood.rosestacker.event.BlockUnstackEvent;
+import dev.rosewood.rosestacker.event.SpawnerStackEvent;
+import dev.rosewood.rosestacker.event.SpawnerUnstackEvent;
+import net.weesli.rclaim.RClaim;
+import net.weesli.rclaim.api.RClaimProvider;
+import net.weesli.rclaim.api.hook.ClaimStacker;
+import net.weesli.rclaim.api.model.Claim;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+
+import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
+
+public class HRoseStacker implements Listener, ClaimStacker {
+
+    public HRoseStacker(RClaim plugin) {
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler
+    public void blockStack(BlockStackEvent event) {
+        if (!availableArea(event.getPlayer(), event.getStack().getLocation())) {
+            event.setCancelled(true);
+            sendMessageToPlayer("YOU_CANT_STACK_BLOCKS", event.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void blockUnstack(BlockUnstackEvent event) {
+        if (event.getPlayer() == null) return;
+        if (!availableArea(event.getPlayer(), event.getStack().getLocation())) {
+            event.setCancelled(true);
+            sendMessageToPlayer("YOU_CANT_UNSTACK_BLOCKS", event.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void SpawnerStack(SpawnerStackEvent event) {
+        if (!availableArea(event.getPlayer(), event.getStack().getLocation())) {
+            event.setCancelled(true);
+            sendMessageToPlayer("YOU_CANT_STACK_SPAWNERS", event.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void spawnerUnstack(SpawnerUnstackEvent event) {
+        if (event.getPlayer() == null) return;
+        if (!availableArea(event.getPlayer(), event.getStack().getLocation())) {
+            event.setCancelled(true);
+            sendMessageToPlayer("YOU_CANT_UNSTACK_SPAWNERS", event.getPlayer());
+        }
+    }
+}

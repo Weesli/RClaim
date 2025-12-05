@@ -39,7 +39,7 @@ public class ClaimUpgradeMenu extends ClaimInventory {
         }
         int suitableDayCount = (ConfigLoader.getConfig().getClaimSettings().getClaimDuration() - currentDayCount);
         int totalClaimCost = claimCostPerDay * suitableDayCount;
-        meta.setLore(meta.getLore().stream().map(line -> line.replaceAll("<cost>", String.valueOf(totalClaimCost))).collect(Collectors.toList()));
+        meta.setLore(meta.hasLore() ? meta.getLore().stream().map(line -> line.replaceAll("<cost>", String.valueOf(totalClaimCost))).collect(Collectors.toList()) : null);
         itemStack.setItemMeta(meta);
         inventory.setItem(new ClickableItemStack(itemStack, menu.getItems().get("item-settings").getIndex()), event -> {
             if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive()){

@@ -74,8 +74,23 @@ public class LangConfig extends RozsConfig {
         @ConfigKey("CONFIRM_UNCLAIMED")
         private String confirmUnclaimed;
 
+        @ConfigKey("YOU_CANT_STACK_BLOCKS")
+        private String youCantStackBlocks;
+
+        @ConfigKey("YOU_CANT_UNSTACK_BLOCKS")
+        private String youCantUnstackBlocks;
+
+        @ConfigKey("YOU_CANT_STACK_SPAWNERS")
+        private String youCantStackSpawners;
+
+        @ConfigKey("YOU_CANT_UNSTACK_SPAWNERS")
+        private String youCantUnstackSpawners;
+
         @ConfigKey("YOU_CANT_PLACE_SPAWNER")
         private String youCantPlaceSpawner;
+
+        @ConfigKey("YOU_CANT_BREAK_SPAWNER")
+        private String youCantBreakSpawner;
 
         @ConfigKey("NOT_IN_CLAIMABLE_WORLD")
         private String notInClaimableWorld;

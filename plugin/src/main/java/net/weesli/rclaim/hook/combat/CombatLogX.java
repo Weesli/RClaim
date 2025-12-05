@@ -20,6 +20,7 @@ public class CombatLogX implements ClaimCombat {
         if (api == null) {
             Bukkit.getConsoleSender().sendMessage("CombatLogX not found. Combat hooks disabled.");
             enabled = false;
+            return;
         }
         enabled = true;
         manager = api.getCombatManager();
