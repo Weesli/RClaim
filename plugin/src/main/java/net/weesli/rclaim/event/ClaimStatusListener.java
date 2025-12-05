@@ -6,7 +6,10 @@ import net.weesli.rclaim.api.status.ClaimStatusRegistry;
 import net.weesli.rclaim.api.status.ClaimStatusService;
 import net.weesli.rozslib.events.PlayerDamageByPlayerEvent;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -32,24 +35,44 @@ public class ClaimStatusListener {
 
     public static class MonsterSpawnStatus extends ClaimStatusRegistry {
         protected MonsterSpawnStatus(ClaimStatusService svc) { super("SPAWN_MONSTER"); }
+
         @EventHandler(ignoreCancelled = true)
         public void on(EntitySpawnEvent e) {
+            if (!(e.getEntity() instanceof Monster)) {
+                return;
+            }
             Claim claim = RClaim.getInstance().getClaimManager().getClaim(e.getLocation());
             if (claim == null) return;
-            if (e.getEntity() instanceof Monster) {
-                if (!claim.checkStatus("SPAWN_MONSTER")) e.setCancelled(true);
+            if (!claim.checkStatus("SPAWN_MONSTER")) {
+                e.setCancelled(true);
             }
         }
     }
 
     public static class AnimalSpawnStatus extends ClaimStatusRegistry {
         protected AnimalSpawnStatus(ClaimStatusService svc) { super("SPAWN_ANIMAL"); }
+
         @EventHandler(ignoreCancelled = true)
         public void on(EntitySpawnEvent e) {
+            Entity spawned = e.getEntity();
+
+            if (spawned instanceof Monster || spawned instanceof Player) {
+                return;
+            }
+            if (!(spawned instanceof LivingEntity)) {
+                return;
+            }
+
+            if (spawned instanceof org.bukkit.entity.Tameable && ((org.bukkit.entity.Tameable) spawned).isTamed()) {
+                return;
+            }
+
             Claim claim = RClaim.getInstance().getClaimManager().getClaim(e.getLocation());
             if (claim == null) return;
-            if (e.getEntity() instanceof Monster) return;
-            if (!claim.checkStatus("SPAWN_ANIMAL")) e.setCancelled(true);
+
+            if (!claim.checkStatus("SPAWN_ANIMAL")) {
+                e.setCancelled(true);
+            }
         }
     }
 
