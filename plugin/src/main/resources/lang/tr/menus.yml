@@ -474,7 +474,7 @@ permissionsMenu:
         - '&7'
         - '&7Hayvanlara saldırma iznini aç/kapat'
       index: 0
-    ITEM_PICKUP:
+    PICKUP_ITEM:
       title: '&aEşya Toplama'
       material: DIAMOND
       customModelData: 0
