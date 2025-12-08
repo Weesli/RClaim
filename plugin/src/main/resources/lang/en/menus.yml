@@ -469,7 +469,7 @@ permissionsMenu:
         - '&7'
         - '&7Toggle attacking animals permission'
       index: 0
-    ITEM_PICKUP:
+    PICKUP_ITEM:
       title: '&aPickup Item'
       material: DIAMOND
       customModelData: 0

@@ -2,6 +2,7 @@ package net.weesli.rclaim.api.permission;
 
 import net.weesli.rclaim.api.RClaimProvider;
 import net.weesli.rclaim.api.model.Claim;
+import net.weesli.rclaim.api.model.ClaimTag;
 import net.weesli.rclaim.api.status.ClaimStatusService;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -56,6 +57,10 @@ public abstract class ClaimPermissionRegistry implements Listener {
         Claim claim = RClaimProvider.getClaimManager().getClaim(loc);
         if (claim == null) return true;
         if(claim.getOwner().equals(player.getUniqueId())) return true;
+        ClaimTag tag = claim.getClaimTags().stream().filter(i -> i.hasUser(player.getUniqueId())).findFirst().orElse(null);
+        if (tag != null){
+            return tag.hasPermission(key());
+        }
         return claim.checkPermission(player.getUniqueId(), key());
     }
 
