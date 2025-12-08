@@ -7,14 +7,13 @@ import net.weesli.rozslib.enums.DatabaseType;
 
 public class MySQLStorage extends AbstractDatabase {
 
-    public MySQLStorage(){
+    public MySQLStorage() {
         super(new ConnectionInfo(
                 DatabaseType.MySQL,
-                String.format("jdbc:mysql://%s:%s@%s:%s/",
-                        ConfigLoader.getConfig().getDatabase().getUsername(),
-                        ConfigLoader.getConfig().getDatabase().getPassword(),
+                String.format("jdbc:mysql://%s:%s/%s",
                         ConfigLoader.getConfig().getDatabase().getHost(),
-                        ConfigLoader.getConfig().getDatabase().getPort()),
+                        ConfigLoader.getConfig().getDatabase().getPort(),
+                        ConfigLoader.getConfig().getDatabase().getDatabase()),
                 ConfigLoader.getConfig().getDatabase().getUsername(),
                 ConfigLoader.getConfig().getDatabase().getPassword(),
                 ConfigLoader.getConfig().getDatabase().getDatabase()

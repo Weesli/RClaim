@@ -16,22 +16,17 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
 
-public abstract class AbstractDatabase extends Database implements ClaimDatabase {
+public abstract class AbstractDatabase implements ClaimDatabase {
 
-    private final ConnectionInfo info;
     private final Gson gson = GsonProvider.getGson();
-    private Connection connection;
+    private final Connection connection;
 
     @SneakyThrows
     public AbstractDatabase(ConnectionInfo info) {
-        super(info);
-        this.info = info;
-        connect();
-    }
-    public void connect() {
         connection = DatabaseFactory.createConnection(info);
         createTable();
     }
+
     @SneakyThrows
     private void createTable() {
         String sql = tableSQL();
