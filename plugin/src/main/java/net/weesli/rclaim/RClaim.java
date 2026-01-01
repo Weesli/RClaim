@@ -112,8 +112,6 @@ public final class RClaim extends JavaPlugin {
         RozsLibService.start(this);
 
         // start the public task
-        //Bukkit.getScheduler().runTaskAsynchronously(this, (this::checkVersion));
-        //Bukkit.getScheduler().runTaskTimerAsynchronously(this, Loader::save, 12000L, 12000L);
         foliaLib.getScheduler().runAsync((wrappedTask) -> {
             checkVersion();
         });
