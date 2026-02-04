@@ -3,6 +3,7 @@ package net.weesli.rclaim.hook.hologram;
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.hook.ClaimHologram;
@@ -14,8 +15,6 @@ import net.weesli.rozslib.color.ColorBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-
-import static net.weesli.rclaim.util.ChatUtil.createTagResolver;
 
 public class HDecentHologram implements ClaimHologram {
 
@@ -36,7 +35,7 @@ public class HDecentHologram implements ClaimHologram {
         if (hologram == null)return;
         for (String line : ConfigLoader.getConfig().getHologram().getHologramSettings().getHologramLines()){
             if (line == null)continue;
-            Component message = ColorBuilder.convertColors(line, createTagResolver("player", Bukkit.getOfflinePlayer(claim.getOwner()).getName()), createTagResolver("id", claim.getID()));
+            Component message = ColorBuilder.convertColors(line, Placeholder.parsed("player", Bukkit.getOfflinePlayer(claim.getOwner()).getName()), Placeholder.parsed("id", claim.getID()));
             DHAPI.addHologramLine(hologram, LegacyComponentSerializer.legacySection().serialize(message));
         }
     }

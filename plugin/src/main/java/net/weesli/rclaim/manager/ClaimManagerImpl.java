@@ -161,10 +161,10 @@ public class ClaimManagerImpl implements ClaimManager {
             if (ConfigLoader.getConfig().getClaimTimeoutMessage().isEnabled()){
                 ConfigLoader.getConfig().getClaimTimeoutMessage().getText()
                         .stream().map(line-> LegacyComponentSerializer.legacySection().serialize(ColorBuilder.convertColors(line))
-                                .replaceAll("%player%", Bukkit.getPlayer(claim.getOwner()).getName())
-                                .replaceAll("%x%", String.valueOf(claim.getX()))
-                                .replaceAll("%z%", String.valueOf(claim.getZ()))
-                                .replaceAll("%world%", claim.getWorldName())
+                                .replaceAll("<player>", Bukkit.getPlayer(claim.getOwner()).getName())
+                                .replaceAll("<x>", String.valueOf(claim.getX()))
+                                .replaceAll("<z>", String.valueOf(claim.getZ()))
+                                .replaceAll("<world>", claim.getWorldName())
                         ).forEach(Bukkit::broadcastMessage);
             }
         }

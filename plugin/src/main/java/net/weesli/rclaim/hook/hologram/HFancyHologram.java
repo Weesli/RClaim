@@ -6,6 +6,7 @@ import de.oliver.fancyholograms.api.data.TextHologramData;
 import de.oliver.fancyholograms.api.events.HologramShowEvent;
 import de.oliver.fancyholograms.api.hologram.Hologram;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.enums.HologramModule;
@@ -21,8 +22,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.util.Optional;
-
-import static net.weesli.rclaim.util.ChatUtil.createTagResolver;
 
 public class HFancyHologram implements ClaimHologram, Listener {
 
@@ -54,7 +53,7 @@ public class HFancyHologram implements ClaimHologram, Listener {
         hologramData.setBackground(Color.fromARGB(0,0,0,0));
         for (String line : ConfigLoader.getConfig().getHologram().getHologramSettings().getHologramLines()){
             if (line == null)continue;
-            Component message = ColorBuilder.convertColors(line, createTagResolver("player", Bukkit.getOfflinePlayer(claim.getOwner()).getName()), createTagResolver("id", claim.getID()));
+            Component message = ColorBuilder.convertColors(line, Placeholder.parsed("player", Bukkit.getOfflinePlayer(claim.getOwner()).getName()), Placeholder.parsed("id", claim.getID()));
             hologramData.addLine(LegacyComponentSerializer.legacySection().serialize(message));
         }
         hologramData.setPersistent(false);

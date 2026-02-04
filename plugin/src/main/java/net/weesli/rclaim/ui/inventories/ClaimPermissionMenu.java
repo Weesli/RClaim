@@ -56,7 +56,7 @@ public class ClaimPermissionMenu extends ClaimInventory {
 
         ItemMeta meta = itemStack.getItemMeta();
         List<String> lore = meta.hasLore() ? meta.getLore().stream()
-                .map(line -> line.replace("%status%", statusPlaceholder))
+                .map(line -> line.replace("<status>", statusPlaceholder))
                 .toList() : null;
         meta.setLore(lore);
         itemStack.setItemMeta(meta);

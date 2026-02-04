@@ -7,6 +7,7 @@ import dev.triumphteam.cmd.core.annotation.SubCommand;
 import dev.triumphteam.cmd.core.annotation.Suggestion;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
@@ -21,7 +22,6 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToConsole;
-import static net.weesli.rclaim.util.ChatUtil.createTagResolver;
 
 @Command("adminclaim")
 public class AdminCommand extends BaseCommand {
@@ -48,7 +48,7 @@ public class AdminCommand extends BaseCommand {
         Claims.forEach(claim -> {
             RClaim.getInstance().getClaimManager().removeClaim(claim);
         });
-        sendMessageToConsole("DELETED_CLAIMS", createTagResolver("player", player.getName()));
+        sendMessageToConsole("DELETED_CLAIMS", Placeholder.parsed("player", player.getName()));
     }
 
     @SubCommand("reload")

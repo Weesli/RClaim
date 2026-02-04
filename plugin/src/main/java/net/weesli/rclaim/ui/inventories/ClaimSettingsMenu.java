@@ -54,9 +54,9 @@ public class ClaimSettingsMenu extends ClaimInventory {
         ItemStack itemStack = getItemStack(item, player);
         ItemMeta meta = itemStack.getItemMeta();
         if (claim.checkStatus(status)) {
-            meta.setLore(meta.hasLore() ? meta.getLore().stream().map(line-> line.replaceAll("%status%", BaseUtil.getStatus(true))).toList() : null);
+            meta.setLore(meta.hasLore() ? meta.getLore().stream().map(line-> line.replaceAll("<status>", BaseUtil.getStatus(true))).toList() : null);
         }else {
-            meta.setLore(meta.hasLore() ? meta.getLore().stream().map(line-> line.replaceAll("%status%", BaseUtil.getStatus(false))).toList() : null);
+            meta.setLore(meta.hasLore() ? meta.getLore().stream().map(line-> line.replaceAll("<status>", BaseUtil.getStatus(false))).toList() : null);
         }
         itemStack.setItemMeta(meta);
         builder.addItem(itemStack, event -> {

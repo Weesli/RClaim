@@ -1,6 +1,7 @@
 package net.weesli.rclaim.ui.inventories;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimEffect;
@@ -22,7 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
-import static net.weesli.rclaim.util.ChatUtil.createTagResolver;
 
 // pageable
 public class ClaimEffectMenu extends ClaimInventory {
@@ -69,9 +69,9 @@ public class ClaimEffectMenu extends ClaimInventory {
         ItemMeta meta = itemStack.getItemMeta();
         ClaimEffect model = claim.getEffect(effect);
         List<String> lore = meta.hasLore() ? meta.getLore().stream().map(line -> line
-                .replaceAll("%status%", BaseUtil.getStatus(model != null && model.isEnabled() && claim.hasEffect(effect)))
-                .replaceAll("%level%", String.valueOf(model == null ? 0 : model.getLevel()))
-                .replaceAll("%cost%", String.valueOf(model == null ? BaseUtil.getCost(effect, claim) : model.isMaxLevel() ? ColorBuilder.convertColors(ConfigLoader.getConfig().getEffects().getMaxLevelMessage()) : BaseUtil.getCost(effect, claim)))
+                .replaceAll("<status>", BaseUtil.getStatus(model != null && model.isEnabled() && claim.hasEffect(effect)))
+                .replaceAll("<level>", String.valueOf(model == null ? 0 : model.getLevel()))
+                .replaceAll("<cost>", String.valueOf(model == null ? BaseUtil.getCost(effect, claim) : model.isMaxLevel() ? ColorBuilder.convertColors(ConfigLoader.getConfig().getEffects().getMaxLevelMessage()) : BaseUtil.getCost(effect, claim)))
         ).toList() : null;
         meta.setLore(lore);
         itemStack.setItemMeta(meta);
@@ -106,7 +106,7 @@ public class ClaimEffectMenu extends ClaimInventory {
                     return;
                 }
                 claim.getEffect(effect).setLevel(currentLevel + 1);
-                sendMessageToPlayer("EFFECT_LEVEL_UP", player, createTagResolver("%level%", String.valueOf(currentLevel+1)));
+                sendMessageToPlayer("EFFECT_LEVEL_UP", player, Placeholder.parsed("level", String.valueOf(currentLevel+1)));
             }
         }
         RClaim.getInstance().getUiManager().openInventory(player, claim, ClaimEffectMenu.class);

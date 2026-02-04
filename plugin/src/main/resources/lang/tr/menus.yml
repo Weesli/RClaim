@@ -228,7 +228,7 @@ optionsMenu:
       material: SHEEP_SPAWN_EGG
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Claim içinde hayvan doğurmaya izin vermek için tıkla!'
       index: 0
@@ -237,7 +237,7 @@ optionsMenu:
       material: TNT
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Claim içinde patlamaları açmak için tıkla!'
       index: 0
@@ -246,7 +246,7 @@ optionsMenu:
       material: WATER_BUCKET
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Claim hava durumunu değiştirmek için tıkla!'
       index: 0
@@ -255,7 +255,7 @@ optionsMenu:
       material: DIAMOND_SWORD
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Claim içinde PVP açmak için tıkla!'
       index: 0
@@ -264,7 +264,7 @@ optionsMenu:
       material: FIRE_CHARGE
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Claim içinde yayılmayı açmak için tıkla!'
       index: 0
@@ -273,7 +273,7 @@ optionsMenu:
       material: SKELETON_SPAWN_EGG
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Claim içinde canavar doğurmaya izin vermek için tıkla!'
       index: 0
@@ -282,7 +282,7 @@ optionsMenu:
       material: CLOCK
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Claim zamanını değiştirmek için tıkla!'
       index: 0
@@ -389,7 +389,7 @@ permissionsMenu:
       material: BUCKET
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Kova doldurma iznini aç/kapat'
       index: 0
@@ -398,7 +398,7 @@ permissionsMenu:
       material: LEVER
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Kapı kullanma iznini aç/kapat'
       index: 0
@@ -407,7 +407,7 @@ permissionsMenu:
       material: STONE_PICKAXE
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Blok kırma iznini aç/kapat'
       index: 0
@@ -416,7 +416,7 @@ permissionsMenu:
       material: CHEST
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Sandık/varil açma iznini aç/kapat'
       index: 0
@@ -425,7 +425,7 @@ permissionsMenu:
       material: LAVA_BUCKET
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Kova boşaltma iznini aç/kapat'
       index: 0
@@ -434,7 +434,7 @@ permissionsMenu:
       material: OBSIDIAN
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Portal kullanma iznini aç/kapat'
       index: 0
@@ -443,7 +443,7 @@ permissionsMenu:
       material: IRON_SWORD
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Varlık etkileşimi iznini aç/kapat'
       index: 0
@@ -452,7 +452,7 @@ permissionsMenu:
       material: IRON_INGOT
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Eşya atma iznini aç/kapat'
       index: 0
@@ -461,7 +461,7 @@ permissionsMenu:
       material: BARREL
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Sandık/varil kırma iznini aç/kapat'
       index: 0
@@ -470,7 +470,7 @@ permissionsMenu:
       material: BOW
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Hayvanlara saldırma iznini aç/kapat'
       index: 0
@@ -479,7 +479,7 @@ permissionsMenu:
       material: DIAMOND
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Eşya toplama iznini aç/kapat'
       index: 0
@@ -488,7 +488,7 @@ permissionsMenu:
       material: DIAMOND_SWORD
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Canavarlara saldırma iznini aç/kapat'
       index: 0
@@ -497,7 +497,7 @@ permissionsMenu:
       material: POTION
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7İksir kullanma iznini aç/kapat'
       index: 0
@@ -506,7 +506,7 @@ permissionsMenu:
       material: STONE
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
+        - '&7Durum: &f<status>'
         - '&7'
         - '&7Blok yerleştirme iznini aç/kapat'
       index: 0
@@ -593,10 +593,10 @@ effectMenu:
       material: IRON_BOOTS
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
-        - '&7Seviye: &f%level%'
+        - '&7Durum: &f<status>'
+        - '&7Seviye: &f<level>'
         - '&7'
-        - '&7Maliyet: &f%cost%'
+        - '&7Maliyet: &f<cost>'
         - '&7'
         - '&7Yükseltmek için tıkla.'
         - '&7Shift-Tık → Aç/Kapat'
@@ -606,10 +606,10 @@ effectMenu:
       material: GOLDEN_PICKAXE
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
-        - '&7Seviye: &f%level%'
+        - '&7Durum: &f<status>'
+        - '&7Seviye: &f<level>'
         - '&7'
-        - '&7Maliyet: &f%cost%'
+        - '&7Maliyet: &f<cost>'
         - '&7'
         - '&7Yükseltmek için tıkla.'
         - '&7Shift-Tık → Aç/Kapat'
@@ -619,10 +619,10 @@ effectMenu:
       material: DIAMOND_BOOTS
       customModelData: 0
       lore:
-        - '&7Durum: &f%status%'
-        - '&7Seviye: &f%level%'
+        - '&7Durum: &f<status>'
+        - '&7Seviye: &f<level>'
         - '&7'
-        - '&7Maliyet: &f%cost%'
+        - '&7Maliyet: &f<cost>'
         - '&7'
         - '&7Yükseltmek için tıkla.'
         - '&7Shift-Tık → Aç/Kapat'

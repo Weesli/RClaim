@@ -44,7 +44,7 @@ public class FormatUtil {
      * @param message The message to send.
      */
     public static void sendActionBar(Player player, Map<String, String> values, String message) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LegacyComponentSerializer.legacySection().serialize(ColorBuilder.convertColors(message.replace("%player%", values.get("player"))))));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LegacyComponentSerializer.legacySection().serialize(ColorBuilder.convertColors(message.replace("<player>", values.get("player"))))));
     }
 
     /**
@@ -56,8 +56,8 @@ public class FormatUtil {
      */
     public static void sendTitle(Player player, Map<String, String> values, String message) {
         String[] split = message.split("<>");
-        String title = split[0].replace("%player%", values.get("player"));
-        String subtitle = split.length > 1 ? split[1].replace("%player%", values.get("player")) : "";
+        String title = split[0].replace("<player>", values.get("player"));
+        String subtitle = split.length > 1 ? split[1].replace("<player>", values.get("player")) : "";
         player.sendTitlePart(TitlePart.TITLE, ColorBuilder.convertColors(title));
         player.sendTitlePart(TitlePart.SUBTITLE, ColorBuilder.convertColors(subtitle));
     }

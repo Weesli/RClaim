@@ -22,7 +22,7 @@ MAX_TRUSTED_PLAYERS: "&cMaksimum üye ekleme limitine ulaştınız"
 YOU_CANT_PLACE_MINION: "&cMinyon yerleştirmek için kendi bölgenizde olmalısınız!"
 AREA_DISABLED: "&cBu alanda claim satın alamazsınız!"
 EFFECT_BOUGHT: "&aClaim efekti satın alındı!"
-EFFECT_LEVEL_UP: "&aClaim efekti &b%level%&a seviyesine yükseltildi!"
+EFFECT_LEVEL_UP: "&aClaim efekti &b<level>&a seviyesine yükseltildi!"
 EFFECT_MAX_LEVEL: "&cBu efekt şu anda maksimum seviyede!"
 ALREADY_ADDED_USER: "&cBu oyuncu zaten tag'a eklenmiş!"
 ENABLE_CLAIM_BLOCK_EDIT_MODE: "&aClaim bloğu düzenleme modu aktif oldu!"
@@ -65,4 +65,4 @@ STATUS_PVP: "&cBu alanda herhangi bir oyuncuya vuramazsınız!"
 
 # Yönetici mesajları
 
-DELETED_CLAIMS: "&c%player%'ın claim'leri başarıyla silindi!"
+DELETED_CLAIMS: "&c<player>'ın claim'leri başarıyla silindi!"

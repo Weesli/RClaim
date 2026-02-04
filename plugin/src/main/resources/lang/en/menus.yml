@@ -224,7 +224,7 @@ optionsMenu:
       material: SHEEP_SPAWN_EGG
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Click to spawn animals on your claim!'
       index: 0
@@ -233,7 +233,7 @@ optionsMenu:
       material: TNT
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Click to enable explosions on your claim!'
       index: 0
@@ -242,7 +242,7 @@ optionsMenu:
       material: WATER_BUCKET
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Click to change weather status!'
       index: 0
@@ -251,7 +251,7 @@ optionsMenu:
       material: DIAMOND_SWORD
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Click to enable PVP on your claim!'
       index: 0
@@ -260,7 +260,7 @@ optionsMenu:
       material: FIRE_CHARGE
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Click to enable spread on your claim!'
       index: 0
@@ -269,7 +269,7 @@ optionsMenu:
       material: SKELETON_SPAWN_EGG
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Click to spawn monsters on your claim!'
       index: 0
@@ -278,7 +278,7 @@ optionsMenu:
       material: CLOCK
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Click to change time status!'
       index: 0
@@ -384,7 +384,7 @@ permissionsMenu:
       material: BUCKET
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle using bucket fill permission'
       index: 0
@@ -393,7 +393,7 @@ permissionsMenu:
       material: LEVER
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle using doors permission'
       index: 0
@@ -402,7 +402,7 @@ permissionsMenu:
       material: STONE_PICKAXE
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle block breaking permission'
       index: 0
@@ -411,7 +411,7 @@ permissionsMenu:
       material: CHEST
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle container opening permission'
       index: 0
@@ -420,7 +420,7 @@ permissionsMenu:
       material: LAVA_BUCKET
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle using bucket empty permission'
       index: 0
@@ -429,7 +429,7 @@ permissionsMenu:
       material: OBSIDIAN
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle using portals permission'
       index: 0
@@ -438,7 +438,7 @@ permissionsMenu:
       material: IRON_SWORD
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle entity interaction permission'
       index: 0
@@ -447,7 +447,7 @@ permissionsMenu:
       material: IRON_INGOT
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle item dropping permission'
       index: 0
@@ -456,7 +456,7 @@ permissionsMenu:
       material: BARREL
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle breaking containers permission'
       index: 0
@@ -465,7 +465,7 @@ permissionsMenu:
       material: BOW
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle attacking animals permission'
       index: 0
@@ -474,7 +474,7 @@ permissionsMenu:
       material: DIAMOND
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle item pickup permission'
       index: 0
@@ -483,7 +483,7 @@ permissionsMenu:
       material: DIAMOND_SWORD
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle attacking monsters permission'
       index: 0
@@ -492,7 +492,7 @@ permissionsMenu:
       material: POTION
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle using potions permission'
       index: 0
@@ -501,7 +501,7 @@ permissionsMenu:
       material: STONE
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
+        - '&7status: &f<status>'
         - '&7'
         - '&7Toggle block placing permission'
       index: 0
@@ -586,10 +586,10 @@ effectMenu:
       material: IRON_BOOTS
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
-        - '&7Level: &f%level%'
+        - '&7status: &f<status>'
+        - '&7Level: &f<level>'
         - '&7'
-        - '&7Cost: &f%cost%'
+        - '&7Cost: &f<cost>'
         - '&7'
         - '&7Click and upgrade effect.'
         - '&7Shift-Click and enable/disable effect.'
@@ -599,10 +599,10 @@ effectMenu:
       material: GOLDEN_PICKAXE
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
-        - '&7Level: &f%level%'
+        - '&7status: &f<status>'
+        - '&7Level: &f<level>'
         - '&7'
-        - '&7Cost: &f%cost%'
+        - '&7Cost: &f<cost>'
         - '&7'
         - '&7Click and upgrade effect.'
         - '&7Shift-Click and enable/disable effect.'
@@ -612,10 +612,10 @@ effectMenu:
       material: DIAMOND_BOOTS
       customModelData: 0
       lore:
-        - '&7status: &f%status%'
-        - '&7Level: &f%level%'
+        - '&7status: &f<status>'
+        - '&7Level: &f<level>'
         - '&7'
-        - '&7Cost: &f%cost%'
+        - '&7Cost: &f<cost>'
         - '&7'
         - '&7Click and upgrade effect.'
         - '&7Shift-Click and enable/disable effect.'
