@@ -35,6 +35,7 @@ public class ClaimImpl implements Claim {
     private List<String> claimStatuses;
     private int x,z;
     private transient World world;
+    private String worldName;
     private Map<UUID, List<String>> claimPermissions = new HashMap<>();
     private List<ClaimEffectImpl> effects;
     private Material block;
@@ -45,7 +46,6 @@ public class ClaimImpl implements Claim {
     private int timestamp;
 
     public ClaimImpl(){
-
     }
 
     public ClaimImpl(String ID, UUID owner, List<UUID> members, List<String> claimStatuses, int x, int z, World world) {
@@ -60,6 +60,7 @@ public class ClaimImpl implements Claim {
         this.x = x;
         this.z = z;
         this.world = world;
+        this.worldName = world.getName();
         timestamp = BaseUtil.getSec(ConfigLoader.getConfig().getClaimSettings().getClaimDuration());
         this.enableBlock = true;
     }
@@ -87,7 +88,7 @@ public class ClaimImpl implements Claim {
     public Location getCenter() {
         int centerX = x + 8;
         int centerZ = z + 8;
-        return new Location(world,  centerX, getYLocation(world, centerX , centerZ), centerZ);
+        return new Location(getWorld(),  centerX, getYLocation(getWorld(), centerX , centerZ), centerZ);
     }
 
     public int getYLocation(World world, int x, int z) {
@@ -101,6 +102,13 @@ public class ClaimImpl implements Claim {
             block = world.getBlockAt(x, y, z);
         }
         return (int) block.getLocation().getY();
+    }
+
+    private World getWorld(){
+        if (world == null){
+            this.world = Bukkit.getWorld(getWorldName());
+        }
+        return world;
     }
 
     public boolean checkPermission(UUID uuid, String key) {
@@ -294,10 +302,7 @@ public class ClaimImpl implements Claim {
 
     @Override
     public String getWorldName() {
-        if (world == null){
-            this.world = blockLocation.getWorld();
-        }
-        return world.getName();
+        return worldName;
     }
 
     @Override
