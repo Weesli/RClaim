@@ -86,6 +86,8 @@ dependencies {
     implementation("com.github.Weesli:RozsConfig:1.2.1")
 
     implementation("com.tcoded:FoliaLib:0.5.1")
+
+    compileOnly ("de.bluecolored:bluemap-api:2.7.7")
 }
 
 dependencies {

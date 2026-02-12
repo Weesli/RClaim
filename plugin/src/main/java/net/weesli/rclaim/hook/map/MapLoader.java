@@ -5,6 +5,7 @@ import net.weesli.rclaim.config.ConfigLoader;
 import org.bukkit.Bukkit;
 
 @Getter
+@Deprecated // this field is deprecated and will delete
 public class MapLoader {
 
     private HDynmap dynmap;

@@ -13,6 +13,7 @@ import lombok.SneakyThrows;
 import net.weesli.rclaim.api.RClaimProvider;
 import net.weesli.rclaim.api.database.ClaimDatabase;
 import net.weesli.rclaim.api.database.Loader;
+import net.weesli.rclaim.api.hook.manager.MapManager;
 import net.weesli.rclaim.api.permission.ClaimPermissionService;
 import net.weesli.rclaim.api.status.ClaimStatusService;
 import net.weesli.rclaim.event.ClaimLifecycleListener;
@@ -69,7 +70,7 @@ public final class RClaim extends JavaPlugin {
     private MinionsManagerImpl minionsManager;
     private CombatManagerImpl combatManager;
     private StackerManagerImpl stackerManager;
-
+    private MapManagerImpl mapManager;
 
    @Getter private static RClaim instance;
 
@@ -93,6 +94,7 @@ public final class RClaim extends JavaPlugin {
         stackerManager = new StackerManagerImpl(this);
         claimManager = new ClaimManagerImpl();
         tagManager = new TagManagerImpl();
+        mapManager = new MapManagerImpl();
         textInputManager = new TextInputManager(this);
         permissionService = new ClaimPermissionServiceImpl(this);
         statusService = new ClaimStatusServiceImpl(this);
@@ -104,7 +106,6 @@ public final class RClaim extends JavaPlugin {
         new CommandManager();
         new Metrics(this, 	23385);
         ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");
-        new MapLoader();
         // initialize betterRTP hook if plugin is enabled
         if (getServer().getPluginManager().isPluginEnabled("BetterRTP")) new HBetterRTP(this);
 

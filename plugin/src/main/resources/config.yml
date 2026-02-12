@@ -22,8 +22,6 @@ worldGuard:
   bannedRegions:
     - example
     - Weesli
-mapSupport:
-  dynmapSupport: false
 # Prevents players from fleeing to their own space when fighting within the server
 combatSystem: true
 effects:
@@ -78,15 +76,15 @@ economyType: VAULT
 claimTimeoutMessage:
   enabled: true
   text:
-    - '&aThe claim region of &b%player% at coordinates &b%x% &b%z% has been destroyed!'
+    - '&aThe claim region of &b<player> at coordinates &b<x> &b<z> has been destroyed!'
 activeWorlds:
   - world
 enterMessage:
   enabled: true
   # available format 'actionbar' and 'title'
   format: title
-  text: '&cClaim owner &f%player%'
-timeFormat: '%week% Week %day% Day %hour% Hour %minute% Minute %second% Second'
+  text: '&cClaim owner &f<player>'
+timeFormat: '<week> Week <day> Day <hour> Hour <minute> Minute <second> Second'
 database:
   host: localhost
   port: 3306
@@ -101,7 +99,7 @@ hologram:
     hologramHeight: 3.5
     hologramLines:
       - '&e&lClaim'
-      - '&eOwner: &f%player%'
+      - '&eOwner: &f<player>'
       - '&e'
       - '&eRemaining time: &f%rclaim_<id>_time%'
       - '&eProgressBar: &f%rclaim_<id>_progressbar%'

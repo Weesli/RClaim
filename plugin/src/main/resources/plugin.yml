@@ -17,6 +17,7 @@ softdepend:
   - JetMinions
   - WorldGuard
   - dynmap
+  - BlueMap
   - CombatLogX
   - PvPManager
   - BetterRTP

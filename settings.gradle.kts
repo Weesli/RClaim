@@ -56,5 +56,8 @@ dependencyResolutionManagement {
 
         // WildStacker
         maven("https://repo.bg-software.com/repository/api/")
+
+        // Blue Map
+        maven ( "https://repo.bluecolored.de/releases" )
     }
 }
