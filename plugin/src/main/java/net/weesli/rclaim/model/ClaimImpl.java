@@ -34,7 +34,7 @@ public class ClaimImpl implements Claim {
     private List<UUID> members;
     private List<String> claimStatuses;
     private int x,z;
-    private World world;
+    private transient World world;
     private Map<UUID, List<String>> claimPermissions = new HashMap<>();
     private List<ClaimEffectImpl> effects;
     private Material block;
@@ -294,6 +294,9 @@ public class ClaimImpl implements Claim {
 
     @Override
     public String getWorldName() {
+        if (world == null){
+            this.world = blockLocation.getWorld();
+        }
         return world.getName();
     }
 
