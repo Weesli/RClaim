@@ -18,10 +18,6 @@ public class TextInputListener implements Listener {
                 return;
             }
             event.setCancelled(true);
-            /*Bukkit.getScheduler().runTask(RClaim.getInstance(), () -> {
-                RClaim.getInstance().getTextInputManager().processInput(player, msg);
-                textPlayer.cancel();
-            });*/
             RClaim.getInstance().getFoliaLib().getScheduler().runNextTick((wrapper) -> {
                 RClaim.getInstance().getTextInputManager().processInput(player, msg);
                 textPlayer.cancel();

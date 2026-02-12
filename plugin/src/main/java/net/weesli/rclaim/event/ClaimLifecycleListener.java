@@ -77,16 +77,6 @@ public class ClaimLifecycleListener implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
-        /*Bukkit.getScheduler().runTaskLater(RClaim.getInstance(), () -> {
-            Player player = e.getPlayer();
-            Location loc = player.getRespawnLocation();
-            if (loc != null) {
-                Claim claim = RClaim.getInstance().getClaimManager().getClaim(loc);
-                if (claim != null) {
-                    Bukkit.getPluginManager().callEvent(new ClaimEnterEvent(claim, player));
-                }
-            }
-        }, 20L);*/
         RClaim.getInstance().getFoliaLib().getScheduler().runLater(() -> {
             Player player = e.getPlayer();
             Location loc = player.getRespawnLocation();
