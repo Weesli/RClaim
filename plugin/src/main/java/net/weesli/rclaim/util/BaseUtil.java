@@ -6,7 +6,6 @@ import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.api.enums.Effect;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.time.Duration;
 import java.util.*;
@@ -37,11 +36,11 @@ public class BaseUtil {
         long seconds = duration.toSecondsPart();
 
         return ConfigLoader.getConfig().getTimeFormat()
-                .replace("%week%", String.valueOf(weeks))
-                .replace("%day%", String.valueOf(days))
-                .replace("%hour%", String.valueOf(hours))
-                .replace("%minute%", String.valueOf(minutes))
-                .replace("%second%", String.valueOf(seconds));
+                .replace("<week>", String.valueOf(weeks))
+                .replace("<day>", String.valueOf(days))
+                .replace("<hour>", String.valueOf(hours))
+                .replace("<minute>", String.valueOf(minutes))
+                .replace("<second>", String.valueOf(seconds));
     }
 
 
