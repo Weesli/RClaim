@@ -26,8 +26,7 @@ public class SQLiteStorage extends AbstractDatabase {
     }
 
     public SQLiteStorage(){
-        super(new ConnectionInfo(DatabaseType.SQLite,
-                "jdbc:sqlite:" + new File(RClaim.getInstance().getDataFolder(), "data/RClaim.db").getAbsolutePath()));
+        super(new ConnectionInfo(DatabaseType.SQLite, "RClaim.db"), null);
     }
 
 

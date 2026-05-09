@@ -88,7 +88,6 @@ public final class RClaim extends JavaPlugin {
         spawnerManager = new SpawnerManagerImpl(this.foliaLib);
         minionsManager = new MinionsManagerImpl();
         economyManager = new EconomyManagerImpl();
-        hologramManager = new HologramManagerImpl();
         uiManager = new UIManager();
         combatManager = new CombatManagerImpl();
         stackerManager = new StackerManagerImpl(this);
@@ -111,6 +110,7 @@ public final class RClaim extends JavaPlugin {
 
         // register RozsLibService in this plugin
         RozsLibService.start(this);
+        hologramManager = new HologramManagerImpl();
 
         // start the public task
         foliaLib.getScheduler().runAsync((wrappedTask) -> {

@@ -18,12 +18,12 @@ public final class ConfigLoader {
     private static MenuConfig menu;
 
     private ConfigLoader(Plugin plugin, String langCode){
-        configMapper = ConfigMapper.of(Config.class).load(plugin.getResource("config.yml"))
-                .file(new File(plugin.getDataFolder(), "config.yml"));
-        langMapper = ConfigMapper.of(LangConfig.class).load(plugin.getResource("lang/" + langCode + "/lang.yml"))
-                .file(new File(plugin.getDataFolder(), "lang/" + langCode + "/lang.yml"));
-        menuMapper = ConfigMapper.of(MenuConfig.class).load(plugin.getResource("lang/" + langCode + "/menus.yml"))
-                .file(new File(plugin.getDataFolder(), "lang/" + langCode + "/menus.yml"));
+        configMapper = ConfigMapper.of(Config.class).file(new File(plugin.getDataFolder(), "config.yml"))
+                .load(plugin.getResource("config.yml"));
+        langMapper = ConfigMapper.of(LangConfig.class).file(new File(plugin.getDataFolder(), "lang/" + langCode + "/lang.yml"))
+                .load(plugin.getResource("lang/" + langCode + "/lang.yml"));
+        menuMapper = ConfigMapper.of(MenuConfig.class).file(new File(plugin.getDataFolder(), "lang/" + langCode + "/menus.yml"))
+                .load(plugin.getResource("lang/" + langCode + "/menus.yml"));
         save();
     }
 

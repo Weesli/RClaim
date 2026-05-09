@@ -14,7 +14,6 @@ import net.weesli.rclaim.api.enums.Effect;
 import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rclaim.util.PermissionUtil;
-import net.weesli.rozslib.database.annotation.PrimaryKey;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -27,7 +26,6 @@ import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 @Setter
 public class ClaimImpl implements Claim {
 
-    @PrimaryKey
     private String ID;
     private String displayName;
     private UUID owner;

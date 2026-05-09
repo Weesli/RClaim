@@ -64,16 +64,16 @@ public class PlayerCommand extends BaseCommand {
         int currentDayCount = 0; // this claim current day count 0 for this claim beacuse created new
         int suitableDayCount = ConfigLoader.getConfig().getClaimSettings().getClaimDuration() - currentDayCount;
         int totalClaimCost = claimCostPerDay * suitableDayCount; // for 30 days claim
+        if (RClaim.getInstance().getClaimManager().isSuitable(player.getLocation().getChunk())){
+            sendMessageToPlayer("IS_NOT_SUITABLE", player);
+            return;
+        }
         if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive()){
             if (!RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, totalClaimCost)){
                 sendMessageToPlayer("HASNT_MONEY", player);
                 return;
             }
             RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, totalClaimCost);
-        }
-        if (RClaim.getInstance().getClaimManager().isSuitable(player.getLocation().getChunk())){
-            sendMessageToPlayer("IS_NOT_SUITABLE", player);
-            return;
         }
         RClaim.getInstance().getClaimManager().createClaim(player.getLocation().getChunk(), player);
     }

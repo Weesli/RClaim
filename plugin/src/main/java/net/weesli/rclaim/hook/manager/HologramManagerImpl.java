@@ -9,7 +9,9 @@ import net.weesli.rclaim.api.enums.HologramModule;
 import net.weesli.rclaim.hook.hologram.HDecentHologram;
 import net.weesli.rclaim.api.hook.ClaimHologram;
 import net.weesli.rclaim.hook.hologram.HFancyHologram;
+import net.weesli.rclaim.hook.hologram.HRozsHologram;
 import net.weesli.rclaim.task.HologramUpdater;
+
 @Getter@Setter
 public class HologramManagerImpl implements HologramManager {
 
@@ -21,6 +23,7 @@ public class HologramManagerImpl implements HologramManager {
             switch (module){
                 case DecentHolograms -> hologramIntegration = new HDecentHologram();
                 case FancyHolograms -> hologramIntegration = new HFancyHologram();
+                case RozsHologram -> hologramIntegration = new HRozsHologram();
             }
             new HologramUpdater(RClaim.getInstance().getFoliaLib());
         }

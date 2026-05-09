@@ -97,7 +97,7 @@ public class ClaimResizeInventory extends ClaimInventory {
         builder.getItems().clear();
         builder.getInventory().clear();
         setupUpgradeInventory(player, builder, claim.getCenter(), claim);
-        builder.build();
+        builder.build(player);
         builder.openInventory(player);
     }
 

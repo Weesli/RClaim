@@ -7,9 +7,9 @@ import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.database.ClaimDatabase;
 import net.weesli.rclaim.model.ClaimImpl;
 import net.weesli.rozslib.database.ConnectionInfo;
-import net.weesli.rozslib.database.Database;
 import net.weesli.rozslib.database.DatabaseFactory;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,8 +22,8 @@ public abstract class AbstractDatabase implements ClaimDatabase {
     private final Connection connection;
 
     @SneakyThrows
-    public AbstractDatabase(ConnectionInfo info) {
-        connection = DatabaseFactory.createConnection(info);
+    public AbstractDatabase(ConnectionInfo info, Path dataPath) {
+        connection = DatabaseFactory.createConnection(info, dataPath);
         createTable();
     }
 

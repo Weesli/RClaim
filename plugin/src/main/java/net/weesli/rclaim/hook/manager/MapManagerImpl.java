@@ -19,6 +19,7 @@ public class MapManagerImpl implements MapManager {
         }else if (Bukkit.getPluginManager().isPluginEnabled("BlueMap")) {
             integration = new HBlueMap();
         }
+        if(integration == null) return;
         RClaim.getInstance().getFoliaLib().getScheduler().runTimerAsync(() -> {
             RClaim.getInstance().getCacheManager().getClaims().getCache().values().forEach(claim -> {
                 integration.update(claim);

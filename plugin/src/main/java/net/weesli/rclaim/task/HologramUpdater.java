@@ -8,7 +8,7 @@ import net.weesli.rclaim.api.model.Claim;
 public class HologramUpdater {
 
     public HologramUpdater(FoliaLib foliaLib){
-        foliaLib.getScheduler().runTimerAsync(this::run,0,20L);
+        foliaLib.getScheduler().runTimer(this::run,0,20L);
     }
 
     public void run() {

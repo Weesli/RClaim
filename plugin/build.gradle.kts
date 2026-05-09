@@ -69,7 +69,7 @@ dependencies {
     implementation("com.github.Weesli:RozsDB-Lite:1.1.1")
 
     // Rlib
-    implementation("com.github.Weesli:Rlib:2.4.6")
+    implementation("com.github.Weesli:Rlib:2.7.0")
 
     // FancyHolograms
     compileOnly("de.oliver:FancyHolograms:2.7.0")
