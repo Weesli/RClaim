@@ -93,8 +93,8 @@ database:
   database: rclaims
 hologram:
   enabled: true
-  # Available modules: 'DecentHolograms' and 'FancyHolograms'
-  hologramModule: DecentHolograms
+  # Available modules: 'DecentHolograms', 'FancyHolograms', 'RozsHologram'
+  hologramModule: RozsHologram
   hologramSettings:
     hologramHeight: 3.5
     hologramLines:
