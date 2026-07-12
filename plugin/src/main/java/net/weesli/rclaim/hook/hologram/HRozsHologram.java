@@ -1,12 +1,10 @@
 package net.weesli.rclaim.hook.hologram;
 
-import net.kyori.adventure.text.Component;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.enums.HologramModule;
 import net.weesli.rclaim.api.hook.ClaimHologram;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
-import net.weesli.rozslib.color.ColorBuilder;
 import net.weesli.rozslib.format.FormatterUtil;
 import net.weesli.rozslib.format.model.Placeholder;
 import net.weesli.rozslib.hologram.Hologram;
@@ -32,7 +30,6 @@ public class HRozsHologram implements ClaimHologram {
         Hologram hologram = service.createHologram(ID,location);
         for (String x : ConfigLoader.getConfig().getHologram().getHologramSettings().getHologramLines()){
             hologram.addLine(FormatterUtil.format(x, new Placeholder("player", Bukkit.getOfflinePlayer(claim.getOwner()).getName()), new Placeholder("id", claim.getID())));
-            hologram.addLine(x.replaceAll("<player>",Bukkit.getOfflinePlayer(claim.getOwner()).getName()).replaceAll("<id>", claim.getID()));
         }
         viewForOwner(claim);
     }
