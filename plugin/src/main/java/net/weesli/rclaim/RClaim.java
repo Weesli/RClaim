@@ -29,7 +29,6 @@ import net.weesli.rclaim.hook.manager.*;
 import net.weesli.rclaim.hook.other.HBetterRTP;
 import net.weesli.rclaim.database.*;
 import net.weesli.rclaim.hook.other.HPlaceholderAPI;
-import net.weesli.rclaim.hook.map.MapLoader;
 import net.weesli.rclaim.manager.ClaimManagerImpl;
 import net.weesli.rclaim.manager.TagManagerImpl;
 import net.weesli.rclaim.permission.ClaimPermissionServiceImpl;
