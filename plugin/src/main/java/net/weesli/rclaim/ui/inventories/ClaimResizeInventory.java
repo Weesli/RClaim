@@ -141,8 +141,7 @@ public class ClaimResizeInventory extends ClaimInventory {
             sendMessageToPlayer("NOT_IN_CLAIMABLE_WORLD", player);
             return;
         }
-        if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive() &&
-                !RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, ConfigLoader.getConfig().getClaimSettings().getClaimCostPerDay() * 30)) {
+        if (RClaim.getInstance().getEconomyManager().getEconomyIntegration().isActive() && !RClaim.getInstance().getEconomyManager().getEconomyIntegration().hasEnough(player, calculateSubClaimCost(claim))) {
             sendMessageToPlayer("HASNT_MONEY", player);
             return;
         }
@@ -161,8 +160,7 @@ public class ClaimResizeInventory extends ClaimInventory {
             setupUpgradeInventory(player, builder, claim.getCenter(), claim);
             builder.openInventory(player);
 
-            RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player,
-                    calculateSubClaimCost(claim));
+            RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, calculateSubClaimCost(claim));
         }
     }
 
