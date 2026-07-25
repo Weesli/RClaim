@@ -59,5 +59,8 @@ dependencyResolutionManagement {
 
         // Blue Map
         maven ( "https://repo.bluecolored.de/releases" )
+
+        // Pl3xMap (coordinate/version unverified, see plugin/build.gradle.kts)
+        maven("https://repo.pl3x.net/")
     }
 }

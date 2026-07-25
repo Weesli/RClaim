@@ -88,6 +88,11 @@ dependencies {
     implementation("com.tcoded:FoliaLib:0.5.1")
 
     compileOnly ("de.bluecolored:bluemap-api:2.7.7")
+
+    // Pl3xMap — this coordinate/version could NOT be verified in this environment
+    // (outbound access to Maven repos was blocked, see HPl3xMap.java). Confirm the
+    // real artifact/version against https://repo.pl3x.net/ before relying on this build.
+    compileOnly("net.pl3x.map:api:20240905-1.21.1")
 }
 
 dependencies {

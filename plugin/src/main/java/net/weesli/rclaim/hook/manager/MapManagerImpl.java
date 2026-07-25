@@ -12,6 +12,7 @@ import net.weesli.rclaim.api.hook.manager.MapManager;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.hook.map.HBlueMap;
 import net.weesli.rclaim.hook.map.HDynmap;
+import net.weesli.rclaim.hook.map.HPl3xMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -26,6 +27,8 @@ public class MapManagerImpl implements MapManager {
             integration = new HDynmap();
         }else if (Bukkit.getPluginManager().isPluginEnabled("BlueMap")) {
             integration = new HBlueMap();
+        }else if (Bukkit.getPluginManager().isPluginEnabled("Pl3xMap")) {
+            integration = new HPl3xMap();
         }
         if(integration == null) return;
         RClaim.getInstance().getFoliaLib().getScheduler().runTimerAsync(() -> {
