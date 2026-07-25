@@ -93,6 +93,11 @@ dependencies {
     // (outbound access to Maven repos was blocked, see HPl3xMap.java). Confirm the
     // real artifact/version against https://repo.pl3x.net/ before relying on this build.
     compileOnly("net.pl3x.map:api:20240905-1.21.1")
+
+    // CoreProtect — this coordinate/version and the CoreProtectAPI method signatures used in
+    // HCoreProtect.java could NOT be verified in this environment (network blocked). Confirm
+    // against https://github.com/PlayPro/CoreProtect before relying on the rollback feature.
+    compileOnly("com.github.PlayPro:CoreProtect:22.4")
 }
 
 dependencies {

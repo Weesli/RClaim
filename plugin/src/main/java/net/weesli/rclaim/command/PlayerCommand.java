@@ -8,11 +8,14 @@ import net.weesli.rclaim.activitylog.ActivityLogStorage;
 import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
+import net.weesli.rclaim.hook.other.HCoreProtect;
 import net.weesli.rclaim.hook.other.HWorldGuard;
 import net.weesli.rclaim.manager.AutoClaimManager;
+import net.weesli.rclaim.manager.PendingRollbackManager;
 import net.weesli.rclaim.ui.inventories.ClaimMainMenu;
 import net.weesli.rclaim.ui.inventories.ClaimsMenu;
 import net.weesli.rclaim.util.BaseUtil;
+import net.weesli.rclaim.util.DurationUtil;
 import net.weesli.rclaim.util.PlayerUtil;
 
 import net.weesli.rclaim.util.PreviewUtil;
@@ -208,6 +211,41 @@ public class PlayerCommand extends BaseCommand {
             case MEMBER_ADDED -> "ACTIVITY_ACTION_MEMBER_ADDED";
             case MEMBER_REMOVED -> "ACTIVITY_ACTION_MEMBER_REMOVED";
         };
+    }
+
+    @SubCommand("rollback")
+    public void rollback(Player player, String arg){
+        // hidden/disabled when CoreProtect isn't installed, per the feature's soft-depend requirement
+        if (!HCoreProtect.isAvailable()) return;
+
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
+        if (claim == null){
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
+            return;
+        }
+        if (!claim.isOwner(player.getUniqueId()) && !player.hasPermission("rclaim.admin.bypass")){
+            sendMessageToPlayer("NOT_YOUR_CLAIM", player);
+            return;
+        }
+
+        if ("confirm".equalsIgnoreCase(arg)){
+            PendingRollbackManager.Pending pendingRollback = PendingRollbackManager.consume(player.getUniqueId(), claim.getID());
+            if (pendingRollback == null){
+                sendMessageToPlayer("ROLLBACK_NO_PENDING", player);
+                return;
+            }
+            HCoreProtect.rollbackClaim(claim, pendingRollback.seconds());
+            sendMessageToPlayer("ROLLBACK_STARTED", player);
+            return;
+        }
+
+        long seconds = DurationUtil.parseSeconds(arg);
+        if (seconds <= 0){
+            sendMessageToPlayer("ROLLBACK_INVALID_DURATION", player);
+            return;
+        }
+        PendingRollbackManager.request(player.getUniqueId(), claim.getID(), seconds);
+        sendMessageToPlayer("ROLLBACK_CONFIRM", player);
     }
 
     @SubCommand("list")

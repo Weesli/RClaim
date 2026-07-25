@@ -32,6 +32,7 @@ import net.weesli.rclaim.api.enums.StorageType;
 import net.weesli.rclaim.hook.manager.*;
 import net.weesli.rclaim.hook.other.HBetterRTP;
 import net.weesli.rclaim.database.*;
+import net.weesli.rclaim.hook.other.HCoreProtect;
 import net.weesli.rclaim.hook.other.HPlaceholderAPI;
 import net.weesli.rclaim.manager.ClaimManagerImpl;
 import net.weesli.rclaim.manager.TagManagerImpl;
@@ -113,6 +114,8 @@ public final class RClaim extends JavaPlugin {
         ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");
         // initialize betterRTP hook if plugin is enabled
         if (getServer().getPluginManager().isPluginEnabled("BetterRTP")) new HBetterRTP(this);
+        // initialize CoreProtect hook (/claim rollback) if plugin is enabled
+        if (getServer().getPluginManager().isPluginEnabled("CoreProtect")) HCoreProtect.setup();
 
         // register RozsLibService in this plugin
         RozsLibService.start(this);

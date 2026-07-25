@@ -284,6 +284,20 @@ public class LangConfig extends RozsConfig {
         @ConfigKey("ACTIVITY_ACTION_MEMBER_REMOVED")
         private String activityActionMemberRemoved;
 
+        // Rollback messages
+
+        @ConfigKey("ROLLBACK_INVALID_DURATION")
+        private String rollbackInvalidDuration;
+
+        @ConfigKey("ROLLBACK_CONFIRM")
+        private String rollbackConfirm;
+
+        @ConfigKey("ROLLBACK_NO_PENDING")
+        private String rollbackNoPending;
+
+        @ConfigKey("ROLLBACK_STARTED")
+        private String rollbackStarted;
+
         public static void sendMessageToPlayer(String path, Player player, TagResolver... tagResolvers) {
                 String rawMessage = ConfigLoader.getConfig().getPrefix()
                         + ConfigLoader.getLangConfig().get(path, String.class);

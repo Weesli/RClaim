@@ -93,3 +93,8 @@ ACTIVITY_ACTION_DOOR_INTERACT: 'used a door'
 ACTIVITY_ACTION_CONTAINER_INTERACT: 'opened a container'
 ACTIVITY_ACTION_MEMBER_ADDED: 'added a member'
 ACTIVITY_ACTION_MEMBER_REMOVED: 'removed a member'
+# Rollback messages
+ROLLBACK_INVALID_DURATION: '&cInvalid duration, use something like 2h or 1d12h.'
+ROLLBACK_CONFIRM: '&cThis will roll back changes in this claim. Run /claim rollback confirm within 30 seconds to proceed.'
+ROLLBACK_NO_PENDING: '&cNo pending rollback for this claim, or it expired. Run /claim rollback <duration> again.'
+ROLLBACK_STARTED: '&aRollback started.'

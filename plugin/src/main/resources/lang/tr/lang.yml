@@ -96,3 +96,9 @@ ACTIVITY_ACTION_DOOR_INTERACT: "bir kapı kullandı"
 ACTIVITY_ACTION_CONTAINER_INTERACT: "bir konteyner açtı"
 ACTIVITY_ACTION_MEMBER_ADDED: "bir üye ekledi"
 ACTIVITY_ACTION_MEMBER_REMOVED: "bir üye çıkardı"
+
+# Rollback mesajları
+ROLLBACK_INVALID_DURATION: "&cGeçersiz süre, örnek: 2h veya 1d12h."
+ROLLBACK_CONFIRM: "&cBu işlem bu claim içindeki değişiklikleri geri alacak. Onaylamak için 30 saniye içinde /claim rollback confirm yazın."
+ROLLBACK_NO_PENDING: "&cBu claim için bekleyen bir rollback yok veya süresi doldu. Tekrar /claim rollback <süre> yazın."
+ROLLBACK_STARTED: "&aRollback başlatıldı."
