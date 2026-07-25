@@ -141,3 +141,14 @@ ClaimPermissionNames:
   USE_DOOR: Use Door
   USE_PORTAL: Use Portal
   USE_POTION: Use Potion
+discordWebhook:
+  enabled: false
+  url: ''
+  claimPurchased: true
+  claimDeleted: true
+  claimExpiringSoon: true
+  # How many hours before expiry the warning notification is sent
+  claimExpiringSoonHours: 24
+  claimExpired: true
+  memberAdded: true
+  memberRemoved: true

@@ -203,6 +203,26 @@ public class LangConfig extends RozsConfig {
         @ConfigKey("DELETED_CLAIMS")
         private String deletedClaims;
 
+        // Discord webhook messages
+
+        @ConfigKey("DISCORD_CLAIM_PURCHASED")
+        private String discordClaimPurchased;
+
+        @ConfigKey("DISCORD_CLAIM_DELETED")
+        private String discordClaimDeleted;
+
+        @ConfigKey("DISCORD_CLAIM_EXPIRING_SOON")
+        private String discordClaimExpiringSoon;
+
+        @ConfigKey("DISCORD_CLAIM_EXPIRED")
+        private String discordClaimExpired;
+
+        @ConfigKey("DISCORD_MEMBER_ADDED")
+        private String discordMemberAdded;
+
+        @ConfigKey("DISCORD_MEMBER_REMOVED")
+        private String discordMemberRemoved;
+
         public static void sendMessageToPlayer(String path, Player player, TagResolver... tagResolvers) {
                 String rawMessage = ConfigLoader.getConfig().getPrefix()
                         + ConfigLoader.getLangConfig().get(path, String.class);

@@ -90,6 +90,9 @@ public class Config extends RozsConfig {
     @ConfigKey("ClaimPermissionNames")
     private ClaimPermissionNames claimPermissions;
 
+    @ConfigKey("discordWebhook")
+    private DiscordWebhookConfig discordWebhook;
+
     @Getter@Setter
     @NoArgsConstructor
     public static class WorldGuardConfig {
@@ -290,5 +293,37 @@ public class Config extends RozsConfig {
         private String USE_PORTAL;
         private String USE_POTION;
 
+    }
+
+    @Getter@Setter
+    @NoArgsConstructor
+    public static class DiscordWebhookConfig {
+        @ConfigKey("enabled")
+        private boolean enabled;
+
+        @ConfigKey("url")
+        private String url;
+
+        @ConfigKey("claimPurchased")
+        private boolean claimPurchased;
+
+        @ConfigKey("claimDeleted")
+        private boolean claimDeleted;
+
+        @ConfigKey("claimExpiringSoon")
+        private boolean claimExpiringSoon;
+
+        @ConfigKey("claimExpiringSoonHours")
+        @Comment("How many hours before expiry the warning notification is sent")
+        private int claimExpiringSoonHours;
+
+        @ConfigKey("claimExpired")
+        private boolean claimExpired;
+
+        @ConfigKey("memberAdded")
+        private boolean memberAdded;
+
+        @ConfigKey("memberRemoved")
+        private boolean memberRemoved;
     }
 }

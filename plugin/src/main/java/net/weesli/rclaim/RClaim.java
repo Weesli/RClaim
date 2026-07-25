@@ -19,6 +19,7 @@ import net.weesli.rclaim.api.status.ClaimStatusService;
 import net.weesli.rclaim.event.ClaimLifecycleListener;
 import net.weesli.rclaim.event.ClaimPermissionListener;
 import net.weesli.rclaim.event.ClaimStatusListener;
+import net.weesli.rclaim.hook.discord.DiscordWebhookListener;
 import net.weesli.rclaim.hook.stacker.HRoseStacker;
 import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.manager.CacheManagerImpl;
@@ -100,6 +101,7 @@ public final class RClaim extends JavaPlugin {
         new ClaimLifecycleListener();
         new ClaimPermissionListener();
         new ClaimStatusListener();
+        new DiscordWebhookListener();
 
         new CommandManager();
         new Metrics(this, 	23385);

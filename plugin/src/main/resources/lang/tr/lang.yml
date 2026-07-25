@@ -66,3 +66,11 @@ STATUS_PVP: "&cBu alanda herhangi bir oyuncuya vuramazsınız!"
 # Yönetici mesajları
 
 DELETED_CLAIMS: "&c<player>'ın claim'leri başarıyla silindi!"
+
+# Discord webhook mesajları
+DISCORD_CLAIM_PURCHASED: "**<player>**, <world> dünyasında <x>, <z> konumunda yeni bir claim satın aldı."
+DISCORD_CLAIM_DELETED: "**<player>** oyuncusunun <world> dünyasındaki <x>, <z> konumundaki claim'i silindi."
+DISCORD_CLAIM_EXPIRING_SOON: "**<player>** oyuncusunun <world> dünyasındaki <x>, <z> konumundaki claim'inin süresi <hours> saat içinde dolacak."
+DISCORD_CLAIM_EXPIRED: "**<player>** oyuncusunun <world> dünyasındaki <x>, <z> konumundaki claim'in süresi doldu ve kaldırıldı."
+DISCORD_MEMBER_ADDED: "**<member>**, **<player>**'in <x>, <z> konumundaki claim'ine eklendi."
+DISCORD_MEMBER_REMOVED: "**<member>**, **<player>**'in <x>, <z> konumundaki claim'inden çıkarıldı."
