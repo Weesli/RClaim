@@ -98,6 +98,10 @@ dependencies {
     // HCoreProtect.java could NOT be verified in this environment (network blocked). Confirm
     // against https://github.com/PlayPro/CoreProtect before relying on the rollback feature.
     compileOnly("com.github.PlayPro:CoreProtect:22.4")
+
+    // Jedis (Redis client) - bundled and relocated since it's a library, not a server plugin
+    // other plugins provide; only used at runtime when redis.enabled is true in config.yml.
+    implementation("redis.clients:jedis:5.1.0")
 }
 
 dependencies {
@@ -140,6 +144,8 @@ tasks.shadowJar {
     relocate("com.tcoded.folialib", "net.weesli.libs.folialib")
     // Kotlin bad! Kotlin is used in other plugins that can create conflicts, just relocate it
     relocate("kotlin", "net.weesli.libs.kotlin")
+    relocate("redis.clients.jedis", "net.weesli.libs.jedis")
+    relocate("org.apache.commons.pool2", "net.weesli.libs.commonspool2")
 
 }
 

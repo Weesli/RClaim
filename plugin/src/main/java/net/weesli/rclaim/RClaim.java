@@ -38,6 +38,7 @@ import net.weesli.rclaim.manager.ClaimManagerImpl;
 import net.weesli.rclaim.manager.TagManagerImpl;
 import net.weesli.rclaim.permission.ClaimPermissionServiceImpl;
 import net.weesli.rclaim.status.ClaimStatusServiceImpl;
+import net.weesli.rclaim.sync.RedisManager;
 import net.weesli.rclaim.task.PublicTask;
 import net.weesli.rclaim.ui.UIManager;
 import net.weesli.rozslib.RozsLibService;
@@ -75,6 +76,7 @@ public final class RClaim extends JavaPlugin {
     private CombatManagerImpl combatManager;
     private StackerManagerImpl stackerManager;
     private MapManagerImpl mapManager;
+    private RedisManager redisManager;
 
    @Getter private static RClaim instance;
 
@@ -98,6 +100,7 @@ public final class RClaim extends JavaPlugin {
         claimManager = new ClaimManagerImpl();
         tagManager = new TagManagerImpl();
         mapManager = new MapManagerImpl();
+        redisManager = new RedisManager();
         textInputManager = new TextInputManager(this);
         permissionService = new ClaimPermissionServiceImpl(this);
         statusService = new ClaimStatusServiceImpl(this);
@@ -154,6 +157,9 @@ public final class RClaim extends JavaPlugin {
         storage.shutdown();
         if (ConfigLoader.getConfig().getActivityLog().isEnabled()) {
             ActivityLogStorage.get().shutdown();
+        }
+        if (redisManager != null) {
+            redisManager.shutdown();
         }
     }
 

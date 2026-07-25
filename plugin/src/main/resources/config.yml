@@ -152,6 +152,13 @@ activityLog:
   # Maximum stored log entries kept per claim; older entries beyond this are purged. 0 disables the limit.
   maxEntriesPerClaim: 500
   pageSize: 8
+redis:
+  # Only takes effect when storageType is MySQL - Redis syncs metadata across servers sharing that database, there is nothing to sync from a local SQLite/RozsDBLite file.
+  enabled: false
+  host: localhost
+  port: 6379
+  password: ''
+  channel: rclaim-sync
 discordWebhook:
   enabled: false
   url: ''

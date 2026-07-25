@@ -96,6 +96,9 @@ public class Config extends RozsConfig {
     @ConfigKey("activityLog")
     private ActivityLogConfig activityLog;
 
+    @ConfigKey("redis")
+    private RedisConfig redis;
+
     @Getter@Setter
     @NoArgsConstructor
     public static class WorldGuardConfig {
@@ -350,5 +353,25 @@ public class Config extends RozsConfig {
 
         @ConfigKey("pageSize")
         private int pageSize;
+    }
+
+    @Getter@Setter
+    @NoArgsConstructor
+    public static class RedisConfig {
+        @ConfigKey("enabled")
+        @Comment("Only takes effect when storageType is MySQL - Redis syncs metadata across servers sharing that database, there is nothing to sync from a local SQLite/RozsDBLite file.")
+        private boolean enabled;
+
+        @ConfigKey("host")
+        private String host;
+
+        @ConfigKey("port")
+        private int port;
+
+        @ConfigKey("password")
+        private String password;
+
+        @ConfigKey("channel")
+        private String channel;
     }
 }
