@@ -7,6 +7,7 @@ import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.hook.other.HWorldGuard;
+import net.weesli.rclaim.manager.AutoClaimManager;
 import net.weesli.rclaim.ui.inventories.ClaimMainMenu;
 import net.weesli.rclaim.ui.inventories.ClaimsMenu;
 import net.weesli.rclaim.util.BaseUtil;
@@ -76,6 +77,12 @@ public class PlayerCommand extends BaseCommand {
             RClaim.getInstance().getEconomyManager().getEconomyIntegration().withdraw(player, totalClaimCost);
         }
         RClaim.getInstance().getClaimManager().createClaim(player.getLocation().getChunk(), player);
+    }
+
+    @SubCommand("auto")
+    public void toggleAutoClaim(Player player){
+        boolean enabled = AutoClaimManager.toggle(player.getUniqueId());
+        sendMessageToPlayer(enabled ? "AUTO_CLAIM_ENABLED" : "AUTO_CLAIM_DISABLED", player);
     }
 
     @SubCommand("trust")

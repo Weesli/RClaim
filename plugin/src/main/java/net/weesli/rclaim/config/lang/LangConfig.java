@@ -7,9 +7,12 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rozsconfig.annotations.ConfigKey;
 import net.weesli.rozsconfig.model.RozsConfig;
+import net.weesli.rozslib.color.ColorBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -223,6 +226,23 @@ public class LangConfig extends RozsConfig {
         @ConfigKey("DISCORD_MEMBER_REMOVED")
         private String discordMemberRemoved;
 
+        // Auto-claim messages
+
+        @ConfigKey("AUTO_CLAIM_ENABLED")
+        private String autoClaimEnabled;
+
+        @ConfigKey("AUTO_CLAIM_DISABLED")
+        private String autoClaimDisabled;
+
+        @ConfigKey("AUTO_CLAIM_CHUNK_CLAIMED")
+        private String autoClaimChunkClaimed;
+
+        @ConfigKey("AUTO_CLAIM_LIMIT_REACHED")
+        private String autoClaimLimitReached;
+
+        @ConfigKey("AUTO_CLAIM_NOT_ENOUGH_MONEY")
+        private String autoClaimNotEnoughMoney;
+
         public static void sendMessageToPlayer(String path, Player player, TagResolver... tagResolvers) {
                 String rawMessage = ConfigLoader.getConfig().getPrefix()
                         + ConfigLoader.getLangConfig().get(path, String.class);
@@ -240,6 +260,15 @@ public class LangConfig extends RozsConfig {
                 player.sendMessage(
                         mm.deserialize(minimessage, tagResolvers)
                                 .decoration(TextDecoration.ITALIC, false)
+                );
+        }
+
+
+        public static void sendActionBarToPlayer(String path, Player player) {
+                String rawMessage = ConfigLoader.getLangConfig().get(path, String.class);
+                player.spigot().sendMessage(
+                        ChatMessageType.ACTION_BAR,
+                        new TextComponent(LegacyComponentSerializer.legacySection().serialize(ColorBuilder.convertColors(rawMessage)))
                 );
         }
 

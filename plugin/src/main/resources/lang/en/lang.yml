@@ -73,3 +73,9 @@ DISCORD_CLAIM_EXPIRING_SOON: '**<player>**''s claim at <x>, <z> in <world> will 
 DISCORD_CLAIM_EXPIRED: '**<player>**''s claim at <x>, <z> in <world> has expired and was removed.'
 DISCORD_MEMBER_ADDED: '**<member>** was added to **<player>**''s claim at <x>, <z>.'
 DISCORD_MEMBER_REMOVED: '**<member>** was removed from **<player>**''s claim at <x>, <z>.'
+# Auto-claim messages
+AUTO_CLAIM_ENABLED: '&aAuto-claim enabled! Walk around to claim chunks automatically.'
+AUTO_CLAIM_DISABLED: '&cAuto-claim disabled.'
+AUTO_CLAIM_CHUNK_CLAIMED: '&aChunk claimed automatically!'
+AUTO_CLAIM_LIMIT_REACHED: '&cClaim limit reached, auto-claim has been disabled.'
+AUTO_CLAIM_NOT_ENOUGH_MONEY: '&cNot enough money, auto-claim has been disabled.'

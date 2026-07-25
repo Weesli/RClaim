@@ -74,3 +74,10 @@ DISCORD_CLAIM_EXPIRING_SOON: "**<player>** oyuncusunun <world> dünyasındaki <x
 DISCORD_CLAIM_EXPIRED: "**<player>** oyuncusunun <world> dünyasındaki <x>, <z> konumundaki claim'in süresi doldu ve kaldırıldı."
 DISCORD_MEMBER_ADDED: "**<member>**, **<player>**'in <x>, <z> konumundaki claim'ine eklendi."
 DISCORD_MEMBER_REMOVED: "**<member>**, **<player>**'in <x>, <z> konumundaki claim'inden çıkarıldı."
+
+# Otomatik claim mesajları
+AUTO_CLAIM_ENABLED: "&aOtomatik claim aktif! Yürüdükçe chunk'lar otomatik claim'lenecek."
+AUTO_CLAIM_DISABLED: "&cOtomatik claim kapatıldı."
+AUTO_CLAIM_CHUNK_CLAIMED: "&aChunk otomatik olarak claim'lendi!"
+AUTO_CLAIM_LIMIT_REACHED: "&cClaim limitine ulaşıldı, otomatik claim kapatıldı."
+AUTO_CLAIM_NOT_ENOUGH_MONEY: "&cYeterli paranız yok, otomatik claim kapatıldı."
