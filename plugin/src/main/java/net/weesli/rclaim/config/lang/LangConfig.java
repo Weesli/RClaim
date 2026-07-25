@@ -243,6 +243,47 @@ public class LangConfig extends RozsConfig {
         @ConfigKey("AUTO_CLAIM_NOT_ENOUGH_MONEY")
         private String autoClaimNotEnoughMoney;
 
+        // Activity log messages
+
+        @ConfigKey("ACTIVITY_LOG_HEADER")
+        private String activityLogHeader;
+
+        @ConfigKey("ACTIVITY_LOG_ENTRY")
+        private String activityLogEntry;
+
+        @ConfigKey("ACTIVITY_LOG_EMPTY")
+        private String activityLogEmpty;
+
+        @ConfigKey("ACTIVITY_LOG_NO_PERMISSION")
+        private String activityLogNoPermission;
+
+        @ConfigKey("ACTIVITY_LOG_DISABLED")
+        private String activityLogDisabled;
+
+        @ConfigKey("ACTIVITY_ACTION_ENTER")
+        private String activityActionEnter;
+
+        @ConfigKey("ACTIVITY_ACTION_LEAVE")
+        private String activityActionLeave;
+
+        @ConfigKey("ACTIVITY_ACTION_BLOCK_BREAK")
+        private String activityActionBlockBreak;
+
+        @ConfigKey("ACTIVITY_ACTION_BLOCK_PLACE")
+        private String activityActionBlockPlace;
+
+        @ConfigKey("ACTIVITY_ACTION_DOOR_INTERACT")
+        private String activityActionDoorInteract;
+
+        @ConfigKey("ACTIVITY_ACTION_CONTAINER_INTERACT")
+        private String activityActionContainerInteract;
+
+        @ConfigKey("ACTIVITY_ACTION_MEMBER_ADDED")
+        private String activityActionMemberAdded;
+
+        @ConfigKey("ACTIVITY_ACTION_MEMBER_REMOVED")
+        private String activityActionMemberRemoved;
+
         public static void sendMessageToPlayer(String path, Player player, TagResolver... tagResolvers) {
                 String rawMessage = ConfigLoader.getConfig().getPrefix()
                         + ConfigLoader.getLangConfig().get(path, String.class);

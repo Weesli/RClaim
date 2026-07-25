@@ -16,7 +16,9 @@ import net.weesli.rclaim.api.database.Loader;
 import net.weesli.rclaim.api.hook.manager.MapManager;
 import net.weesli.rclaim.api.permission.ClaimPermissionService;
 import net.weesli.rclaim.api.status.ClaimStatusService;
+import net.weesli.rclaim.activitylog.ActivityLogStorage;
 import net.weesli.rclaim.event.AutoClaimListener;
+import net.weesli.rclaim.event.ClaimActivityListener;
 import net.weesli.rclaim.event.ClaimLifecycleListener;
 import net.weesli.rclaim.event.ClaimPermissionListener;
 import net.weesli.rclaim.event.ClaimStatusListener;
@@ -104,6 +106,7 @@ public final class RClaim extends JavaPlugin {
         new ClaimStatusListener();
         new DiscordWebhookListener();
         new AutoClaimListener();
+        new ClaimActivityListener();
 
         new CommandManager();
         new Metrics(this, 	23385);
@@ -120,6 +123,10 @@ public final class RClaim extends JavaPlugin {
             checkVersion();
         });
         foliaLib.getScheduler().runTimerAsync(Loader::save, 12000L, 12000L);
+        if (ConfigLoader.getConfig().getActivityLog().isEnabled()) {
+            ActivityLogStorage.get();
+            foliaLib.getScheduler().runTimerAsync((task) -> ActivityLogStorage.get().pruneAsync(), 24000L, 24000L);
+        }
         new PublicTask(foliaLib);
 
         // publish RClaimAPI for other plugins
@@ -142,6 +149,9 @@ public final class RClaim extends JavaPlugin {
     public void onDisable() {
         Loader.save();
         storage.shutdown();
+        if (ConfigLoader.getConfig().getActivityLog().isEnabled()) {
+            ActivityLogStorage.get().shutdown();
+        }
     }
 
     @SneakyThrows

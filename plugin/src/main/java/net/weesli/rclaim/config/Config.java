@@ -93,6 +93,9 @@ public class Config extends RozsConfig {
     @ConfigKey("discordWebhook")
     private DiscordWebhookConfig discordWebhook;
 
+    @ConfigKey("activityLog")
+    private ActivityLogConfig activityLog;
+
     @Getter@Setter
     @NoArgsConstructor
     public static class WorldGuardConfig {
@@ -329,5 +332,23 @@ public class Config extends RozsConfig {
 
         @ConfigKey("memberRemoved")
         private boolean memberRemoved;
+    }
+
+    @Getter@Setter
+    @NoArgsConstructor
+    public static class ActivityLogConfig {
+        @ConfigKey("enabled")
+        private boolean enabled;
+
+        @ConfigKey("retentionDays")
+        @Comment("Log entries older than this many days are purged automatically. 0 disables age-based purging.")
+        private int retentionDays;
+
+        @ConfigKey("maxEntriesPerClaim")
+        @Comment("Maximum stored log entries kept per claim; older entries beyond this are purged. 0 disables the limit.")
+        private int maxEntriesPerClaim;
+
+        @ConfigKey("pageSize")
+        private int pageSize;
     }
 }

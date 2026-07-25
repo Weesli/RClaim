@@ -145,6 +145,13 @@ ClaimPermissionNames:
   USE_DOOR: Use Door
   USE_PORTAL: Use Portal
   USE_POTION: Use Potion
+activityLog:
+  enabled: true
+  # Log entries older than this many days are purged automatically. 0 disables age-based purging.
+  retentionDays: 30
+  # Maximum stored log entries kept per claim; older entries beyond this are purged. 0 disables the limit.
+  maxEntriesPerClaim: 500
+  pageSize: 8
 discordWebhook:
   enabled: false
   url: ''

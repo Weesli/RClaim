@@ -3,6 +3,8 @@ package net.weesli.rclaim.command;
 import dev.triumphteam.cmd.core.BaseCommand;
 import dev.triumphteam.cmd.core.annotation.*;
 import net.weesli.rclaim.RClaim;
+import net.weesli.rclaim.activitylog.ActivityAction;
+import net.weesli.rclaim.activitylog.ActivityLogStorage;
 import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.config.ConfigLoader;
@@ -14,8 +16,13 @@ import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rclaim.util.PlayerUtil;
 
 import net.weesli.rclaim.util.PreviewUtil;
+import net.weesli.rozslib.color.ColorBuilder;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import static net.weesli.rclaim.config.lang.LangConfig.sendMessageToPlayer;
 
@@ -134,6 +141,75 @@ public class PlayerCommand extends BaseCommand {
             sendMessageToPlayer("TARGET_NOT_FOUND", player);
         }
     }
+    @SubCommand("log")
+    public void viewLog(Player player, String page){
+        if (!ConfigLoader.getConfig().getActivityLog().isEnabled()){
+            sendMessageToPlayer("ACTIVITY_LOG_DISABLED", player);
+            return;
+        }
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
+        if (claim == null){
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
+            return;
+        }
+        if (!claim.isOwner(player.getUniqueId()) && !claim.isMember(player.getUniqueId())){
+            sendMessageToPlayer("ACTIVITY_LOG_NO_PERMISSION", player);
+            return;
+        }
+
+        int requestedPage = 1;
+        if (page != null && !page.isEmpty()){
+            try {
+                requestedPage = Integer.parseInt(page);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+
+        String claimName = claim.getDisplayName() != null ? claim.getDisplayName() : claim.getID();
+        int pageSize = ConfigLoader.getConfig().getActivityLog().getPageSize();
+
+        ActivityLogStorage.get().fetchPageAsync(claim.getID(), requestedPage, pageSize, player, (entries, totalPages) -> {
+            player.sendMessage(ColorBuilder.convertColors(
+                    ConfigLoader.getLangConfig().get("ACTIVITY_LOG_HEADER", String.class)
+                            .replace("<claim>", claimName)
+                            .replace("<page>", String.valueOf(Math.min(Math.max(1, requestedPage), totalPages)))
+                            .replace("<pages>", String.valueOf(totalPages))
+            ));
+
+            if (entries.isEmpty()){
+                sendMessageToPlayer("ACTIVITY_LOG_EMPTY", player);
+                return;
+            }
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM HH:mm").withZone(ZoneId.systemDefault());
+            for (var entry : entries){
+                String actionLabel = ConfigLoader.getLangConfig().get(actionLangKey(entry.action()), String.class);
+                if (entry.detail() != null && !entry.detail().isEmpty()){
+                    actionLabel = actionLabel + " (" + entry.detail() + ")";
+                }
+                OfflinePlayer actor = Bukkit.getOfflinePlayer(entry.playerId());
+                String line = ConfigLoader.getLangConfig().get("ACTIVITY_LOG_ENTRY", String.class)
+                        .replace("<time>", formatter.format(Instant.ofEpochMilli(entry.timestamp())))
+                        .replace("<player>", actor.getName() == null ? "?" : actor.getName())
+                        .replace("<action>", actionLabel);
+                player.sendMessage(ColorBuilder.convertColors(line));
+            }
+        });
+    }
+
+    private static String actionLangKey(ActivityAction action){
+        return switch (action) {
+            case ENTER -> "ACTIVITY_ACTION_ENTER";
+            case LEAVE -> "ACTIVITY_ACTION_LEAVE";
+            case BLOCK_BREAK -> "ACTIVITY_ACTION_BLOCK_BREAK";
+            case BLOCK_PLACE -> "ACTIVITY_ACTION_BLOCK_PLACE";
+            case DOOR_INTERACT -> "ACTIVITY_ACTION_DOOR_INTERACT";
+            case CONTAINER_INTERACT -> "ACTIVITY_ACTION_CONTAINER_INTERACT";
+            case MEMBER_ADDED -> "ACTIVITY_ACTION_MEMBER_ADDED";
+            case MEMBER_REMOVED -> "ACTIVITY_ACTION_MEMBER_REMOVED";
+        };
+    }
+
     @SubCommand("list")
     public void list(Player player){
         RClaim.getInstance().getUiManager().openInventory(player,null, ClaimsMenu.class);
