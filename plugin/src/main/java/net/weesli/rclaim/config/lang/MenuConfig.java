@@ -61,6 +61,9 @@ public class MenuConfig {
     @Comment("Tag permissions menu configuration settings")
     public PageableMenu tagPermissionsMenu;
 
+    @Comment("Claim marketplace menu configuration settings")
+    public PageableMenu marketMenu;
+
     @Getter@Setter
     @NoArgsConstructor
     public static class PageableMenu{

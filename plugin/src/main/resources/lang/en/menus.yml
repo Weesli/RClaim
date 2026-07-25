@@ -865,3 +865,62 @@ tagPermissionsMenu:
         - '&aClick and view the next page!'
       custom-model-data: 0
     index: 53
+marketMenu:
+  title: '&8Claim Market'
+  size: 54
+  items:
+    item-sale:
+      title: '&e<claim> &7- For Sale'
+      material: EMERALD
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aOwner: &f<owner>'
+        - '&aLocation: &f<x>, <z> (<world>)'
+        - '&aPrice: &f<price>'
+        - '&a'
+        - '&aClick to buy!'
+    item-rent:
+      title: '&e<claim> &7- For Rent'
+      material: GOLD_INGOT
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aOwner: &f<owner>'
+        - '&aLocation: &f<x>, <z> (<world>)'
+        - '&aPrice: &f<price>'
+        - '&aDuration: &f<duration>'
+        - '&a'
+        - '&aClick to rent!'
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 18
+    - 27
+  previousItem:
+    menuItem:
+      title: '&8Previous Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the previous page!'
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Next Page'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aClick and view the next page!'
+    index: 53

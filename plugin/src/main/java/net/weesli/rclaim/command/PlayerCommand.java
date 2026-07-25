@@ -12,7 +12,10 @@ import net.weesli.rclaim.hook.other.HCoreProtect;
 import net.weesli.rclaim.hook.other.HWorldGuard;
 import net.weesli.rclaim.manager.AutoClaimManager;
 import net.weesli.rclaim.manager.PendingRollbackManager;
+import net.weesli.rclaim.marketplace.MarketplaceManager;
+import net.weesli.rclaim.marketplace.RentalStorage;
 import net.weesli.rclaim.ui.inventories.ClaimMainMenu;
+import net.weesli.rclaim.ui.inventories.ClaimMarketMenu;
 import net.weesli.rclaim.ui.inventories.ClaimsMenu;
 import net.weesli.rclaim.util.BaseUtil;
 import net.weesli.rclaim.util.DurationUtil;
@@ -246,6 +249,99 @@ public class PlayerCommand extends BaseCommand {
         }
         PendingRollbackManager.request(player.getUniqueId(), claim.getID(), seconds);
         sendMessageToPlayer("ROLLBACK_CONFIRM", player);
+    }
+
+    @SubCommand("sell")
+    public void sell(Player player, String priceArg){
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
+        if (claim == null){
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
+            return;
+        }
+        if (!claim.isOwner(player.getUniqueId())){
+            sendMessageToPlayer("NOT_YOUR_CLAIM", player);
+            return;
+        }
+        if (RentalStorage.get().getActiveRental(claim.getID()) != null){
+            sendMessageToPlayer("MARKET_CLAIM_CURRENTLY_RENTED", player);
+            return;
+        }
+        if (MarketplaceManager.isListed(claim.getID())){
+            sendMessageToPlayer("MARKET_ALREADY_LISTED", player);
+            return;
+        }
+        double price = parsePrice(priceArg);
+        if (price <= 0){
+            sendMessageToPlayer("MARKET_INVALID_PRICE", player);
+            return;
+        }
+        MarketplaceManager.listForSale(claim.getID(), player.getUniqueId(), price);
+        sendMessageToPlayer("MARKET_LISTED_SALE", player);
+    }
+
+    @SubCommand("rent")
+    public void rent(Player player, String priceArg, String durationArg){
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
+        if (claim == null){
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
+            return;
+        }
+        if (!claim.isOwner(player.getUniqueId())){
+            sendMessageToPlayer("NOT_YOUR_CLAIM", player);
+            return;
+        }
+        if (RentalStorage.get().getActiveRental(claim.getID()) != null){
+            sendMessageToPlayer("MARKET_CLAIM_CURRENTLY_RENTED", player);
+            return;
+        }
+        if (MarketplaceManager.isListed(claim.getID())){
+            sendMessageToPlayer("MARKET_ALREADY_LISTED", player);
+            return;
+        }
+        double price = parsePrice(priceArg);
+        if (price <= 0){
+            sendMessageToPlayer("MARKET_INVALID_PRICE", player);
+            return;
+        }
+        long durationSeconds = DurationUtil.parseSeconds(durationArg);
+        if (durationSeconds <= 0){
+            sendMessageToPlayer("MARKET_INVALID_DURATION", player);
+            return;
+        }
+        MarketplaceManager.listForRent(claim.getID(), player.getUniqueId(), price, (int) durationSeconds);
+        sendMessageToPlayer("MARKET_LISTED_RENT", player);
+    }
+
+    @SubCommand("unlist")
+    public void unlist(Player player){
+        Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
+        if (claim == null){
+            sendMessageToPlayer("NOT_IN_CLAIM", player);
+            return;
+        }
+        if (!claim.isOwner(player.getUniqueId())){
+            sendMessageToPlayer("NOT_YOUR_CLAIM", player);
+            return;
+        }
+        if (!MarketplaceManager.isListed(claim.getID())){
+            sendMessageToPlayer("MARKET_NOT_LISTED", player);
+            return;
+        }
+        MarketplaceManager.unlist(claim.getID());
+        sendMessageToPlayer("MARKET_UNLISTED", player);
+    }
+
+    @SubCommand("market")
+    public void market(Player player){
+        RClaim.getInstance().getUiManager().openInventory(player, null, ClaimMarketMenu.class);
+    }
+
+    private static double parsePrice(String priceArg){
+        try {
+            return Double.parseDouble(priceArg);
+        } catch (NumberFormatException | NullPointerException e){
+            return -1;
+        }
     }
 
     @SubCommand("list")

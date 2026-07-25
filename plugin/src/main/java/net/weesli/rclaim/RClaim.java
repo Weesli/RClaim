@@ -35,6 +35,7 @@ import net.weesli.rclaim.database.*;
 import net.weesli.rclaim.hook.other.HCoreProtect;
 import net.weesli.rclaim.hook.other.HPlaceholderAPI;
 import net.weesli.rclaim.manager.ClaimManagerImpl;
+import net.weesli.rclaim.marketplace.RentalStorage;
 import net.weesli.rclaim.manager.TagManagerImpl;
 import net.weesli.rclaim.permission.ClaimPermissionServiceImpl;
 import net.weesli.rclaim.status.ClaimStatusServiceImpl;
@@ -133,6 +134,7 @@ public final class RClaim extends JavaPlugin {
             ActivityLogStorage.get();
             foliaLib.getScheduler().runTimerAsync((task) -> ActivityLogStorage.get().pruneAsync(), 24000L, 24000L);
         }
+        RentalStorage.get();
         new PublicTask(foliaLib);
 
         // publish RClaimAPI for other plugins
@@ -161,6 +163,7 @@ public final class RClaim extends JavaPlugin {
         if (redisManager != null) {
             redisManager.shutdown();
         }
+        RentalStorage.get().shutdown();
     }
 
     @SneakyThrows

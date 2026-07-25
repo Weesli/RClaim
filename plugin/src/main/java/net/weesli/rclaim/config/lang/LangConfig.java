@@ -298,6 +298,44 @@ public class LangConfig extends RozsConfig {
         @ConfigKey("ROLLBACK_STARTED")
         private String rollbackStarted;
 
+        // Marketplace messages
+
+        @ConfigKey("MARKET_INVALID_PRICE")
+        private String marketInvalidPrice;
+
+        @ConfigKey("MARKET_INVALID_DURATION")
+        private String marketInvalidDuration;
+
+        @ConfigKey("MARKET_ALREADY_LISTED")
+        private String marketAlreadyListed;
+
+        @ConfigKey("MARKET_CLAIM_CURRENTLY_RENTED")
+        private String marketClaimCurrentlyRented;
+
+        @ConfigKey("MARKET_LISTED_SALE")
+        private String marketListedSale;
+
+        @ConfigKey("MARKET_LISTED_RENT")
+        private String marketListedRent;
+
+        @ConfigKey("MARKET_UNLISTED")
+        private String marketUnlisted;
+
+        @ConfigKey("MARKET_NOT_LISTED")
+        private String marketNotListed;
+
+        @ConfigKey("MARKET_CANT_BUY_OWN")
+        private String marketCantBuyOwn;
+
+        @ConfigKey("MARKET_PURCHASE_SUCCESS")
+        private String marketPurchaseSuccess;
+
+        @ConfigKey("MARKET_RENT_SUCCESS")
+        private String marketRentSuccess;
+
+        @ConfigKey("MARKET_PENDING_PAYOUT")
+        private String marketPendingPayout;
+
         public static void sendMessageToPlayer(String path, Player player, TagResolver... tagResolvers) {
                 String rawMessage = ConfigLoader.getConfig().getPrefix()
                         + ConfigLoader.getLangConfig().get(path, String.class);

@@ -7,6 +7,9 @@ import net.weesli.rclaim.api.enums.ExplodeCause;
 import net.weesli.rclaim.config.Config;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.hook.discord.DiscordWebhookListener;
+import net.weesli.rclaim.marketplace.MarketplaceManager;
+import net.weesli.rclaim.marketplace.RentalRecord;
+import net.weesli.rclaim.marketplace.RentalStorage;
 
 public class PublicTask {
 
@@ -27,6 +30,11 @@ public class PublicTask {
                     }
                 }
                 claimImpl.removeTimestamp(1);
+
+                RentalRecord rental = RentalStorage.get().getActiveRental(claimImpl.getID());
+                if (rental != null && System.currentTimeMillis() >= rental.rentEndMillis()) {
+                    MarketplaceManager.returnFromRental(claimImpl, rental);
+                }
             }
         }
     }

@@ -876,3 +876,62 @@ tagPermissionsMenu:
         - '&aSonraki sayfayı görmek için tıkla!'
       custom-model-data: 0
     index: 53
+marketMenu:
+  title: '&8Claim Pazarı'
+  size: 54
+  items:
+    item-sale:
+      title: '&e<claim> &7- Satılık'
+      material: EMERALD
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSahip: &f<owner>'
+        - '&aKonum: &f<x>, <z> (<world>)'
+        - '&aFiyat: &f<price>'
+        - '&a'
+        - '&aSatın almak için tıkla!'
+    item-rent:
+      title: '&e<claim> &7- Kiralık'
+      material: GOLD_INGOT
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSahip: &f<owner>'
+        - '&aKonum: &f<x>, <z> (<world>)'
+        - '&aFiyat: &f<price>'
+        - '&aSüre: &f<duration>'
+        - '&a'
+        - '&aKiralamak için tıkla!'
+  autoFill: false
+  fillerSlots:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 18
+    - 27
+  previousItem:
+    menuItem:
+      title: '&8Önceki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aÖnceki sayfayı görüntülemek için tıkla!'
+    index: 45
+  nextItem:
+    menuItem:
+      title: '&8Sonraki Sayfa'
+      material: ARROW
+      customModelData: 0
+      lore:
+        - '&8'
+        - '&aSonraki sayfayı görüntülemek için tıkla!'
+    index: 53
