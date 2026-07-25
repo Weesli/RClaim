@@ -22,6 +22,10 @@ worldGuard:
   bannedRegions:
     - example
     - Weesli
+mapSupport:
+  dynmapSupport: true
+  # Claims with less than this many hours remaining are highlighted in a warning color on supported maps. 0 disables the highlight.
+  expiringSoonHours: 24
 # Prevents players from fleeing to their own space when fighting within the server
 combatSystem: true
 effects:

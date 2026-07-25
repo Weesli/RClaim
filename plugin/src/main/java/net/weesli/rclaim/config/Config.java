@@ -107,6 +107,10 @@ public class Config extends RozsConfig {
     public static class MapSupportConfig {
         @ConfigKey("dynmapSupport")
         private boolean dynmapSupport;
+
+        @ConfigKey("expiringSoonHours")
+        @Comment("Claims with less than this many hours remaining are highlighted in a warning color on supported maps. 0 disables the highlight.")
+        private int expiringSoonHours;
     }
     @Getter@Setter
     @NoArgsConstructor
