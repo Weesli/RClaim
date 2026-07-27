@@ -7,9 +7,12 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rozsconfig.annotations.ConfigKey;
 import net.weesli.rozsconfig.model.RozsConfig;
+import net.weesli.rozslib.color.ColorBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -203,6 +206,136 @@ public class LangConfig extends RozsConfig {
         @ConfigKey("DELETED_CLAIMS")
         private String deletedClaims;
 
+        // Discord webhook messages
+
+        @ConfigKey("DISCORD_CLAIM_PURCHASED")
+        private String discordClaimPurchased;
+
+        @ConfigKey("DISCORD_CLAIM_DELETED")
+        private String discordClaimDeleted;
+
+        @ConfigKey("DISCORD_CLAIM_EXPIRING_SOON")
+        private String discordClaimExpiringSoon;
+
+        @ConfigKey("DISCORD_CLAIM_EXPIRED")
+        private String discordClaimExpired;
+
+        @ConfigKey("DISCORD_MEMBER_ADDED")
+        private String discordMemberAdded;
+
+        @ConfigKey("DISCORD_MEMBER_REMOVED")
+        private String discordMemberRemoved;
+
+        // Auto-claim messages
+
+        @ConfigKey("AUTO_CLAIM_ENABLED")
+        private String autoClaimEnabled;
+
+        @ConfigKey("AUTO_CLAIM_DISABLED")
+        private String autoClaimDisabled;
+
+        @ConfigKey("AUTO_CLAIM_CHUNK_CLAIMED")
+        private String autoClaimChunkClaimed;
+
+        @ConfigKey("AUTO_CLAIM_LIMIT_REACHED")
+        private String autoClaimLimitReached;
+
+        @ConfigKey("AUTO_CLAIM_NOT_ENOUGH_MONEY")
+        private String autoClaimNotEnoughMoney;
+
+        // Activity log messages
+
+        @ConfigKey("ACTIVITY_LOG_HEADER")
+        private String activityLogHeader;
+
+        @ConfigKey("ACTIVITY_LOG_ENTRY")
+        private String activityLogEntry;
+
+        @ConfigKey("ACTIVITY_LOG_EMPTY")
+        private String activityLogEmpty;
+
+        @ConfigKey("ACTIVITY_LOG_NO_PERMISSION")
+        private String activityLogNoPermission;
+
+        @ConfigKey("ACTIVITY_LOG_DISABLED")
+        private String activityLogDisabled;
+
+        @ConfigKey("ACTIVITY_ACTION_ENTER")
+        private String activityActionEnter;
+
+        @ConfigKey("ACTIVITY_ACTION_LEAVE")
+        private String activityActionLeave;
+
+        @ConfigKey("ACTIVITY_ACTION_BLOCK_BREAK")
+        private String activityActionBlockBreak;
+
+        @ConfigKey("ACTIVITY_ACTION_BLOCK_PLACE")
+        private String activityActionBlockPlace;
+
+        @ConfigKey("ACTIVITY_ACTION_DOOR_INTERACT")
+        private String activityActionDoorInteract;
+
+        @ConfigKey("ACTIVITY_ACTION_CONTAINER_INTERACT")
+        private String activityActionContainerInteract;
+
+        @ConfigKey("ACTIVITY_ACTION_MEMBER_ADDED")
+        private String activityActionMemberAdded;
+
+        @ConfigKey("ACTIVITY_ACTION_MEMBER_REMOVED")
+        private String activityActionMemberRemoved;
+
+        // Rollback messages
+
+        @ConfigKey("ROLLBACK_INVALID_DURATION")
+        private String rollbackInvalidDuration;
+
+        @ConfigKey("ROLLBACK_CONFIRM")
+        private String rollbackConfirm;
+
+        @ConfigKey("ROLLBACK_NO_PENDING")
+        private String rollbackNoPending;
+
+        @ConfigKey("ROLLBACK_STARTED")
+        private String rollbackStarted;
+
+        // Marketplace messages
+
+        @ConfigKey("MARKET_INVALID_PRICE")
+        private String marketInvalidPrice;
+
+        @ConfigKey("MARKET_INVALID_DURATION")
+        private String marketInvalidDuration;
+
+        @ConfigKey("MARKET_ALREADY_LISTED")
+        private String marketAlreadyListed;
+
+        @ConfigKey("MARKET_CLAIM_CURRENTLY_RENTED")
+        private String marketClaimCurrentlyRented;
+
+        @ConfigKey("MARKET_LISTED_SALE")
+        private String marketListedSale;
+
+        @ConfigKey("MARKET_LISTED_RENT")
+        private String marketListedRent;
+
+        @ConfigKey("MARKET_UNLISTED")
+        private String marketUnlisted;
+
+        @ConfigKey("MARKET_NOT_LISTED")
+        private String marketNotListed;
+
+        @ConfigKey("MARKET_CANT_BUY_OWN")
+        private String marketCantBuyOwn;
+
+        @ConfigKey("MARKET_PURCHASE_SUCCESS")
+        private String marketPurchaseSuccess;
+
+        @ConfigKey("MARKET_RENT_SUCCESS")
+        private String marketRentSuccess;
+
+        @ConfigKey("MARKET_PENDING_PAYOUT")
+        private String marketPendingPayout;
+
         public static void sendMessageToPlayer(String path, Player player, TagResolver... tagResolvers) {
                 String rawMessage = ConfigLoader.getConfig().getPrefix()
                         + ConfigLoader.getLangConfig().get(path, String.class);
@@ -220,6 +353,15 @@ public class LangConfig extends RozsConfig {
                 player.sendMessage(
                         mm.deserialize(minimessage, tagResolvers)
                                 .decoration(TextDecoration.ITALIC, false)
+                );
+        }
+
+
+        public static void sendActionBarToPlayer(String path, Player player) {
+                String rawMessage = ConfigLoader.getLangConfig().get(path, String.class);
+                player.spigot().sendMessage(
+                        ChatMessageType.ACTION_BAR,
+                        new TextComponent(LegacyComponentSerializer.legacySection().serialize(ColorBuilder.convertColors(rawMessage)))
                 );
         }
 

@@ -90,6 +90,15 @@ public class Config extends RozsConfig {
     @ConfigKey("ClaimPermissionNames")
     private ClaimPermissionNames claimPermissions;
 
+    @ConfigKey("discordWebhook")
+    private DiscordWebhookConfig discordWebhook;
+
+    @ConfigKey("activityLog")
+    private ActivityLogConfig activityLog;
+
+    @ConfigKey("redis")
+    private RedisConfig redis;
+
     @Getter@Setter
     @NoArgsConstructor
     public static class WorldGuardConfig {
@@ -104,6 +113,10 @@ public class Config extends RozsConfig {
     public static class MapSupportConfig {
         @ConfigKey("dynmapSupport")
         private boolean dynmapSupport;
+
+        @ConfigKey("expiringSoonHours")
+        @Comment("Claims with less than this many hours remaining are highlighted in a warning color on supported maps. 0 disables the highlight.")
+        private int expiringSoonHours;
     }
     @Getter@Setter
     @NoArgsConstructor
@@ -290,5 +303,75 @@ public class Config extends RozsConfig {
         private String USE_PORTAL;
         private String USE_POTION;
 
+    }
+
+    @Getter@Setter
+    @NoArgsConstructor
+    public static class DiscordWebhookConfig {
+        @ConfigKey("enabled")
+        private boolean enabled;
+
+        @ConfigKey("url")
+        private String url;
+
+        @ConfigKey("claimPurchased")
+        private boolean claimPurchased;
+
+        @ConfigKey("claimDeleted")
+        private boolean claimDeleted;
+
+        @ConfigKey("claimExpiringSoon")
+        private boolean claimExpiringSoon;
+
+        @ConfigKey("claimExpiringSoonHours")
+        @Comment("How many hours before expiry the warning notification is sent")
+        private int claimExpiringSoonHours;
+
+        @ConfigKey("claimExpired")
+        private boolean claimExpired;
+
+        @ConfigKey("memberAdded")
+        private boolean memberAdded;
+
+        @ConfigKey("memberRemoved")
+        private boolean memberRemoved;
+    }
+
+    @Getter@Setter
+    @NoArgsConstructor
+    public static class ActivityLogConfig {
+        @ConfigKey("enabled")
+        private boolean enabled;
+
+        @ConfigKey("retentionDays")
+        @Comment("Log entries older than this many days are purged automatically. 0 disables age-based purging.")
+        private int retentionDays;
+
+        @ConfigKey("maxEntriesPerClaim")
+        @Comment("Maximum stored log entries kept per claim; older entries beyond this are purged. 0 disables the limit.")
+        private int maxEntriesPerClaim;
+
+        @ConfigKey("pageSize")
+        private int pageSize;
+    }
+
+    @Getter@Setter
+    @NoArgsConstructor
+    public static class RedisConfig {
+        @ConfigKey("enabled")
+        @Comment("Only takes effect when storageType is MySQL - Redis syncs metadata across servers sharing that database, there is nothing to sync from a local SQLite/RozsDBLite file.")
+        private boolean enabled;
+
+        @ConfigKey("host")
+        private String host;
+
+        @ConfigKey("port")
+        private int port;
+
+        @ConfigKey("password")
+        private String password;
+
+        @ConfigKey("channel")
+        private String channel;
     }
 }

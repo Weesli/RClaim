@@ -4,6 +4,12 @@ import com.tcoded.folialib.FoliaLib;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.enums.ExplodeCause;
+import net.weesli.rclaim.config.Config;
+import net.weesli.rclaim.config.ConfigLoader;
+import net.weesli.rclaim.hook.discord.DiscordWebhookListener;
+import net.weesli.rclaim.marketplace.MarketplaceManager;
+import net.weesli.rclaim.marketplace.RentalRecord;
+import net.weesli.rclaim.marketplace.RentalStorage;
 
 public class PublicTask {
 
@@ -12,11 +18,23 @@ public class PublicTask {
     }
 
     public void run() {
+        Config.DiscordWebhookConfig webhookConfig = ConfigLoader.getConfig().getDiscordWebhook();
         for (Claim claimImpl : RClaim.getInstance().getCacheManager().getClaims().getCache().values()){
             if (claimImpl.isExpired()){
                 RClaim.getInstance().getClaimManager().explodeClaim(claimImpl.getID(), ExplodeCause.TIME_OUT);
             }else {
+                if (webhookConfig.isEnabled() && webhookConfig.isClaimExpiringSoon()) {
+                    int thresholdSeconds = webhookConfig.getClaimExpiringSoonHours() * 3600;
+                    if (claimImpl.getTimestamp() == thresholdSeconds) {
+                        DiscordWebhookListener.notifyExpiringSoon(claimImpl, webhookConfig.getClaimExpiringSoonHours());
+                    }
+                }
                 claimImpl.removeTimestamp(1);
+
+                RentalRecord rental = RentalStorage.get().getActiveRental(claimImpl.getID());
+                if (rental != null && System.currentTimeMillis() >= rental.rentEndMillis()) {
+                    MarketplaceManager.returnFromRental(claimImpl, rental);
+                }
             }
         }
     }

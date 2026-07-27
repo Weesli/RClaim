@@ -66,3 +66,53 @@ STATUS_PVP: "&cBu alanda herhangi bir oyuncuya vuramazsınız!"
 # Yönetici mesajları
 
 DELETED_CLAIMS: "&c<player>'ın claim'leri başarıyla silindi!"
+
+# Discord webhook mesajları
+DISCORD_CLAIM_PURCHASED: "**<player>**, <world> dünyasında <x>, <z> konumunda yeni bir claim satın aldı."
+DISCORD_CLAIM_DELETED: "**<player>** oyuncusunun <world> dünyasındaki <x>, <z> konumundaki claim'i silindi."
+DISCORD_CLAIM_EXPIRING_SOON: "**<player>** oyuncusunun <world> dünyasındaki <x>, <z> konumundaki claim'inin süresi <hours> saat içinde dolacak."
+DISCORD_CLAIM_EXPIRED: "**<player>** oyuncusunun <world> dünyasındaki <x>, <z> konumundaki claim'in süresi doldu ve kaldırıldı."
+DISCORD_MEMBER_ADDED: "**<member>**, **<player>**'in <x>, <z> konumundaki claim'ine eklendi."
+DISCORD_MEMBER_REMOVED: "**<member>**, **<player>**'in <x>, <z> konumundaki claim'inden çıkarıldı."
+
+# Otomatik claim mesajları
+AUTO_CLAIM_ENABLED: "&aOtomatik claim aktif! Yürüdükçe chunk'lar otomatik claim'lenecek."
+AUTO_CLAIM_DISABLED: "&cOtomatik claim kapatıldı."
+AUTO_CLAIM_CHUNK_CLAIMED: "&aChunk otomatik olarak claim'lendi!"
+AUTO_CLAIM_LIMIT_REACHED: "&cClaim limitine ulaşıldı, otomatik claim kapatıldı."
+AUTO_CLAIM_NOT_ENOUGH_MONEY: "&cYeterli paranız yok, otomatik claim kapatıldı."
+
+# Aktivite log mesajları
+ACTIVITY_LOG_HEADER: "&6--- Claim Log (<claim>) [<page>/<pages>] ---"
+ACTIVITY_LOG_ENTRY: "&7[<time>] &f<player> &7<action>"
+ACTIVITY_LOG_EMPTY: "&7Bu claim için henüz kayıtlı bir aktivite yok."
+ACTIVITY_LOG_NO_PERMISSION: "&cBu claim'in kaydını görüntülemek için üyesi olmalısınız."
+ACTIVITY_LOG_DISABLED: "&cAktivite kaydı devre dışı."
+ACTIVITY_ACTION_ENTER: "claim'e girdi"
+ACTIVITY_ACTION_LEAVE: "claim'den çıktı"
+ACTIVITY_ACTION_BLOCK_BREAK: "bir blok kırdı"
+ACTIVITY_ACTION_BLOCK_PLACE: "bir blok yerleştirdi"
+ACTIVITY_ACTION_DOOR_INTERACT: "bir kapı kullandı"
+ACTIVITY_ACTION_CONTAINER_INTERACT: "bir konteyner açtı"
+ACTIVITY_ACTION_MEMBER_ADDED: "bir üye ekledi"
+ACTIVITY_ACTION_MEMBER_REMOVED: "bir üye çıkardı"
+
+# Rollback mesajları
+ROLLBACK_INVALID_DURATION: "&cGeçersiz süre, örnek: 2h veya 1d12h."
+ROLLBACK_CONFIRM: "&cBu işlem bu claim içindeki değişiklikleri geri alacak. Onaylamak için 30 saniye içinde /claim rollback confirm yazın."
+ROLLBACK_NO_PENDING: "&cBu claim için bekleyen bir rollback yok veya süresi doldu. Tekrar /claim rollback <süre> yazın."
+ROLLBACK_STARTED: "&aRollback başlatıldı."
+
+# Pazar mesajları
+MARKET_INVALID_PRICE: "&cGeçersiz fiyat, pozitif bir sayı girin."
+MARKET_INVALID_DURATION: "&cGeçersiz süre, örnek: 2h veya 1d12h."
+MARKET_ALREADY_LISTED: "&cBu claim zaten listelenmiş. Önce /claim unlist yazın."
+MARKET_CLAIM_CURRENTLY_RENTED: "&cBu claim şu anda kiralık durumda ve listelenemez."
+MARKET_LISTED_SALE: "&aClaim satışa çıkarıldı! Oyuncular /claim market üzerinden satın alabilir."
+MARKET_LISTED_RENT: "&aClaim kiralığa çıkarıldı! Oyuncular /claim market üzerinden kiralayabilir."
+MARKET_UNLISTED: "&aİlan kaldırıldı."
+MARKET_NOT_LISTED: "&cBu claim listelenmemiş, ya da başka biri zaten satın aldı/kiraladı."
+MARKET_CANT_BUY_OWN: "&cKendi ilanınızı satın alamaz veya kiralayamazsınız."
+MARKET_PURCHASE_SUCCESS: "&aClaim satın alındı! Artık sizin."
+MARKET_RENT_SUCCESS: "&aClaim kiralandı! Kiralama süresi dolunca eski sahibine dönecek."
+MARKET_PENDING_PAYOUT: "&aÇevrimdışıyken bir claim satışından/kiralamasından <amount> aldınız."

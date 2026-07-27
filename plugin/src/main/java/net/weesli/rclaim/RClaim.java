@@ -16,9 +16,13 @@ import net.weesli.rclaim.api.database.Loader;
 import net.weesli.rclaim.api.hook.manager.MapManager;
 import net.weesli.rclaim.api.permission.ClaimPermissionService;
 import net.weesli.rclaim.api.status.ClaimStatusService;
+import net.weesli.rclaim.activitylog.ActivityLogStorage;
+import net.weesli.rclaim.event.AutoClaimListener;
+import net.weesli.rclaim.event.ClaimActivityListener;
 import net.weesli.rclaim.event.ClaimLifecycleListener;
 import net.weesli.rclaim.event.ClaimPermissionListener;
 import net.weesli.rclaim.event.ClaimStatusListener;
+import net.weesli.rclaim.hook.discord.DiscordWebhookListener;
 import net.weesli.rclaim.hook.stacker.HRoseStacker;
 import net.weesli.rclaim.input.TextInputManager;
 import net.weesli.rclaim.manager.CacheManagerImpl;
@@ -28,11 +32,14 @@ import net.weesli.rclaim.api.enums.StorageType;
 import net.weesli.rclaim.hook.manager.*;
 import net.weesli.rclaim.hook.other.HBetterRTP;
 import net.weesli.rclaim.database.*;
+import net.weesli.rclaim.hook.other.HCoreProtect;
 import net.weesli.rclaim.hook.other.HPlaceholderAPI;
 import net.weesli.rclaim.manager.ClaimManagerImpl;
+import net.weesli.rclaim.marketplace.RentalStorage;
 import net.weesli.rclaim.manager.TagManagerImpl;
 import net.weesli.rclaim.permission.ClaimPermissionServiceImpl;
 import net.weesli.rclaim.status.ClaimStatusServiceImpl;
+import net.weesli.rclaim.sync.RedisManager;
 import net.weesli.rclaim.task.PublicTask;
 import net.weesli.rclaim.ui.UIManager;
 import net.weesli.rozslib.RozsLibService;
@@ -70,6 +77,7 @@ public final class RClaim extends JavaPlugin {
     private CombatManagerImpl combatManager;
     private StackerManagerImpl stackerManager;
     private MapManagerImpl mapManager;
+    private RedisManager redisManager;
 
    @Getter private static RClaim instance;
 
@@ -93,6 +101,7 @@ public final class RClaim extends JavaPlugin {
         claimManager = new ClaimManagerImpl();
         tagManager = new TagManagerImpl();
         mapManager = new MapManagerImpl();
+        redisManager = new RedisManager();
         textInputManager = new TextInputManager(this);
         permissionService = new ClaimPermissionServiceImpl(this);
         statusService = new ClaimStatusServiceImpl(this);
@@ -100,12 +109,17 @@ public final class RClaim extends JavaPlugin {
         new ClaimLifecycleListener();
         new ClaimPermissionListener();
         new ClaimStatusListener();
+        new DiscordWebhookListener();
+        new AutoClaimListener();
+        new ClaimActivityListener();
 
         new CommandManager();
         new Metrics(this, 	23385);
         ModuleLoader.loadAddons(this.getDataFolder().getPath() + "/modules");
         // initialize betterRTP hook if plugin is enabled
         if (getServer().getPluginManager().isPluginEnabled("BetterRTP")) new HBetterRTP(this);
+        // initialize CoreProtect hook (/claim rollback) if plugin is enabled
+        if (getServer().getPluginManager().isPluginEnabled("CoreProtect")) HCoreProtect.setup();
 
         // register RozsLibService in this plugin
         RozsLibService.start(this);
@@ -116,6 +130,11 @@ public final class RClaim extends JavaPlugin {
             checkVersion();
         });
         foliaLib.getScheduler().runTimerAsync(Loader::save, 12000L, 12000L);
+        if (ConfigLoader.getConfig().getActivityLog().isEnabled()) {
+            ActivityLogStorage.get();
+            foliaLib.getScheduler().runTimerAsync((task) -> ActivityLogStorage.get().pruneAsync(), 24000L, 24000L);
+        }
+        RentalStorage.get();
         new PublicTask(foliaLib);
 
         // publish RClaimAPI for other plugins
@@ -138,6 +157,13 @@ public final class RClaim extends JavaPlugin {
     public void onDisable() {
         Loader.save();
         storage.shutdown();
+        if (ConfigLoader.getConfig().getActivityLog().isEnabled()) {
+            ActivityLogStorage.get().shutdown();
+        }
+        if (redisManager != null) {
+            redisManager.shutdown();
+        }
+        RentalStorage.get().shutdown();
     }
 
     @SneakyThrows

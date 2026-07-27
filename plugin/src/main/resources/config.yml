@@ -22,6 +22,10 @@ worldGuard:
   bannedRegions:
     - example
     - Weesli
+mapSupport:
+  dynmapSupport: true
+  # Claims with less than this many hours remaining are highlighted in a warning color on supported maps. 0 disables the highlight.
+  expiringSoonHours: 24
 # Prevents players from fleeing to their own space when fighting within the server
 combatSystem: true
 effects:
@@ -141,3 +145,28 @@ ClaimPermissionNames:
   USE_DOOR: Use Door
   USE_PORTAL: Use Portal
   USE_POTION: Use Potion
+activityLog:
+  enabled: true
+  # Log entries older than this many days are purged automatically. 0 disables age-based purging.
+  retentionDays: 30
+  # Maximum stored log entries kept per claim; older entries beyond this are purged. 0 disables the limit.
+  maxEntriesPerClaim: 500
+  pageSize: 8
+redis:
+  # Only takes effect when storageType is MySQL - Redis syncs metadata across servers sharing that database, there is nothing to sync from a local SQLite/RozsDBLite file.
+  enabled: false
+  host: localhost
+  port: 6379
+  password: ''
+  channel: rclaim-sync
+discordWebhook:
+  enabled: false
+  url: ''
+  claimPurchased: true
+  claimDeleted: true
+  claimExpiringSoon: true
+  # How many hours before expiry the warning notification is sent
+  claimExpiringSoonHours: 24
+  claimExpired: true
+  memberAdded: true
+  memberRemoved: true

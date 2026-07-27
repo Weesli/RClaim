@@ -3,14 +3,21 @@ package net.weesli.rclaim.hook.map;
 import net.weesli.rclaim.RClaim;
 import net.weesli.rclaim.api.hook.ClaimMap;
 import net.weesli.rclaim.api.model.Claim;
+import net.weesli.rclaim.config.ConfigLoader;
 import net.weesli.rclaim.model.ClaimImpl;
 import net.weesli.rclaim.api.model.SubClaim;
+import net.weesli.rclaim.util.BaseUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapCommonAPI;
 import org.dynmap.markers.*;
 
+import java.awt.Color;
+import java.util.UUID;
+
 public class HDynmap implements ClaimMap {
+
+    private static final int EXPIRING_SOON_COLOR = 0xFF9800;
 
     private DynmapCommonAPI api;
     private MarkerAPI markerAPI;
@@ -37,13 +44,18 @@ public class HDynmap implements ClaimMap {
         if (set == null) return;
 
         ClaimImpl impl = (ClaimImpl) claim;
+        String ownerName = Bukkit.getOfflinePlayer(impl.getOwner()).getName();
+        int color = colorFor(claim);
+        String description = buildDescription(claim, ownerName);
 
         createOrUpdateChunk(
                 impl.getID(),
                 impl.getCenter().getWorld().getName(),
                 impl.getX(),
                 impl.getZ(),
-                Bukkit.getOfflinePlayer(impl.getOwner()).getName()
+                ownerName,
+                description,
+                color
         );
 
         for (SubClaim sub : impl.getSubClaims()) {
@@ -52,9 +64,47 @@ public class HDynmap implements ClaimMap {
                     impl.getCenter().getWorld().getName(),
                     sub.getX() << 4,
                     sub.getZ() << 4,
-                    Bukkit.getOfflinePlayer(impl.getOwner()).getName() + " (Sub)"
+                    ownerName + " (Sub)",
+                    description,
+                    color
             );
         }
+    }
+
+    private int colorFor(Claim claim) {
+        int expiringSoonHours = ConfigLoader.getConfig().getMapSupport().getExpiringSoonHours();
+        if (expiringSoonHours > 0 && claim.getTimestamp() <= expiringSoonHours * 3600) {
+            return EXPIRING_SOON_COLOR;
+        }
+        return colorForOwner(claim.getOwner());
+    }
+
+    private int colorForOwner(UUID owner) {
+        float hue = (owner.hashCode() & 0x7FFFFFFF) % 360 / 360f;
+        return Color.HSBtoRGB(hue, 0.55f, 0.95f) & 0xFFFFFF;
+    }
+
+    private String buildDescription(Claim claim, String ownerName) {
+        String claimName = claim.getDisplayName() != null ? claim.getDisplayName() : claim.getID();
+        boolean pvp = claim.checkStatus("PVP");
+        boolean explosion = claim.checkStatus("EXPLOSION");
+
+        return "<div class=\"regioninfo\">"
+                + "<b>" + escapeHtml(claimName) + "</b><br/>"
+                + "Owner: " + escapeHtml(ownerName == null ? "?" : ownerName) + "<br/>"
+                + "Members: " + claim.getMembers().size() + "<br/>"
+                + "Remaining: " + escapeHtml(BaseUtil.getTimeFormat(claim.getID())) + "<br/>"
+                + "PvP: " + (pvp ? "On" : "Off") + " | Explosion: " + (explosion ? "On" : "Off")
+                + "</div>";
+    }
+
+    private static String escapeHtml(String input) {
+        if (input == null) return "";
+        return input.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
     }
 
     private void createOrUpdateChunk(
@@ -62,7 +112,9 @@ public class HDynmap implements ClaimMap {
             String world,
             int blockX,
             int blockZ,
-            String label
+            String label,
+            String description,
+            int color
     ) {
         AreaMarker marker = set.findAreaMarker(id);
 
@@ -96,8 +148,9 @@ public class HDynmap implements ClaimMap {
         }
 
         if (marker != null) {
-            marker.setFillStyle(0.5, 0x66FF66);
-            marker.setLineStyle(1, 1.0, 0xFFFFFF);
+            marker.setFillStyle(0.5, color);
+            marker.setLineStyle(1, 1.0, color);
+            marker.setDescription(description);
         }
     }
 

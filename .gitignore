@@ -2,6 +2,7 @@
 .idea/
 build/
 buildSrc/
+.gradle/
 *.iml
 
 *.ipr

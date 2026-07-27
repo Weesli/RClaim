@@ -9,6 +9,7 @@ import net.weesli.rclaim.api.events.ClaimStatusChangeEvent;
 import net.weesli.rclaim.api.model.Claim;
 import net.weesli.rclaim.api.model.ClaimEffect;
 import net.weesli.rclaim.config.ConfigLoader;
+import net.weesli.rclaim.marketplace.MarketplaceManager;
 import net.weesli.rclaim.ui.inventories.ClaimMainMenu;
 import net.weesli.rclaim.util.FormatUtil;
 import net.weesli.rozslib.events.BlockLeftClickEvent;
@@ -69,6 +70,7 @@ public class ClaimLifecycleListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
+        MarketplaceManager.payOutIfPending(player);
         Claim claim = RClaim.getInstance().getClaimManager().getClaim(player.getLocation());
         if (claim != null) {
             Bukkit.getPluginManager().callEvent(new ClaimEnterEvent(claim, player));
